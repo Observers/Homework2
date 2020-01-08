@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    ViewBag.Title = "Index";
+}
+
+@section stylesheet
+{
+    <link rel="stylesheet" href="~/css/sidenavfixed.css" />
+}
+
+@section header {
+    @{await Html.RenderPartialAsync("_NavBar");}
+}
+
+@section sidenav {
+    @{await Html.RenderPartialAsync("_SideNav");}
+}

@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Role Maintenance";
+}
+
+@section stylesheet
+{
+    <link rel="stylesheet" href="~/css/sidenavfixed.css" />
+}
+
+@section header
+{
+    @{await Html.RenderPartialAsync("_NavBar");}
+}
+
+@section sidenav
+{
+    @{await Html.RenderPartialAsync("_SideNav");}
+}
+
+<div class="row">
+    <h5>@ViewData["Title"]</h5>
+</div>
+
+<div class="row">
+    <div class="input-field col s6">
+        <select>
+            <option value="" disabled selected>Choose your option</option>
+            <option value="1">GSYADM</option>
+            <option value="2">GADM</option>
+            <option value="3">GOWNDER</option>
+            <option value="4">Contactor</option>
+            <option value="5">Other</option>
+        </select>
+        <label>Role</label>
+    </div>
+</div>
+
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large red pulse ">
+        <i class="large material-icons">edit</i>
+    </a>
+    <ul>
+        <li>
+            <a class="btn-floating red tooltipped" data-position="left" data-tooltip="Query">
+                <i class="material-icons">search</i>
+                Query
+            </a>
+        </li>
+        <li>
+            <a class="btn-floating yellow darken-1 tooltipped" data-position="left" data-tooltip="Add">
+                <i class="material-icons">add</i>
+                Add
+            </a>
+        </li>
+        <li>
+            <a class="btn-floating green tooltipped" data-position="left" data-tooltip="Modify">
+                <i class="material-icons">mode_edit</i>
+                Modify
+            </a>
+        </li>
+        <li>
+            <a class="btn-floating blue tooltipped" data-position="left" data-tooltip="Menu">
+                <i class="material-icons">menu</i>
+                Menu
+            </a>
+        </li>
+        <li>
+            <a class="btn-floating blue tooltipped" data-position="left" data-tooltip="Delete">
+                <i class="material-icons">delete</i>
+                Delete
+            </a>
+        </li>
+    </ul>
+</div>
+
+

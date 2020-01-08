@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewData["Title"] = "Menu Mantainence";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section stylesheet
+{
+    <link rel="stylesheet" href="~/css/sidenavfixed.css" />
+}
+
+@section header 
+{
+    @{await Html.RenderPartialAsync("_NavBar");}
+}
+
+@section sidenav 
+{
+    @{await Html.RenderPartialAsync("_SideNav");}
+}
+
+<div class="row">
+    <h5>@ViewData["Title"]</h5>
+</div>
+
+<div class="row">
+    <div class="input-field col s6">
+        <input id="menu_no" type="text" class="validate">
+        <label for="menu_no">Menu No</label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="input-field col s6">
+        <input id="title" type="text" class="validate">
+        <label for="title">Title</label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <div class="input-field col s4">
+            <select>
+                <option value="" disabled selected>Choose your option</option>
+                <option value="1">Menu</option>
+                <option value="2">Program</option>
+            </select>
+            <label>Link Type</label>
+        </div>
+
+        <div class="input-field col s4">
+            <select>
+                <option value="" disabled selected>Choose your option</option>
+                <option value="1">Y</option>
+                <option value="2">N</option>
+            </select>
+            <label>Status</label>
+        </div>
+    </div>
+</div>
+
+
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large red pulse">
+        <i class="large material-icons">edit</i>
+    </a>
+    <ul>
+        <li>
+            <a class="btn-floating red tooltipped" data-position="left" data-tooltip="Query">
+                <i class="material-icons">search</i>
+                Query
+            </a>
+        </li>
+        <li>
+            <a class="btn-floating yellow darken-1 tooltipped" data-position="left" data-tooltip="Add">
+                <i class="material-icons">add</i>
+                Add
+            </a>
+        </li>
+        <li>
+            <a class="btn-floating green tooltipped" data-position="left" data-tooltip="Modify">
+                <i class="material-icons">mode_edit</i>
+                Modify
+            </a>
+        </li>
+        <li>
+            <a class="btn-floating blue tooltipped" data-position="left" data-tooltip="Delete">
+                <i class="material-icons">delete</i>
+                Delete
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="row">
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Role</th>
+                <th>Role Description</th>
+                <th>Status</th>
+                <th>Create Date</th>
+                <th>Create User</th>
+                <th>Modify Date</th>
+                <th>Modify User</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>
+                    <label>
+                        <input type="checkbox" class="filled-in" />
+                        <span></span>
+                    </label>
+                </td>
+                <td>Hello</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
