@@ -1,0 +1,25 @@
+﻿body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+main {
+    flex: 1 0 auto;
+    padding: 20px;
+}
+
+.login-box {
+    height: 100%;
+}
+
+.invalid {
+    color: red;
+}

@@ -1,50 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
 using Homework2.Models;
-using System.Data.SqlClient;
 
 namespace Homework2.Controllers
 {
     public class AccountController : Controller
     {
-        readonly SqlConnection con = new SqlConnection();
-        readonly SqlCommand com = new SqlCommand();
-        SqlDataReader dr;
-
-        [HttpGet]
-        public IActionResult Login()
+        // GET: Account
+        public ActionResult Index()
         {
+            HttpCookie cookie = Request.Cookies["Account"];
+            if (cookie != null)
+            {
+                ViewBag.username = cookie["username"].ToString();
+
+                string EncryptedPassword = cookie["password"].ToString();
+                byte[] b = Convert.FromBase64String(EncryptedPassword);
+                string DecryptedPassword = ASCIIEncoding.ASCII.GetString(b);
+                ViewBag.username = DecryptedPassword.ToString();
+            }
             return View();
         }
 
-        void connectionString()
+        [HttpPost]
+        public ActionResult Login(Account acc, FormCollection form)
         {
-            con.ConnectionString = "data source=SILVER; database=Trainee15; integrated security=SSPI;";
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                HttpCookie cookie = new HttpCookie("Account");
+                string f = form["RememberMe"];
+                if (f != null)
+                {
+                    cookie["username"] = acc.username;
+
+                    byte[] b = ASCIIEncoding.ASCII.GetBytes(acc.username);
+                    string EncryptedPassword = Convert.ToBase64String(b);
+                    cookie["password"] = EncryptedPassword;
+
+                    cookie.Expires = DateTime.Now.AddDays(2);
+                    HttpContext.Response.Cookies.Add(cookie);
+                }
+                else
+                {
+                    cookie.Expires = DateTime.Now.AddDays(-1);
+                    HttpContext.Response.Cookies.Add(cookie);
+                }
+
+                var userDetails = db.Accounts.Where(x => x.username == acc.username && x.password == acc.password).FirstOrDefault();
+                if (userDetails == null)
+                {
+                    TempData["data"] = "Wrong Username or Password.";
+                    return View("Index");
+                }
+                else
+                {
+                    Session["userID"] = acc.userID;
+                    return RedirectToAction("Index", "Home");
+                }
+            }
         }
 
-        [HttpPost]
-        public IActionResult Verify(AccountModel acc)
+        public ActionResult LogOut()
         {
-            System.Diagnostics.Debug.WriteLine(acc.Username);
-            connectionString();
-            con.Open();
-            com.Connection = con;
-            com.CommandText = "select * from account where username='"+acc.Username+"' and password='"+acc.Password+"'";
-            dr = com.ExecuteReader();
-            if (dr.Read())
-            {
-                System.Diagnostics.Debug.WriteLine("HI");
-                con.Close();
-                return RedirectToAction("Index","Home");
-            }
-            else
-            {
-                con.Close();
-                return View("../Home/Index.cshtml");
-            }
+            Session.Abandon();
+            return RedirectToAction("Index", "Account");
         }
     }
 }
