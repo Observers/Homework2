@@ -21,7 +21,9 @@ namespace Homework2.Controllers
                 string EncryptedPassword = cookie["password"].ToString();
                 byte[] b = Convert.FromBase64String(EncryptedPassword);
                 string DecryptedPassword = ASCIIEncoding.ASCII.GetString(b);
-                ViewBag.username = DecryptedPassword.ToString();
+                ViewBag.password = DecryptedPassword.ToString();
+
+
             }
             return View();
         }
@@ -49,11 +51,11 @@ namespace Homework2.Controllers
                     cookie.Expires = DateTime.Now.AddDays(-1);
                     HttpContext.Response.Cookies.Add(cookie);
                 }
-
-                var userDetails = db.Accounts.Where(x => x.username == acc.username && x.password == acc.password).FirstOrDefault();
+                //Where(x => x.username == acc.username && x.password == acc.password).FirstOrDefault();
+                var userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == acc.password); 
                 if (userDetails == null)
                 {
-                    TempData["data"] = "Wrong Username or Password.";
+                    TempData["Message"] = "Wrong Username or Password.";
                     return View("Index");
                 }
                 else
@@ -68,6 +70,45 @@ namespace Homework2.Controllers
         {
             Session.Abandon();
             return RedirectToAction("Index", "Account");
+        }
+
+        public ActionResult ChangePassword()
+        {
+            HttpCookie cookie = Request.Cookies["Account"];
+            if (cookie != null)
+            {
+                ViewBag.username = cookie["username"].ToString();
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(Account acc, FormCollection form)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                Account userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == acc.password);
+                if (userDetails == null)
+                {
+                    HttpCookie cookie = Request.Cookies["Account"];
+                    if (cookie != null)
+                    {
+                        ViewBag.username = cookie["username"].ToString();
+                    }
+                    TempData["Message"] = "Wrong Username or Password.";
+                    return View("ChangePassword");
+                }
+                else
+                {
+                    userDetails.password = acc.newPassword;
+
+                    db.SaveChanges();
+
+                    TempData["Message"] = "<script>alert('Password changed successfully!')</script>";
+
+                    return View("ChangePassword");
+                }
+            }
         }
     }
 }

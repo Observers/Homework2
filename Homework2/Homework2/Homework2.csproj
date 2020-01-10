@@ -96,6 +96,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controllers\database.txt" />
     <Content Include="Global.asax" />
     <Content Include="Models\Account.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -109,6 +110,7 @@
     </Content>
     <Content Include="Static\css\sidenavfixed.css" />
     <Content Include="Static\css\site.css" />
+    <Content Include="Static\js\ChangePassword.js" />
     <Content Include="Static\js\site.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -155,6 +157,7 @@
     <Content Include="Views\Shared\_Maintainance.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
