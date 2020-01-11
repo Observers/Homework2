@@ -16,7 +16,7 @@
                 <div class="collapsible-body">
                     <ul>
                         <li><a href="#!">User Maintenance</a></li>
-                        <li><a href="#!">Role Maintenance</a></li>
+                        <li><a href="@Url.Action("RoleMaintenance", "SystemSetup")">Role Maintenance</a></li>
                         <li><a href="#!">Menu Maintenance</a></li>
                     </ul>
                 </div>
@@ -33,8 +33,8 @@
                 <a class="collapsible-header">Profile</a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="#!">Change Password</a></li>
-                        <li><a href="@Url.Action("LogOut", "Account")">Logout</a></li>
+                        <li><a href="@Url.Action("ChangePassword", "Profile")">Change Password</a></li>
+                        <li><a href="@Url.Action("LogOut", "Profile")">Logout</a></li>
                     </ul>
                 </div>
             </li>

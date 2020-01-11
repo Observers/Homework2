@@ -98,66 +98,71 @@
   <ItemGroup>
     <Content Include="Controllers\database.txt" />
     <Content Include="Global.asax" />
-    <Content Include="Models\Account.Context.tt">
+    <Content Include="Models\database.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Account.edmx</DependentUpon>
-      <LastGenOutput>Account.Context.cs</LastGenOutput>
+      <DependentUpon>database.edmx</DependentUpon>
+      <LastGenOutput>database.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\Account.tt">
+    <Content Include="Models\database.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Account.edmx</DependentUpon>
-      <LastGenOutput>Account1.cs</LastGenOutput>
+      <DependentUpon>database.edmx</DependentUpon>
+      <LastGenOutput>database.cs</LastGenOutput>
     </Content>
     <Content Include="Static\css\sidenavfixed.css" />
     <Content Include="Static\css\site.css" />
-    <Content Include="Static\js\ChangePassword.js" />
+    <Content Include="Static\js\changePassword.js" />
+    <Content Include="Static\js\roleMaintenance.js" />
     <Content Include="Static\js\site.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SystemSetupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Account.Context.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Account.cs">
-      <DependentUpon>Account.tt</DependentUpon>
+      <DependentUpon>database.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account.Designer.cs">
+    <Compile Include="Models\database.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Account.edmx</DependentUpon>
+      <DependentUpon>database.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account1.cs">
+    <Compile Include="Models\database.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Account.tt</DependentUpon>
+      <DependentUpon>database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\database.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>database.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>database.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <EntityDeploy Include="Models\Account.edmx">
+    <EntityDeploy Include="Models\database.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Account.Designer.cs</LastGenOutput>
+      <LastGenOutput>database.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\Account.edmx.diagram">
-      <DependentUpon>Account.edmx</DependentUpon>
+    <Content Include="Models\database.edmx.diagram">
+      <DependentUpon>database.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Shared\_SideNav.cshtml" />
-    <Content Include="Views\Shared\_Maintainance.cshtml" />
-    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Profile\ChangePassword.cshtml" />
+    <Content Include="Views\SystemSetup\RoleMaintenance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -8,12 +8,12 @@ using Homework2.Models;
 
 namespace Homework2.Controllers
 {
-    public class AccountController : Controller
+    public class ProfileController : Controller
     {
         // GET: Account
         public ActionResult Index()
         {
-            HttpCookie cookie = Request.Cookies["Account"];
+            HttpCookie cookie = Request.Cookies["Profile"];
             if (cookie != null)
             {
                 ViewBag.username = cookie["username"].ToString();
@@ -33,7 +33,7 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                HttpCookie cookie = new HttpCookie("Account");
+                HttpCookie cookie = new HttpCookie("Profile");
                 string f = form["RememberMe"];
                 if (f != null)
                 {
@@ -69,12 +69,12 @@ namespace Homework2.Controllers
         public ActionResult LogOut()
         {
             Session.Abandon();
-            return RedirectToAction("Index", "Account");
+            return RedirectToAction("Index", "Profile");
         }
 
         public ActionResult ChangePassword()
         {
-            HttpCookie cookie = Request.Cookies["Account"];
+            HttpCookie cookie = Request.Cookies["Profile"];
             if (cookie != null)
             {
                 ViewBag.username = cookie["username"].ToString();
@@ -83,14 +83,14 @@ namespace Homework2.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChangePassword(Account acc, FormCollection form)
+        public ActionResult ChangePassword(Account acc)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
                 Account userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == acc.password);
                 if (userDetails == null)
                 {
-                    HttpCookie cookie = Request.Cookies["Account"];
+                    HttpCookie cookie = Request.Cookies["Profile"];
                     if (cookie != null)
                     {
                         ViewBag.username = cookie["username"].ToString();
