@@ -2,6 +2,11 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if(Session["userID"] == null)
+    {
+        Response.Redirect("~/Profile/Index");
+    }
 }
 
 @section stylesheet
@@ -17,3 +22,4 @@
     @{Html.RenderPartial("_SideNav");}
 }
 
+<h3>Welcome @Session["username"]</h3>

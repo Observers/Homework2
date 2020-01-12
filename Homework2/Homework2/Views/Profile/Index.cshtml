@@ -11,8 +11,6 @@
 
 @using (Html.BeginForm("Login", "Profile", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
-
     <div class="row">
         <div class="center-align">
             <span class="invalid">@TempData["Message"]</span>

@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "RoleMaintenance";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if(Session["userID"] == null)
+    {
+        Response.Redirect("~/Profile/Index");
+    }
 }
 
 @section stylesheet
@@ -30,7 +35,7 @@
 {
     <div class="row">
         <div class="input-field col s6">
-            <select name="selectRole">
+            <select name="selectRole" class="wrapper">
                 <option value="" disabled selected>Choose your option</option>
                 @foreach (var role in Model?.ListA)
                 {
@@ -100,31 +105,31 @@
         </a>
         <ul>
             <li>
-                <button class="btn-floating red tooltipped" data-position="left" data-tooltip="Query" formaction="QueryForm" formmethod="post">
+                <button class="btn-floating red tooltipped" data-position="left" data-tooltip="Query" formaction="QueryRole" formmethod="post">
                     <i class="material-icons">search</i>
                     Query
                 </button>
             </li>
             <li>
-                <button class="btn-floating yellow darken-1 tooltipped" data-position="left" data-tooltip="Add" formaction="AddForm" formmethod="post">
+                <button class="btn-floating yellow darken-1 tooltipped" data-position="left" data-tooltip="Add" formaction="AddRole" formmethod="get">
                     <i class="material-icons">add</i>
                     Add
                 </button>
             </li>
             <li>
-                <button class="btn-floating green tooltipped" data-position="left" data-tooltip="Modify" formaction="ModifyForm" formmethod="post">
+                <button class="btn-floating green tooltipped" data-position="left" data-tooltip="Modify" formaction="ModifyRole" formmethod="post">
                     <i class="material-icons">mode_edit</i>
                     Modify
                 </button>
             </li>
             <li>
-                <button class="btn-floating blue tooltipped" data-position="left" data-tooltip="Menu" formaction="MenuForm" formmethod="post">
+                <button class="btn-floating blue tooltipped" data-position="left" data-tooltip="Menu" formaction="MenuRole" formmethod="post">
                     <i class="material-icons">menu</i>
                     Menu
                 </button>
             </li>
             <li>
-                <button class="btn-floating blue tooltipped" data-position="left" data-tooltip="Delete" formaction="DeleteForm" formmethod="post">
+                <button class="btn-floating blue tooltipped" data-position="left" data-tooltip="Delete" formaction="DeleteRole" formmethod="post">
                     <i class="material-icons">delete</i>
                     Delete
                 </button>

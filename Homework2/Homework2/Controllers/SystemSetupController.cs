@@ -23,16 +23,15 @@ namespace Homework2.Controllers
         }
 
         [HttpPost]
-        public ActionResult QueryForm(FormCollection form)
+        public ActionResult QueryRole(FormCollection form)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
                 var selectRole = form["selectRole"];
-                System.Diagnostics.Debug.WriteLine(selectRole); 
                 var viewModel = new Role();
                 if (selectRole != null)
                 {
-                    int iSelectRole = Int32.Parse(selectRole);
+                    int iSelectRole = int.Parse(selectRole);
                     viewModel.ListA = db.Roles.ToList();
                     viewModel.ListB = db.Roles.Where(x => x.roleID == iSelectRole).ToList();
                 }
@@ -45,26 +44,70 @@ namespace Homework2.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult AddForm()
+        [HttpGet]
+        public ActionResult AddRole()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult ModifyForm()
+            public ActionResult AddRole(FormCollection form)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                int userID = (int)Session["userID"];
+                var user = db.Accounts.SingleOrDefault(x => x.userID == userID);
+
+                Role roleAdd = new Role();
+                roleAdd.role = form["role"];
+                roleAdd.description = form["description"];
+                var selectStatus = form["selectStatus"];
+                if(selectStatus == "1")
+                {
+                    roleAdd.status = true;
+                }
+                else 
+                {
+                    roleAdd.status = false;
+                }
+                DateTime curretDateTime = DateTime.Now;
+                roleAdd.createDate = curretDateTime;
+                roleAdd.createUser = user.username;
+                roleAdd.modifyDate = curretDateTime;
+                roleAdd.modifyUser = user.username;
+
+                db.Roles.Add(roleAdd);
+                db.SaveChanges();
+
+                var viewModel = new Role();
+                viewModel.ListA = db.Roles.ToList();
+                List<Role> list = new List<Role>();
+                viewModel.ListB = list;
+
+                return View("RoleMaintenance", viewModel);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ModifyRole()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult ModifyRole(FormCollection form)
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult MenuForm()
+        public ActionResult MenuRole()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult DeleteForm()
+        public ActionResult DeleteRole()
         {
             return View();
         }

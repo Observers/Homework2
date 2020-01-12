@@ -22,8 +22,6 @@ namespace Homework2.Controllers
                 byte[] b = Convert.FromBase64String(EncryptedPassword);
                 string DecryptedPassword = ASCIIEncoding.ASCII.GetString(b);
                 ViewBag.password = DecryptedPassword.ToString();
-
-
             }
             return View();
         }
@@ -60,7 +58,8 @@ namespace Homework2.Controllers
                 }
                 else
                 {
-                    Session["userID"] = acc.userID;
+                    Session["userID"] = userDetails.userID;
+                    Session["username"] = userDetails.username;
                     return RedirectToAction("Index", "Home");
                 }
             }
