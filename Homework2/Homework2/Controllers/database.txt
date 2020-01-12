@@ -50,3 +50,7 @@ public ActionResult edit(Student student)
 
 	return View(student_update);
 }
+
+
+//Back button
+<button type="submit" formaction='@Url.Action("Previous","Home")'>Previous</button>

@@ -22,5 +22,7 @@ namespace Homework2.Models
         public string createUser { get; set; }
         public Nullable<System.DateTime> modifyDate { get; set; }
         public string modifyUser { get; set; }
+        public List<Role> ListA { get; set; }
+        public List<Role> ListB { get; set; }
     }
 }
