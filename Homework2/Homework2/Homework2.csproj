@@ -164,6 +164,7 @@
     <Content Include="Views\Profile\ChangePassword.cshtml" />
     <Content Include="Views\SystemSetup\RoleMaintenance.cshtml" />
     <Content Include="Views\SystemSetup\AddRole.cshtml" />
+    <Content Include="Views\SystemSetup\ModifyRole.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
