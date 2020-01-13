@@ -55,7 +55,7 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                database(form, true);
+                Database(form, true);
 
                 var viewModel = new Role();
                 viewModel.ListA = db.Roles.ToList();
@@ -94,7 +94,7 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                database(form, false);
+                Database(form, false);
 
                 var viewModel = new Role();
                 viewModel.ListA = db.Roles.ToList();
@@ -112,12 +112,29 @@ namespace Homework2.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteRole()
+        public ActionResult DeleteRole(FormCollection form)
         {
-            return View();
+            var viewModel = new Role();
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                string[] checkboxes = form["checkbox"].Split(',');
+                foreach (var role in checkboxes)
+                {
+                    int iRoleID = Int32.Parse(role);
+                    Role deleteRole = db.Roles.SingleOrDefault(r => r.roleID == iRoleID);
+                    db.Roles.Remove(deleteRole);
+                    db.SaveChanges();
+                }
+
+                viewModel.ListA = db.Roles.ToList();
+                List<Role> list = new List<Role>();
+                viewModel.ListB = list;
+            }
+
+            return View("RoleMaintenance", viewModel);
         }
 
-        public void database(FormCollection form, bool action)
+        public void Database(FormCollection form, bool action)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
@@ -130,7 +147,7 @@ namespace Homework2.Controllers
                 {
                     role.role = form["role"];
                 }
-                if(!action)
+                if (!action)
                 {
                     var selectRole = form["selectRole"];
                     int iSelectRole = int.Parse(selectRole);
@@ -147,8 +164,9 @@ namespace Homework2.Controllers
                 {
                     role.status = false;
                 }
+
                 DateTime curretDateTime = DateTime.Now;
-                if(action)
+                if (action)
                 {
                     role.createDate = curretDateTime;
                     role.createUser = user.username;
@@ -156,7 +174,7 @@ namespace Homework2.Controllers
                 role.modifyDate = curretDateTime;
                 role.modifyUser = user.username;
 
-                if(action)
+                if (action)
                 {
                     db.Roles.Add(role);
                 }

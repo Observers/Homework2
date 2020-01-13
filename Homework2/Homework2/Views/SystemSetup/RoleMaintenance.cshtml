@@ -123,13 +123,13 @@
                 </button>
             </li>
             <li>
-                <button class="btn-floating yellow tooltipped" data-position="left" data-tooltip="Menu" formaction="MenuRole" formmethod="get">
+                <button class="btn-floating yellow tooltipped" data-position="left" data-tooltip="Menu" formaction="MenuRole" formmethod="get" >
                     <i class="material-icons">menu</i>
                     Menu
                 </button>
             </li>
             <li>
-                <button class="btn-floating blue tooltipped" data-position="left" data-tooltip="Delete" formaction="DeleteRole" formmethod="post">
+                <button class="btn-floating blue tooltipped" onclick="return confirm('Are you sure you want to delete?')" data-position="left" data-tooltip="Delete" formaction="DeleteRole" formmethod="post">
                     <i class="material-icons">delete</i>
                     Delete
                 </button>
