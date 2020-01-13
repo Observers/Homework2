@@ -55,29 +55,7 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                int userID = (int)Session["userID"];
-                var user = db.Accounts.SingleOrDefault(x => x.userID == userID);
-
-                Role roleAdd = new Role();
-                roleAdd.role = form["role"];
-                roleAdd.description = form["description"];
-                var selectStatus = form["selectStatus"];
-                if (selectStatus == "1")
-                {
-                    roleAdd.status = true;
-                }
-                else
-                {
-                    roleAdd.status = false;
-                }
-                DateTime curretDateTime = DateTime.Now;
-                roleAdd.createDate = curretDateTime;
-                roleAdd.createUser = user.username;
-                roleAdd.modifyDate = curretDateTime;
-                roleAdd.modifyUser = user.username;
-
-                db.Roles.Add(roleAdd);
-                db.SaveChanges();
+                database(form, true);
 
                 var viewModel = new Role();
                 viewModel.ListA = db.Roles.ToList();
@@ -116,28 +94,7 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                int userID = (int)Session["userID"];
-                var user = db.Accounts.SingleOrDefault(x => x.userID == userID);
-
-                var selectRole = form["selectRole"];
-                System.Diagnostics.Debug.WriteLine(selectRole);
-                int iSelectRole = int.Parse(selectRole);
-                Role roleModified = db.Roles.SingleOrDefault(x => x.roleID == iSelectRole);
-                roleModified.description = form["description"];
-                var selectStatus = form["selectStatus"];
-                if (selectStatus == "1")
-                {
-                    roleModified.status = true;
-                }
-                else
-                {
-                    roleModified.status = false;
-                }
-                DateTime curretDateTime = DateTime.Now;
-                roleModified.modifyDate = curretDateTime;
-                roleModified.modifyUser = user.username;
-
-                db.SaveChanges();
+                database(form, false);
 
                 var viewModel = new Role();
                 viewModel.ListA = db.Roles.ToList();
@@ -158,6 +115,54 @@ namespace Homework2.Controllers
         public ActionResult DeleteRole()
         {
             return View();
+        }
+
+        public void database(FormCollection form, bool action)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                int userID = (int)Session["userID"];
+                var user = db.Accounts.SingleOrDefault(x => x.userID == userID);
+
+                Role role = new Role();
+
+                if (action)
+                {
+                    role.role = form["role"];
+                }
+                if(!action)
+                {
+                    var selectRole = form["selectRole"];
+                    int iSelectRole = int.Parse(selectRole);
+                    role = db.Roles.SingleOrDefault(x => x.roleID == iSelectRole);
+                }
+
+                role.description = form["description"];
+                var selectStatus = form["selectStatus"];
+                if (selectStatus == "1")
+                {
+                    role.status = true;
+                }
+                else
+                {
+                    role.status = false;
+                }
+                DateTime curretDateTime = DateTime.Now;
+                if(action)
+                {
+                    role.createDate = curretDateTime;
+                    role.createUser = user.username;
+                }
+                role.modifyDate = curretDateTime;
+                role.modifyUser = user.username;
+
+                if(action)
+                {
+                    db.Roles.Add(role);
+                }
+
+                db.SaveChanges();
+            }
         }
     }
 }
