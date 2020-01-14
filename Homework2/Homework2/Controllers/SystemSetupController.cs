@@ -242,13 +242,57 @@ namespace Homework2.Controllers
         [HttpGet]
         public ActionResult AddUser()
         {
-            return View();
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                Role roles = new Role();
+                roles.rolesList = db.Roles.ToList();
+                return View(roles);
+            }
         }
 
         [HttpPost]
         public ActionResult AddUser(FormCollection form)
         {
-            return View();
+            using(Trainee15Entities db = new Trainee15Entities())
+            {
+                int sessionUserID = (int)Session["userID"];
+                var sessionUser = db.Accounts.SingleOrDefault(x => x.userID == sessionUserID);
+                var username = form["username"];
+                var roleId = form["selectRole"];
+                int iRoleID = int.Parse(roleId);
+                var selectStatus = form["selectStatus"];
+                DateTime curretDateTime = DateTime.Now;
+
+                Account newAccount = new Account();
+                newAccount.username = username;
+                newAccount.password = username + "12345";
+                db.Accounts.Add(newAccount);
+
+                User addUser = new User();
+                addUser.username = username;
+                addUser.roleID = iRoleID;
+                if(selectStatus == "1")
+                {
+                    addUser.status = true;
+                }
+                else
+                {
+                    addUser.status = false;
+                }
+                addUser.createDate = curretDateTime;
+                addUser.createUser = sessionUser.username;
+                addUser.modifyDate = curretDateTime;
+                addUser.modifyUser = sessionUser.username;
+                db.Users.Add(addUser);
+                db.SaveChanges();
+
+                User users = new User();
+                users.userList = db.Users.ToList();
+                users.roleList = db.Roles.ToList();
+                users.userTableList = new List<User>();
+                TempData["Message"] = "<script>alert('A new user has been successfully added!')</script>";
+                return View("UserMaintenance", users);
+            }
         }
 
         [HttpPost]
