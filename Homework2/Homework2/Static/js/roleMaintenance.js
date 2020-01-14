@@ -4,11 +4,3 @@
         checkboxes[i].checked = source.checked;
     }
 }
-
-function clicked() {
-    if (confirm('Do you want to Delete?')) {
-        yourformelement.submit();
-    } else {
-        return false;
-    }
-}

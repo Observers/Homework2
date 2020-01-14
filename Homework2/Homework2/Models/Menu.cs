@@ -12,30 +12,22 @@ namespace Homework2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class Menu
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public Menu()
         {
-            this.Users = new HashSet<User>();
-            this.Menus = new HashSet<Menu>();
+            this.Roles = new HashSet<Role>();
         }
     
-        public int roleID { get; set; }
-        public string roleName { get; set; }
-        public string description { get; set; }
+        public int menuID { get; set; }
+        public Nullable<int> menuLevel { get; set; }
+        public string title { get; set; }
+        public string linkType { get; set; }
+        public string linkUrl { get; set; }
         public Nullable<bool> status { get; set; }
-        public Nullable<System.DateTime> createDate { get; set; }
-        public string createUser { get; set; }
-        public Nullable<System.DateTime> modifyDate { get; set; }
-        public string modifyUser { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Menu> Menus { get; set; }
-
-        public List<Role> rolesList { get; set; }
-        public List<Role> rolesTableList { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
     }
 }

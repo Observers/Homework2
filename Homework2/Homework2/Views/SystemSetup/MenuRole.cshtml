@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "MenuRole";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Profile/Index");
+    }
+}
+
+@section stylesheet
+{
+    <link rel="stylesheet" href="~/Static/css/sidenavfixed.css" />
+}
+
+@section header {
+    @{Html.RenderPartial("_NavBar");}
+}
+
+@section sidenav {
+    @{Html.RenderPartial("_SideNav");}
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="input-field col s4 offset-s4">
+            <select name="selectRole" class="wrapper">
+                <option selected value="@Model.roleID">@Model.role</option>
+            </select>
+            <label>Role</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Menu No</th>
+                    <th>Level</th>
+                    <th>Title</th>
+                    <th>Link Type</th>
+                    <th>Link URL</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model?.ListB)
+                {
+                    <tr>
+                        <td>
+                            <label>
+                                <input value="@item.roleID" type="checkbox" class="filled-in" name="checkbox" />
+                                <span></span>
+                            </label>
+                        </td>
+
+                        <td>@item.roleName</td>
+                        <td>@item.description</td>
+
+                        @if (@item.status == true)
+                        {
+                            <td>Y</td>
+                        }
+                        else
+                        {
+                            <td>N</td>
+                        }
+
+                        <td>@item.createDate.ToString()</td>
+                        <td>@item.createUser</td>
+                        <td>@item.modifyDate.ToString()</td>
+                        <td>@item.modifyUser</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="col s2">
+                <button class="btn waves-effect waves-light" type="submit" name="action">
+                    Save
+                </button>
+            </div>
+            <div class="col s2">
+                <button class="waves-effect waves-light btn" onclick="history.back()">Back</button>
+            </div>
+        </div>
+    </div>
+}

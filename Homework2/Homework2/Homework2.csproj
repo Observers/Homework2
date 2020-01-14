@@ -98,15 +98,15 @@
   <ItemGroup>
     <Content Include="Controllers\database.txt" />
     <Content Include="Global.asax" />
-    <Content Include="Models\database.Context.tt">
+    <Content Include="Models\Trainee15Entities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>database.edmx</DependentUpon>
-      <LastGenOutput>database.Context.cs</LastGenOutput>
+      <DependentUpon>Trainee15Entities.edmx</DependentUpon>
+      <LastGenOutput>Trainee15Entities.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\database.tt">
+    <Content Include="Models\Trainee15Entities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>database.edmx</DependentUpon>
-      <LastGenOutput>database.cs</LastGenOutput>
+      <DependentUpon>Trainee15Entities.edmx</DependentUpon>
+      <LastGenOutput>Trainee15Entities.cs</LastGenOutput>
     </Content>
     <Content Include="Static\css\sidenavfixed.css" />
     <Content Include="Static\css\site.css" />
@@ -124,36 +124,42 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Account.cs">
-      <DependentUpon>database.tt</DependentUpon>
+      <DependentUpon>Trainee15Entities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\database.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>database.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\database.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>database.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\database.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>database.edmx</DependentUpon>
+    <Compile Include="Models\Menu.cs">
+      <DependentUpon>Trainee15Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role.cs">
-      <DependentUpon>database.tt</DependentUpon>
+      <DependentUpon>Trainee15Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Trainee15Entities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Trainee15Entities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Trainee15Entities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Trainee15Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Trainee15Entities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Trainee15Entities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs">
+      <DependentUpon>Trainee15Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <EntityDeploy Include="Models\database.edmx">
+    <EntityDeploy Include="Models\Trainee15Entities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>database.Designer.cs</LastGenOutput>
+      <LastGenOutput>Trainee15Entities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\database.edmx.diagram">
-      <DependentUpon>database.edmx</DependentUpon>
+    <Content Include="Models\Trainee15Entities.edmx.diagram">
+      <DependentUpon>Trainee15Entities.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -165,6 +171,8 @@
     <Content Include="Views\SystemSetup\RoleMaintenance.cshtml" />
     <Content Include="Views\SystemSetup\AddRole.cshtml" />
     <Content Include="Views\SystemSetup\ModifyRole.cshtml" />
+    <Content Include="Views\SystemSetup\MenuRole.cshtml" />
+    <Content Include="Views\SystemSetup\UserMaintenance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

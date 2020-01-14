@@ -1,10 +1,9 @@
-﻿@model Homework2.Models.Role
-
+﻿
 @{
-    ViewBag.Title = "RoleMaintenance";
+    ViewBag.Title = "User Maintenance";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    if(Session["userID"] == null)
+    if (Session["userID"] == null)
     {
         Response.Redirect("~/Profile/Index");
     }
@@ -23,10 +22,6 @@
     @{Html.RenderPartial("_SideNav");}
 }
 
-@section scripts {
-    <script src="~/Static/js/roleMaintenance.js" asp-append-version="true"></script>
-}
-
 <div class="row">
     <h5>@ViewData["Title"]</h5>
 </div>
@@ -37,9 +32,16 @@
 {
     <div class="row">
         <div class="input-field col s6">
+            <input id="user" name="user" type="text" class="validate" value="">
+            <label for="user">User</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s6">
             <select name="selectRole" class="wrapper">
                 <option value="" disabled selected>Choose your option</option>
-                @foreach (var role in Model?.rolesList)
+                @foreach (var role in Model?.roleList)
                 {
                     <option value="@role.roleID">@role.roleName</option>
                 }
@@ -58,8 +60,8 @@
                             <span></span>
                         </label>
                     </th>
+                    <th>User</th>
                     <th>Role</th>
-                    <th>Role Description</th>
                     <th>Status</th>
                     <th>Create Date</th>
                     <th>Create User</th>
@@ -69,18 +71,17 @@
             </thead>
 
             <tbody>
-                @foreach (var item in Model?.rolesTableList)
+                @foreach (var item in Model?.userList)
                 {
                     <tr>
                         <td>
                             <label>
-                                <input value="@item.roleID" type="checkbox" class="filled-in" name="checkbox" />
+                                <input value="@item.userID" type="checkbox" class="filled-in" name="checkbox" />
                                 <span></span>
                             </label>
                         </td>
-
-                        <td>@item.roleName</td>
-                        <td>@item.description</td>
+                        <td>@item.username</td>
+                        <td>@item.Role.roleName</td>
 
                         @if (@item.status == true)
                         {
@@ -107,7 +108,7 @@
         </a>
         <ul>
             <li>
-                <button class="btn-floating red tooltipped" data-position="left" data-tooltip="Query" formaction="QueryRole" formmethod="post">
+                <button class="btn-floating red tooltipped" data-position="left" data-tooltip="Query" formaction="QueryUser" formmethod="post">
                     <i class="material-icons">search</i>
                     Query
                 </button>
@@ -122,12 +123,6 @@
                 <button class="btn-floating yellow tooltipped" data-position="left" data-tooltip="Modify" formaction="ModifyRole" formmethod="post">
                     <i class="material-icons">mode_edit</i>
                     Modify
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating yellow tooltipped" data-position="left" data-tooltip="Menu" formaction="MenuRole" formmethod="get" >
-                    <i class="material-icons">menu</i>
-                    Menu
                 </button>
             </li>
             <li>

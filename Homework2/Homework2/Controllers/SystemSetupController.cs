@@ -15,9 +15,9 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                viewModel.ListA = db.Roles.ToList();
+                viewModel.rolesList = db.Roles.ToList();
                 List<Role> list = new List<Role>();
-                viewModel.ListB = list;
+                viewModel.rolesTableList = list;
                 return View(viewModel);
             }
         }
@@ -32,13 +32,13 @@ namespace Homework2.Controllers
                 if (selectRole != null)
                 {
                     int iSelectRole = int.Parse(selectRole);
-                    viewModel.ListA = db.Roles.ToList();
-                    viewModel.ListB = db.Roles.Where(x => x.roleID == iSelectRole).ToList();
+                    viewModel.rolesList = db.Roles.ToList();
+                    viewModel.rolesTableList = db.Roles.Where(x => x.roleID == iSelectRole).ToList();
                 }
                 else
                 {
-                    viewModel.ListA = db.Roles.ToList();
-                    viewModel.ListB = db.Roles.ToList();
+                    viewModel.rolesList = db.Roles.ToList();
+                    viewModel.rolesTableList = db.Roles.ToList();
                 }
                 return View("RoleMaintenance", viewModel);
             }
@@ -58,10 +58,10 @@ namespace Homework2.Controllers
                 Database(form, true);
 
                 var viewModel = new Role();
-                viewModel.ListA = db.Roles.ToList();
+                viewModel.rolesList = db.Roles.ToList();
                 List<Role> list = new List<Role>();
-                viewModel.ListB = list;
-
+                viewModel.rolesTableList = list;
+                TempData["Message"] = "<script>alert('Role has been successfully added!')</script>";
                 return View("RoleMaintenance", viewModel);
             }
         }
@@ -81,8 +81,8 @@ namespace Homework2.Controllers
                 else
                 {
                     var viewModel = new Role();
-                    viewModel.ListA = db.Roles.ToList();
-                    viewModel.ListB = db.Roles.ToList();
+                    viewModel.rolesList = db.Roles.ToList();
+                    viewModel.rolesTableList = db.Roles.ToList();
                     return View("RoleMaintenance", viewModel);
                 }
 
@@ -97,15 +97,15 @@ namespace Homework2.Controllers
                 Database(form, false);
 
                 var viewModel = new Role();
-                viewModel.ListA = db.Roles.ToList();
+                viewModel.rolesList = db.Roles.ToList();
                 List<Role> list = new List<Role>();
-                viewModel.ListB = list;
-
+                viewModel.rolesTableList = list;
+                TempData["Message"] = "<script>alert('Role has been successfully modified!')</script>";
                 return View("RoleMaintenance", viewModel);
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult MenuRole()
         {
             return View();
@@ -126,11 +126,11 @@ namespace Homework2.Controllers
                     db.SaveChanges();
                 }
 
-                viewModel.ListA = db.Roles.ToList();
+                viewModel.rolesList = db.Roles.ToList();
                 List<Role> list = new List<Role>();
-                viewModel.ListB = list;
+                viewModel.rolesTableList = list;
             }
-
+            TempData["Message"] = "<script>alert('One or more role has been successfully deleted!')</script>";
             return View("RoleMaintenance", viewModel);
         }
 
@@ -145,7 +145,7 @@ namespace Homework2.Controllers
 
                 if (action)
                 {
-                    role.role = form["role"];
+                    role.roleName = form["role"];
                 }
                 if (!action)
                 {
@@ -180,6 +180,42 @@ namespace Homework2.Controllers
                 }
 
                 db.SaveChanges();
+            }
+        }
+
+        public ActionResult UserMaintenance(User users)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                users.userList = new List<User>();
+                users.roleList = db.Roles.ToList();
+                return View(users);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult QueryUser(FormCollection form)
+        {
+
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                User users = new User();
+                users.userList = new List<User>();
+                users.roleList = db.Roles.ToList();
+
+                var selectRole = form["selectRole"];
+                if (selectRole != null)
+                {
+                    int iSelectRole = int.Parse(selectRole);
+                    users.userList = db.Users.Where(x => x.roleID == iSelectRole).ToList();
+                    users.roleList = db.Roles.ToList();
+                }
+                else
+                {
+                    users.userList = db.Users.ToList();
+                    users.roleList = db.Roles.ToList();
+                }
+                return View("UserMaintenance", users);
             }
         }
     }
