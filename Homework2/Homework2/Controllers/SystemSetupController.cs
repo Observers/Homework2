@@ -83,14 +83,14 @@ namespace Homework2.Controllers
                     var viewModel = new Role();
                     viewModel.rolesList = db.Roles.ToList();
                     viewModel.rolesTableList = db.Roles.ToList();
+                    TempData["Message"] = "Please select user from dropdown list.";
                     return View("RoleMaintenance", viewModel);
                 }
-
             }
         }
 
         [HttpPost]
-        public ActionResult ModifyDatabase(FormCollection form)
+        public ActionResult ModifyRoleDatabase(FormCollection form)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
@@ -138,14 +138,14 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                int userID = (int)Session["userID"];
-                var user = db.Accounts.SingleOrDefault(x => x.userID == userID);
+                int sessionUserID = (int)Session["userID"];
+                var sessionUser = db.Accounts.SingleOrDefault(x => x.userID == sessionUserID);
 
                 Role role = new Role();
 
                 if (action)
                 {
-                    role.roleName = form["role"];
+                    role.roleName = form["roleName"];
                 }
                 if (!action)
                 {
@@ -169,10 +169,10 @@ namespace Homework2.Controllers
                 if (action)
                 {
                     role.createDate = curretDateTime;
-                    role.createUser = user.username;
+                    role.createUser = sessionUser.username;
                 }
                 role.modifyDate = curretDateTime;
-                role.modifyUser = user.username;
+                role.modifyUser = sessionUser.username;
 
                 if (action)
                 {
@@ -187,8 +187,9 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                users.userList = new List<User>();
+                users.userList = db.Users.ToList();
                 users.roleList = db.Roles.ToList();
+                users.userTableList = new List<User>();
                 return View(users);
             }
         }
@@ -200,22 +201,119 @@ namespace Homework2.Controllers
             using (Trainee15Entities db = new Trainee15Entities())
             {
                 User users = new User();
-                users.userList = new List<User>();
+                users.userList = db.Users.ToList();
                 users.roleList = db.Roles.ToList();
+                users.userTableList = new List<User>();
 
+                var selectUser = form["selectUser"];
                 var selectRole = form["selectRole"];
-                if (selectRole != null)
+
+                if (selectUser != null && selectRole != null)
+                {
+                    int iSelectUser = int.Parse(selectUser);
+                    int iSelectRole = int.Parse(selectRole);
+                    System.Diagnostics.Debug.WriteLine(iSelectUser);
+                    System.Diagnostics.Debug.WriteLine(iSelectRole);
+                    users.userTableList = db.Users.Where(x => x.userID == iSelectUser && x.roleID == iSelectRole).ToList();
+                    return View("UserMaintenance", users);
+                }
+
+                if (selectUser != null && selectRole == null)
+                {
+                    int iSelectUser = int.Parse(selectUser);
+                    System.Diagnostics.Debug.WriteLine(iSelectUser);
+                    users.userTableList = db.Users.Where(x => x.userID == iSelectUser).ToList();
+                    return View("UserMaintenance", users);
+                }
+
+                if (selectUser == null && selectRole != null)
                 {
                     int iSelectRole = int.Parse(selectRole);
-                    users.userList = db.Users.Where(x => x.roleID == iSelectRole).ToList();
-                    users.roleList = db.Roles.ToList();
+                    System.Diagnostics.Debug.WriteLine(selectRole);
+                    users.userTableList = db.Users.Where(x => x.roleID == iSelectRole).ToList();
+                    return View("UserMaintenance", users);
+                }
+
+                users.userTableList = db.Users.ToList();
+                return View("UserMaintenance", users);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AddUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ModifyUser(FormCollection form)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                var selectUser = form["selectUser"];
+                if (selectUser != null)
+                {
+                    int iSelectUser = int.Parse(selectUser);
+                    User user = db.Users.SingleOrDefault(x => x.userID == iSelectUser);
+                    user.roleList = db.Roles.ToList();
+                    return View("ModifyUser", user);
                 }
                 else
                 {
-                    users.userList = db.Users.ToList();
-                    users.roleList = db.Roles.ToList();
+                    var viewModel = new User();
+                    viewModel.userList = db.Users.ToList();
+                    viewModel.roleList = db.Roles.ToList();
+                    viewModel.userTableList = new List<User>();
+                    TempData["Message"] = "Please select user from dropdown list.";
+                    return View("UserMaintenance", viewModel);
                 }
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ModifyUserDatabase(FormCollection form)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                int sessionUserID = (int)Session["userID"];
+                var sessionUser = db.Accounts.SingleOrDefault(x => x.userID == sessionUserID);
+
+                var userID = form["selectUser"];
+                var roleID = form["selectRole"];
+                var selectStatus = form["selectStatus"];
+                int iUserID = int.Parse(userID);
+                int iRoleID = int.Parse(roleID);
+                User user = db.Users.SingleOrDefault(x => x.userID == iUserID);
+                user.roleID = iRoleID;
+                if (selectStatus == "1")
+                {
+                    user.status = true;
+                }
+                else
+                {
+                    user.status = false;
+                }
+                DateTime curretDateTime = DateTime.Now;
+                user.modifyDate = curretDateTime;
+                user.modifyUser = sessionUser.username;
+                db.SaveChanges();
+
+                User users = new User();
+                users.userList = db.Users.ToList();
+                users.roleList = db.Roles.ToList();
+                users.userTableList = new List<User>();
+                TempData["Message"] = "<script>alert('Role has been successfully modified!')</script>";
                 return View("UserMaintenance", users);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteUser(FormCollection form)
+        {
+            using(Trainee15Entities db = new Trainee15Entities())
+            {
+
+                return View();
             }
         }
     }

@@ -28,5 +28,6 @@ namespace Homework2.Models
 
         public List<User> userList { get; set; }
         public List<Role> roleList { get; set; }
+        public List<User> userTableList { get; set; }
     }
 }
