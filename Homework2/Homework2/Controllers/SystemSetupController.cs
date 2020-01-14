@@ -239,8 +239,14 @@ namespace Homework2.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult AddUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddUser(FormCollection form)
         {
             return View();
         }
@@ -312,8 +318,20 @@ namespace Homework2.Controllers
         {
             using(Trainee15Entities db = new Trainee15Entities())
             {
-
-                return View();
+                string[] checkboxes = form["checkbox"].Split(',');
+                foreach (var user in checkboxes)
+                {
+                    int iUserID = Int32.Parse(user);
+                    User deletUser = db.Users.SingleOrDefault(x => x.userID == iUserID);
+                    db.Users.Remove(deletUser);
+                    db.SaveChanges();
+                }
+                User users = new User();
+                users.userList = db.Users.ToList();
+                users.roleList = db.Roles.ToList();
+                users.userTableList = new List<User>();
+                TempData["Message"] = "<script>alert('One or more user has been successfully deleted!')</script>";
+                return View("UserMaintenance", users);
             }
         }
     }

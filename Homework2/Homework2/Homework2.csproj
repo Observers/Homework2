@@ -174,7 +174,7 @@
     <Content Include="Views\SystemSetup\MenuRole.cshtml" />
     <Content Include="Views\SystemSetup\UserMaintenance.cshtml" />
     <Content Include="Views\SystemSetup\ModifyUser.cshtml" />
-    <Content Include="Views\SystemSetup\DeleteUser.cshtml" />
+    <Content Include="Views\SystemSetup\AddUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
