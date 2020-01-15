@@ -17,11 +17,12 @@
           <Key>
             <PropertyRef Name="menuID" />
           </Key>
-          <Property Name="menuID" Type="int" Nullable="false" />
-          <Property Name="menuLevel" Type="int" />
+          <Property Name="menuID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="menuNo" Type="varchar" MaxLength="50" />
+          <Property Name="level" Type="int" />
           <Property Name="title" Type="varchar" MaxLength="50" />
           <Property Name="linkType" Type="varchar" MaxLength="50" />
-          <Property Name="linkUrl" Type="varchar(max)" />
+          <Property Name="linkUrl" Type="varchar" MaxLength="50" />
           <Property Name="status" Type="bit" />
         </EntityType>
         <EntityType Name="Role">
@@ -147,11 +148,12 @@
           <Key>
             <PropertyRef Name="menuID" />
           </Key>
-          <Property Name="menuID" Type="Int32" Nullable="false" />
-          <Property Name="menuLevel" Type="Int32" />
+          <Property Name="menuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="menuNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="level" Type="Int32" />
           <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="linkType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="linkUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="linkUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="status" Type="Boolean" />
           <NavigationProperty Name="Roles" Relationship="Self.RoleMenu" FromRole="Menu" ToRole="Role" />
         </EntityType>
@@ -250,7 +252,8 @@
             <EntityTypeMapping TypeName="Trainee15Model.Menu">
               <MappingFragment StoreEntitySet="Menu">
                 <ScalarProperty Name="menuID" ColumnName="menuID" />
-                <ScalarProperty Name="menuLevel" ColumnName="menuLevel" />
+                <ScalarProperty Name="menuNo" ColumnName="menuNo" />
+                <ScalarProperty Name="level" ColumnName="level" />
                 <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="linkType" ColumnName="linkType" />
                 <ScalarProperty Name="linkUrl" ColumnName="linkUrl" />

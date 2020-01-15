@@ -212,8 +212,6 @@ namespace Homework2.Controllers
                 {
                     int iSelectUser = int.Parse(selectUser);
                     int iSelectRole = int.Parse(selectRole);
-                    System.Diagnostics.Debug.WriteLine(iSelectUser);
-                    System.Diagnostics.Debug.WriteLine(iSelectRole);
                     users.userTableList = db.Users.Where(x => x.userID == iSelectUser && x.roleID == iSelectRole).ToList();
                     return View("UserMaintenance", users);
                 }
@@ -221,7 +219,6 @@ namespace Homework2.Controllers
                 if (selectUser != null && selectRole == null)
                 {
                     int iSelectUser = int.Parse(selectUser);
-                    System.Diagnostics.Debug.WriteLine(iSelectUser);
                     users.userTableList = db.Users.Where(x => x.userID == iSelectUser).ToList();
                     return View("UserMaintenance", users);
                 }
@@ -229,7 +226,6 @@ namespace Homework2.Controllers
                 if (selectUser == null && selectRole != null)
                 {
                     int iSelectRole = int.Parse(selectRole);
-                    System.Diagnostics.Debug.WriteLine(selectRole);
                     users.userTableList = db.Users.Where(x => x.roleID == iSelectRole).ToList();
                     return View("UserMaintenance", users);
                 }
@@ -377,6 +373,138 @@ namespace Homework2.Controllers
                 TempData["Message"] = "<script>alert('One or more user has been successfully deleted!')</script>";
                 return View("UserMaintenance", users);
             }
+        }
+
+        public ActionResult MenuMaintenance(Menu menu)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                menu.menuList = db.Menus.ToList();
+                menu.menuTableList = new List<Menu>();
+                return View(menu);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult QueryMenu(FormCollection form)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                var menuNo = form["menuNo"];
+                var title = form["title"];
+                var linkType = form["linkType"];
+                var status = form["status"];
+                bool bStatus = false;
+                if (status == "1")
+                {
+                    bStatus = true;
+                }
+
+                Menu query = new Menu();
+                query.menuList = db.Menus.ToList();
+                query.menuTableList = new List<Menu>();
+
+                if(menuNo != null  && title != null && linkType != null && status != null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.title == title && x.linkType == linkType && x.status == bStatus).ToList();
+                    System.Diagnostics.Debug.WriteLine("1");
+                }
+                if (menuNo != null && title != null && linkType != null && status == null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.title == title && x.linkType == linkType).ToList();
+                    System.Diagnostics.Debug.WriteLine("2");
+                }
+                if (menuNo != null && title != null && linkType == null && status != null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.title == title && x.status == bStatus).ToList();
+                    System.Diagnostics.Debug.WriteLine("3");
+                }
+                if (menuNo != null && title != null && linkType == null && status == null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.title == title).ToList();
+                    System.Diagnostics.Debug.WriteLine("4");
+                }
+                if (menuNo != null && title == null && linkType != null && status != null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.linkType == linkType && x.status == bStatus).ToList();
+                    System.Diagnostics.Debug.WriteLine("5");
+                }
+                if (menuNo != null && title == null && linkType != null && status == null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.linkType == linkType).ToList();
+                    System.Diagnostics.Debug.WriteLine("6");
+                }
+                if (menuNo != null && title == null && linkType == null && status != null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.status == bStatus).ToList();
+                    System.Diagnostics.Debug.WriteLine("7");
+                }
+                if (menuNo != null && title == null && linkType == null && status == null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo).ToList();
+                    System.Diagnostics.Debug.WriteLine("8");
+                }
+                if (menuNo == null && title != null && linkType != null && status != null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.title == title && x.linkType == linkType && x.status == bStatus).ToList();
+                    System.Diagnostics.Debug.WriteLine("9");
+                }
+                if (menuNo == null && title != null && linkType != null && status == null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.title == title && x.linkType == linkType).ToList();
+                    System.Diagnostics.Debug.WriteLine("10");
+                }
+                if (menuNo == null && title != null && linkType == null && status != null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.title == title && x.status == bStatus).ToList();
+                    System.Diagnostics.Debug.WriteLine("11");
+                }
+                if (menuNo == null && title != null && linkType == null && status == null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.title == title).ToList();
+                    System.Diagnostics.Debug.WriteLine("12");
+                }
+                if (menuNo == null && title == null && linkType != null && status != null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.linkType == linkType && x.status == bStatus).ToList();
+                    System.Diagnostics.Debug.WriteLine("13");
+                }
+                if (menuNo == null && title == null && linkType != null && status == null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.linkType == linkType).ToList();
+                    System.Diagnostics.Debug.WriteLine("14");
+                }
+                if (menuNo == null && title == null && linkType == null && status != null)
+                {
+                    query.menuTableList = db.Menus.Where(x => x.status == bStatus).ToList();
+                    System.Diagnostics.Debug.WriteLine("15");
+                }
+                if (menuNo == null && title == null && linkType == null && status == null)
+                {
+                    query.menuTableList = db.Menus.ToList();
+                    System.Diagnostics.Debug.WriteLine("16");
+                }
+
+                return View("MenuMaintenance", query);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AddMenu()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ModifyMenu()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteMenu()
+        {
+            return View();
         }
     }
 }

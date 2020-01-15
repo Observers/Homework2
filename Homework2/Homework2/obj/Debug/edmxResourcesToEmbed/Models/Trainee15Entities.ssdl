@@ -12,11 +12,12 @@
     <Key>
       <PropertyRef Name="menuID" />
     </Key>
-    <Property Name="menuID" Type="int" Nullable="false" />
-    <Property Name="menuLevel" Type="int" />
+    <Property Name="menuID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="menuNo" Type="varchar" MaxLength="50" />
+    <Property Name="level" Type="int" />
     <Property Name="title" Type="varchar" MaxLength="50" />
     <Property Name="linkType" Type="varchar" MaxLength="50" />
-    <Property Name="linkUrl" Type="varchar(max)" />
+    <Property Name="linkUrl" Type="varchar" MaxLength="50" />
     <Property Name="status" Type="bit" />
   </EntityType>
   <EntityType Name="Role">

@@ -13,11 +13,12 @@
     <Key>
       <PropertyRef Name="menuID" />
     </Key>
-    <Property Name="menuID" Type="Int32" Nullable="false" />
-    <Property Name="menuLevel" Type="Int32" />
+    <Property Name="menuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="menuNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="level" Type="Int32" />
     <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="linkType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="linkUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="linkUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="status" Type="Boolean" />
     <NavigationProperty Name="Roles" Relationship="Self.RoleMenu" FromRole="Menu" ToRole="Role" />
   </EntityType>

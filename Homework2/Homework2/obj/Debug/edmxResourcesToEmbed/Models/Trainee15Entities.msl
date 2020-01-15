@@ -14,7 +14,8 @@
       <EntityTypeMapping TypeName="Trainee15Model.Menu">
         <MappingFragment StoreEntitySet="Menu">
           <ScalarProperty Name="menuID" ColumnName="menuID" />
-          <ScalarProperty Name="menuLevel" ColumnName="menuLevel" />
+          <ScalarProperty Name="menuNo" ColumnName="menuNo" />
+          <ScalarProperty Name="level" ColumnName="level" />
           <ScalarProperty Name="title" ColumnName="title" />
           <ScalarProperty Name="linkType" ColumnName="linkType" />
           <ScalarProperty Name="linkUrl" ColumnName="linkUrl" />

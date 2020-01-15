@@ -111,7 +111,6 @@
     <Content Include="Static\css\sidenavfixed.css" />
     <Content Include="Static\css\site.css" />
     <Content Include="Static\js\changePassword.js" />
-    <Content Include="Static\js\roleMaintenance.js" />
     <Content Include="Static\js\site.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -175,6 +174,7 @@
     <Content Include="Views\SystemSetup\UserMaintenance.cshtml" />
     <Content Include="Views\SystemSetup\ModifyUser.cshtml" />
     <Content Include="Views\SystemSetup\AddUser.cshtml" />
+    <Content Include="Views\SystemSetup\MenuMaintenance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
