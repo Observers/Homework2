@@ -489,16 +489,107 @@ namespace Homework2.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult AddMenu()
         {
-            return View();
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                Menu menu = new Menu();
+                menu.menuList = db.Menus.SqlQuery("SELECT * FROM Menu m1 INNER JOIN Menu m2 ON m1.menuID = m2.menuID WHERE m1.menuNo LIKE '00%' AND LEN(m2.MenuNo) = 3").ToList();
+                return View(menu);
+            }
         }
 
         [HttpPost]
-        public ActionResult ModifyMenu()
+        public ActionResult AddMenu(FormCollection form)
         {
-            return View();
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                var level = form["selectLinkType"];
+                var title = form["title"];
+                var linkType = form["selectLinkType"];
+                var subMenu = form["selectSubMenu"];
+                var linkUrl = form["linkUrl"];
+                var status = form["selectStatus"];
+                Menu menu = new Menu();
+
+                string menuNo = "00";
+               
+                int iEndNo = 0;
+                if (linkType == "1")
+                {
+                    string temp = "SELECT * FROM Menu WHERE menuNo LIKE '" + menuNo + "[0-9]' ORDER BY menuNo DESC";
+                    var endNo = db.Menus.SqlQuery(temp).ToList();
+                    if (endNo != null)
+                    {
+                        Menu menu1 = endNo.First();
+                        iEndNo = int.Parse(menu1.menuNo);
+                        iEndNo++;
+                        menuNo += iEndNo;
+                    }
+                    else
+                    {
+                        iEndNo++;
+                        menuNo += iEndNo;
+                    }
+                    linkType = "Menu";
+                }
+                else
+                {
+                    string temp = "SELECT * FROM Menu WHERE menuNo LIKE '" + subMenu + "[0-9]' ORDER BY menuNo DESC";
+                    var endNo = db.Menus.SqlQuery(temp).ToList();
+                    if (endNo != null)
+                    {
+                        Menu menu1 = endNo.First();
+                        iEndNo = int.Parse(menu1.menuNo);
+                        iEndNo++;
+                        menuNo += iEndNo;
+                    }
+                    else
+                    {
+                        iEndNo++;
+                        menuNo += iEndNo;
+                    }
+                    linkType = "Program";
+                }
+
+                menu.menuNo = menuNo;
+                menu.level = int.Parse(level);
+                menu.title = title;
+                menu.linkType = linkType;
+                menu.linkUrl = linkUrl;
+                if(status == "1")
+                {
+                    menu.status = true;
+                }
+                else
+                {
+                    menu.status = false;
+                }
+                db.Menus.Add(menu);
+                db.SaveChanges();
+
+                menu.menuList = db.Menus.ToList();
+                menu.menuTableList = new List<Menu>();
+                return View("MenuMaintenance", menu);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ModifyMenu(FormCollection form)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                return View();
+            }
+        }
+
+        public ActionResult ModifyMenuDatabase(FormCollection form)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                return View("MenuMaitenance");
+            }
         }
 
         [HttpPost]

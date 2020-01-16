@@ -110,6 +110,7 @@
     </Content>
     <Content Include="Static\css\sidenavfixed.css" />
     <Content Include="Static\css\site.css" />
+    <Content Include="Static\js\addMenu.js" />
     <Content Include="Static\js\changePassword.js" />
     <Content Include="Static\js\site.js" />
     <Content Include="Web.config" />
@@ -175,6 +176,8 @@
     <Content Include="Views\SystemSetup\ModifyUser.cshtml" />
     <Content Include="Views\SystemSetup\AddUser.cshtml" />
     <Content Include="Views\SystemSetup\MenuMaintenance.cshtml" />
+    <Content Include="Views\SystemSetup\AddMenu.cshtml" />
+    <Content Include="Views\SystemSetup\ModifyMenu.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
