@@ -1,4 +1,13 @@
-﻿using Homework2.Models;
+﻿// TODO: Side menu navigation.
+// TODO: Sort tables.
+// TODO: Add materialize breadcrumb to pages.
+
+// TODO: Check all forms have required field where neccessary.
+// TODO: Add comments.
+// TODO: Change buttons to make it more UI friendly.
+// TODO: Make modify button to modify from table as well.
+
+using Homework2.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -580,7 +589,23 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                return View();
+                string[] checkboxes = form["checkbox"].Split(',');
+                Menu modify = new Menu();
+
+                if(checkboxes.Length == 1)
+                {
+                    int iMenuID = int.Parse(checkboxes[0]);
+                    modify = db.Menus.SingleOrDefault(x => x.menuID == iMenuID);
+                    modify.menuList = db.Menus.SqlQuery("SELECT * FROM Menu m1 INNER JOIN Menu m2 ON m1.menuID = m2.menuID WHERE m1.menuNo LIKE '00%' AND LEN(m2.MenuNo) = 3").ToList();
+                    return View("ModifyMenu", modify);
+                }
+                else
+                {
+                    modify.menuList = db.Menus.ToList();
+                    modify.menuTableList = new List<Menu>();
+                    TempData["Message"] = "Can only select one from table to modify.";
+                    return View("MenuMaintenance", modify);
+                }
             }
         }
 
@@ -588,10 +613,36 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                return View("MenuMaitenance");
+                Menu menu = new Menu();
+                System.Diagnostics.Debug.WriteLine("ID:"+form["menuID"]);
+
+                // TODO: Change menuNo when sub-menu changes and linkType.
+                int menuID = int.Parse(form["menuID"]);
+                menu = db.Menus.SingleOrDefault(x => x.menuID == menuID);
+                menu.level = int.Parse(form["selectLinkType"]);
+                menu.title = form["title"];
+                if(form["selectLinkType"] == "1")
+                {
+                    menu.linkType = "Menu";
+                }
+                else
+                {
+                    if(form["selectLinkType"] == "2")
+                    {
+                        menu.linkType = "Program";
+                    }
+                }
+                menu.linkUrl = form["linkUrl"];
+                menu.status = bool.Parse(form["status"]);
+                db.SaveChanges();
+
+                menu.menuList = db.Menus.ToList();
+                menu.menuTableList = new List<Menu>();
+                return View("MenuMaitenance", menu);
             }
         }
 
+        // TODO: Delete Menu.
         [HttpPost]
         public ActionResult DeleteMenu()
         {
@@ -600,12 +651,6 @@ namespace Homework2.Controllers
     }
 }
 
-// TODO: Modify Menu.
-// TODO: Delete Menu.
-// TODO: User side nave.
-// TODO: Sort tables.
-// TODO: Add materialize breadcrumb to pages.
-// TODO: Change database to work database.
-// TODO: Check all forms have required field where neccessary.
-// TODO: Add comments.
-// TODO: Change buttons to make it more UI friendly.
+
+
+
