@@ -599,3 +599,13 @@ namespace Homework2.Controllers
         }
     }
 }
+
+// TODO: Modify Menu.
+// TODO: Delete Menu.
+// TODO: User side nave.
+// TODO: Sort tables.
+// TODO: Add materialize breadcrumb to pages.
+// TODO: Change database to work database.
+// TODO: Check all forms have required field where neccessary.
+// TODO: Add comments.
+// TODO: Change buttons to make it more UI friendly.
