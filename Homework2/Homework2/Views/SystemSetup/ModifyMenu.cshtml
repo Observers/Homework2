@@ -30,10 +30,13 @@
 
 @using (Html.BeginForm("ModifyMenuDatabase", "SystemSetup", FormMethod.Post))
 {
+    <div class="row" hidden>
+        <input hidden disabled id="@Model.menuID" name="menuID" type="text" value="@Model.menuID"/>
+    </div>
     <div class="row">
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
-                <input id="title" name="title" type="text" required class="validate">
+                <input id="title" name="title" type="text" required class="validate" value="@Model.title">
                 <label for="title">Title</label>
             </div>
         </div>
@@ -55,7 +58,7 @@
     <div class="row">
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
-                <select id="selectSubMenu" name="selectSubMenu" disabled>
+                <select id="a" name="selectSubMenu" disabled>
                     <option value="" disabled selected>Choose your option</option>
                     @foreach (var item in Model?.menuList)
                     {

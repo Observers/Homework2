@@ -3,7 +3,7 @@
     ViewBag.Title = "AddRole";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    if(Session["userID"] == null)
+    if (Session["userID"] == null)
     {
         Response.Redirect("~/Profile/Index");
     }
@@ -20,6 +20,10 @@
 
 @section sidenav {
     @{Html.RenderPartial("_SideNav");}
+}
+
+@section scripts {
+    <script src="~/Static/js/modifyMenu.js" asp-append-version="true"></script>
 }
 
 <div class="row">
