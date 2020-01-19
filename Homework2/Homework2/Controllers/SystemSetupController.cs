@@ -616,22 +616,23 @@ namespace Homework2.Controllers
                 Menu menu = new Menu();
                 System.Diagnostics.Debug.WriteLine("ID:"+form["menuID"]);
 
-                // TODO: Change menuNo when sub-menu changes and linkType.
                 int menuID = int.Parse(form["menuID"]);
                 menu = db.Menus.SingleOrDefault(x => x.menuID == menuID);
-                menu.level = int.Parse(form["selectLinkType"]);
-                menu.title = form["title"];
-                if(form["selectLinkType"] == "1")
+                // TODO: Check submenu/menu hasn't changed
+                if (form["selectLinkType"] == "1")
                 {
                     menu.linkType = "Menu";
                 }
                 else
                 {
-                    if(form["selectLinkType"] == "2")
+                    if (form["selectLinkType"] == "2")
                     {
                         menu.linkType = "Program";
                     }
                 }
+                menu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
+                menu.level = int.Parse(form["selectLinkType"]);
+                menu.title = form["title"];
                 menu.linkUrl = form["linkUrl"];
                 menu.status = bool.Parse(form["status"]);
                 db.SaveChanges();
@@ -639,6 +640,51 @@ namespace Homework2.Controllers
                 menu.menuList = db.Menus.ToList();
                 menu.menuTableList = new List<Menu>();
                 return View("MenuMaitenance", menu);
+            }
+        }
+
+        public string MenuNo(string linkType, string subMenu)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                string menuNo = "00";
+
+                int iEndNo = 0;
+                if (linkType == "1")
+                {
+                    string temp = "SELECT * FROM Menu WHERE menuNo LIKE '" + menuNo + "[0-9]' ORDER BY menuNo DESC";
+                    var endNo = db.Menus.SqlQuery(temp).ToList();
+                    if (endNo != null)
+                    {
+                        Menu menu1 = endNo.First();
+                        iEndNo = int.Parse(menu1.menuNo);
+                        iEndNo++;
+                        menuNo += iEndNo;
+                    }
+                    else
+                    {
+                        iEndNo++;
+                        menuNo += iEndNo;
+                    }
+                }
+                else
+                {
+                    string temp = "SELECT * FROM Menu WHERE menuNo LIKE '" + subMenu + "[0-9]' ORDER BY menuNo DESC";
+                    var endNo = db.Menus.SqlQuery(temp).ToList();
+                    if (endNo != null)
+                    {
+                        Menu menu1 = endNo.First();
+                        iEndNo = int.Parse(menu1.menuNo);
+                        iEndNo++;
+                        menuNo += iEndNo;
+                    }
+                    else
+                    {
+                        iEndNo++;
+                        menuNo += iEndNo;
+                    }
+                }
+                return menuNo;
             }
         }
 
