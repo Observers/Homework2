@@ -702,11 +702,25 @@ namespace Homework2.Controllers
             }
         }
 
-        // TODO: Delete Menu.
         [HttpPost]
-        public ActionResult DeleteMenu()
+        public ActionResult DeleteMenu(FormCollection form)
         {
-            return View();
+            using(Trainee15Entities db = new Trainee15Entities())
+            {
+                string[] checkboxes = form["checkbox"].Split(',');
+                foreach (var menuID in checkboxes)
+                {
+                    int iMenuID = Int32.Parse(menuID);
+                    Menu deleteMenu = db.Menus.SingleOrDefault(x => x.menuID == iMenuID);
+                    db.Menus.Remove(deleteMenu);
+                    db.SaveChanges();
+                }
+                Menu menu = new Menu();
+                menu.menuList = db.Menus.ToList();
+                menu.menuTableList = new List<Menu>();
+                TempData["Message"] = "<script>alert('One or more user has been successfully deleted!')</script>";
+                return View("MenuMaintenance", menu);
+            }
         }
     }
 }
