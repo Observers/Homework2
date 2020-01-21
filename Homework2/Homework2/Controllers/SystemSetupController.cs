@@ -1,10 +1,11 @@
 ﻿// TODO: Side menu navigation.
 // TODO: Sort tables.
+// TODO: User Modify from table.
 // TODO: Add materialize breadcrumb to pages.
 
 // TODO: Check all forms have required field where neccessary.
 // TODO: Add comments.
-// TODO: Change buttons to make it more UI friendly.
+// TODO: Change buttons to follow prototype.
 // TODO: Make modify button to modify from table as well.
 
 using Homework2.Models;
@@ -618,19 +619,32 @@ namespace Homework2.Controllers
 
                 int menuID = int.Parse(form["menuID"]);
                 menu = db.Menus.SingleOrDefault(x => x.menuID == menuID);
-                // TODO: Check submenu/menu hasn't changed
                 if (form["selectLinkType"] == "1")
                 {
-                    menu.linkType = "Menu";
+                    if(menu.linkType != "Menu")
+                    {
+                        menu.linkType = "Menu";
+                        menu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
+                    }
                 }
                 else
                 {
                     if (form["selectLinkType"] == "2")
                     {
-                        menu.linkType = "Program";
+                        if(menu.linkType != "Program")
+                        {
+                            menu.linkType = "Program";
+                            menu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
+                        }
+                        else
+                        {
+                            if(string.CompareOrdinal(menu.menuNo, 0, form["selectSubMenu"], 0, 3) != 0)
+                            {
+                                menu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
+                            }
+                        }
                     }
                 }
-                menu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
                 menu.level = int.Parse(form["selectLinkType"]);
                 menu.title = form["title"];
                 menu.linkUrl = form["linkUrl"];
