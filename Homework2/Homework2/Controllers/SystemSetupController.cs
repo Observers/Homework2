@@ -1,12 +1,10 @@
 ﻿// TODO: Side menu navigation.
 // TODO: Sort tables.
-// TODO: User Modify from table.
 // TODO: Add materialize breadcrumb to pages.
 
 // TODO: Check all forms have required field where neccessary.
 // TODO: Add comments.
 // TODO: Change buttons to follow prototype.
-// TODO: Make modify button to modify from table as well.
 
 using Homework2.Models;
 using System;
@@ -20,8 +18,7 @@ namespace Homework2.Controllers
 {
     public class SystemSetupController : Controller
     {
-        // GET: SystemSetup
-        public ActionResult RoleMaintenance(Role viewModel)
+        public ActionResult RoleMaintenance(ExtendedRole viewModel)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
@@ -38,7 +35,7 @@ namespace Homework2.Controllers
             using (Trainee15Entities db = new Trainee15Entities())
             {
                 var selectRole = form["selectRole"];
-                var viewModel = new Role();
+                var viewModel = new ExtendedRole();
                 if (selectRole != null)
                 {
                     int iSelectRole = int.Parse(selectRole);
@@ -67,7 +64,7 @@ namespace Homework2.Controllers
             {
                 Database(form, true);
 
-                var viewModel = new Role();
+                ExtendedRole viewModel = new ExtendedRole();
                 viewModel.rolesList = db.Roles.ToList();
                 List<Role> list = new List<Role>();
                 viewModel.rolesTableList = list;
@@ -81,19 +78,19 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                var selectRole = form["selectRole"];
-                if (selectRole != null)
+                string[] checkboxes = form["checkbox"].Split(',');
+                ExtendedRole viewModel = new ExtendedRole();
+                if (checkboxes.Length != 1)
                 {
-                    int iSelectRole = int.Parse(selectRole);
+                    int iSelectRole = int.Parse(checkboxes[0]);
                     Role role = db.Roles.SingleOrDefault(x => x.roleID == iSelectRole);
                     return View("ModifyRole", role);
                 }
                 else
                 {
-                    var viewModel = new Role();
                     viewModel.rolesList = db.Roles.ToList();
                     viewModel.rolesTableList = db.Roles.ToList();
-                    TempData["Message"] = "Please select user from dropdown list.";
+                    TempData["Message"] = "Can only select one to modify from table";
                     return View("RoleMaintenance", viewModel);
                 }
             }
@@ -106,7 +103,7 @@ namespace Homework2.Controllers
             {
                 Database(form, false);
 
-                var viewModel = new Role();
+                ExtendedRole viewModel = new ExtendedRole();
                 viewModel.rolesList = db.Roles.ToList();
                 List<Role> list = new List<Role>();
                 viewModel.rolesTableList = list;
@@ -124,7 +121,7 @@ namespace Homework2.Controllers
         [HttpPost]
         public ActionResult DeleteRole(FormCollection form)
         {
-            var viewModel = new Role();
+            var viewModel = new ExtendedRole();
             using (Trainee15Entities db = new Trainee15Entities())
             {
                 string[] checkboxes = form["checkbox"].Split(',');
@@ -193,7 +190,7 @@ namespace Homework2.Controllers
             }
         }
 
-        public ActionResult UserMaintenance(User users)
+        public ActionResult UserMaintenance(ExtendedUser users)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
@@ -210,7 +207,7 @@ namespace Homework2.Controllers
 
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                User users = new User();
+                ExtendedUser users = new ExtendedUser();
                 users.userList = db.Users.ToList();
                 users.roleList = db.Roles.ToList();
                 users.userTableList = new List<User>();
@@ -250,7 +247,7 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                Role roles = new Role();
+                ExtendedRole roles = new ExtendedRole();
                 roles.rolesList = db.Roles.ToList();
                 return View(roles);
             }
@@ -292,7 +289,7 @@ namespace Homework2.Controllers
                 db.Users.Add(addUser);
                 db.SaveChanges();
 
-                User users = new User();
+                ExtendedUser users = new ExtendedUser();
                 users.userList = db.Users.ToList();
                 users.roleList = db.Roles.ToList();
                 users.userTableList = new List<User>();
@@ -306,21 +303,22 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                var selectUser = form["selectUser"];
-                if (selectUser != null)
+                string[] checkboxes = form["checkbox"].Split(',');
+                if (checkboxes.Length != 1)
                 {
-                    int iSelectUser = int.Parse(selectUser);
-                    User user = db.Users.SingleOrDefault(x => x.userID == iSelectUser);
+                    int iSelectUser = int.Parse(checkboxes[0]);
+                    ExtendedUser user = new ExtendedUser();
+                    user.user = db.Users.SingleOrDefault(x => x.userID == iSelectUser);
                     user.roleList = db.Roles.ToList();
                     return View("ModifyUser", user);
                 }
                 else
                 {
-                    var viewModel = new User();
+                    ExtendedUser viewModel = new ExtendedUser();
                     viewModel.userList = db.Users.ToList();
                     viewModel.roleList = db.Roles.ToList();
                     viewModel.userTableList = new List<User>();
-                    TempData["Message"] = "Please select user from dropdown list.";
+                    TempData["Message"] = "Can only select one from table to modify";
                     return View("UserMaintenance", viewModel);
                 }
             }
@@ -354,7 +352,7 @@ namespace Homework2.Controllers
                 user.modifyUser = sessionUser.username;
                 db.SaveChanges();
 
-                User users = new User();
+                ExtendedUser users = new ExtendedUser();
                 users.userList = db.Users.ToList();
                 users.roleList = db.Roles.ToList();
                 users.userTableList = new List<User>();
@@ -376,7 +374,7 @@ namespace Homework2.Controllers
                     db.Users.Remove(deletUser);
                     db.SaveChanges();
                 }
-                User users = new User();
+                ExtendedUser users = new ExtendedUser();
                 users.userList = db.Users.ToList();
                 users.roleList = db.Roles.ToList();
                 users.userTableList = new List<User>();
@@ -385,7 +383,7 @@ namespace Homework2.Controllers
             }
         }
 
-        public ActionResult MenuMaintenance(Menu menu)
+        public ActionResult MenuMaintenance(ExtendedMenu menu)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
@@ -410,90 +408,27 @@ namespace Homework2.Controllers
                     bStatus = true;
                 }
 
-                Menu query = new Menu();
-                query.menuList = db.Menus.ToList();
-                query.menuTableList = new List<Menu>();
+                var queryMenu = db.Menus.AsQueryable();
+                if(menuNo != null)
+                {
+                    queryMenu = queryMenu.Where(x => x.menuNo == menuNo);
+                }
+                if (title != null)
+                {
+                    queryMenu = queryMenu.Where(x => x.title == title);
+                }
+                if (linkType != null)
+                {
+                    queryMenu = queryMenu.Where(x => x.linkType == linkType);
+                }
+                if (status != null)
+                {
+                    queryMenu = queryMenu.Where(x => x.status == bStatus);
+                }
 
-                if(menuNo != null  && title != null && linkType != null && status != null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.title == title && x.linkType == linkType && x.status == bStatus).ToList();
-                    System.Diagnostics.Debug.WriteLine("1");
-                }
-                if (menuNo != null && title != null && linkType != null && status == null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.title == title && x.linkType == linkType).ToList();
-                    System.Diagnostics.Debug.WriteLine("2");
-                }
-                if (menuNo != null && title != null && linkType == null && status != null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.title == title && x.status == bStatus).ToList();
-                    System.Diagnostics.Debug.WriteLine("3");
-                }
-                if (menuNo != null && title != null && linkType == null && status == null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.title == title).ToList();
-                    System.Diagnostics.Debug.WriteLine("4");
-                }
-                if (menuNo != null && title == null && linkType != null && status != null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.linkType == linkType && x.status == bStatus).ToList();
-                    System.Diagnostics.Debug.WriteLine("5");
-                }
-                if (menuNo != null && title == null && linkType != null && status == null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.linkType == linkType).ToList();
-                    System.Diagnostics.Debug.WriteLine("6");
-                }
-                if (menuNo != null && title == null && linkType == null && status != null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo && x.status == bStatus).ToList();
-                    System.Diagnostics.Debug.WriteLine("7");
-                }
-                if (menuNo != null && title == null && linkType == null && status == null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.menuNo == menuNo).ToList();
-                    System.Diagnostics.Debug.WriteLine("8");
-                }
-                if (menuNo == null && title != null && linkType != null && status != null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.title == title && x.linkType == linkType && x.status == bStatus).ToList();
-                    System.Diagnostics.Debug.WriteLine("9");
-                }
-                if (menuNo == null && title != null && linkType != null && status == null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.title == title && x.linkType == linkType).ToList();
-                    System.Diagnostics.Debug.WriteLine("10");
-                }
-                if (menuNo == null && title != null && linkType == null && status != null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.title == title && x.status == bStatus).ToList();
-                    System.Diagnostics.Debug.WriteLine("11");
-                }
-                if (menuNo == null && title != null && linkType == null && status == null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.title == title).ToList();
-                    System.Diagnostics.Debug.WriteLine("12");
-                }
-                if (menuNo == null && title == null && linkType != null && status != null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.linkType == linkType && x.status == bStatus).ToList();
-                    System.Diagnostics.Debug.WriteLine("13");
-                }
-                if (menuNo == null && title == null && linkType != null && status == null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.linkType == linkType).ToList();
-                    System.Diagnostics.Debug.WriteLine("14");
-                }
-                if (menuNo == null && title == null && linkType == null && status != null)
-                {
-                    query.menuTableList = db.Menus.Where(x => x.status == bStatus).ToList();
-                    System.Diagnostics.Debug.WriteLine("15");
-                }
-                if (menuNo == null && title == null && linkType == null && status == null)
-                {
-                    query.menuTableList = db.Menus.ToList();
-                    System.Diagnostics.Debug.WriteLine("16");
-                }
+                ExtendedMenu query = new ExtendedMenu();
+                query.menuList = db.Menus.ToList();
+                query.menuTableList = queryMenu.ToList();
 
                 return View("MenuMaintenance", query);
             }
@@ -504,7 +439,7 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                Menu menu = new Menu();
+                ExtendedMenu menu = new ExtendedMenu();
                 menu.menuList = db.Menus.SqlQuery("SELECT * FROM Menu m1 INNER JOIN Menu m2 ON m1.menuID = m2.menuID WHERE m1.menuNo LIKE '00%' AND LEN(m2.MenuNo) = 3").ToList();
                 return View(menu);
             }
@@ -521,7 +456,7 @@ namespace Homework2.Controllers
                 var subMenu = form["selectSubMenu"];
                 var linkUrl = form["linkUrl"];
                 var status = form["selectStatus"];
-                Menu menu = new Menu();
+                ExtendedMenu menu = new ExtendedMenu();
 
                 string menuNo = "00";
                
@@ -591,12 +526,12 @@ namespace Homework2.Controllers
             using (Trainee15Entities db = new Trainee15Entities())
             {
                 string[] checkboxes = form["checkbox"].Split(',');
-                Menu modify = new Menu();
+                ExtendedMenu modify = new ExtendedMenu();
 
                 if(checkboxes.Length == 1)
                 {
                     int iMenuID = int.Parse(checkboxes[0]);
-                    modify = db.Menus.SingleOrDefault(x => x.menuID == iMenuID);
+                    modify.menu = db.Menus.SingleOrDefault(x => x.menuID == iMenuID);
                     modify.menuList = db.Menus.SqlQuery("SELECT * FROM Menu m1 INNER JOIN Menu m2 ON m1.menuID = m2.menuID WHERE m1.menuNo LIKE '00%' AND LEN(m2.MenuNo) = 3").ToList();
                     return View("ModifyMenu", modify);
                 }
@@ -614,11 +549,11 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                Menu menu = new Menu();
+                ExtendedMenu menu = new ExtendedMenu();
                 System.Diagnostics.Debug.WriteLine("ID:"+form["menuID"]);
 
                 int menuID = int.Parse(form["menuID"]);
-                menu = db.Menus.SingleOrDefault(x => x.menuID == menuID);
+                menu.menu = db.Menus.SingleOrDefault(x => x.menuID == menuID);
                 if (form["selectLinkType"] == "1")
                 {
                     if(menu.linkType != "Menu")
@@ -715,7 +650,7 @@ namespace Homework2.Controllers
                     db.Menus.Remove(deleteMenu);
                     db.SaveChanges();
                 }
-                Menu menu = new Menu();
+                ExtendedMenu menu = new ExtendedMenu();
                 menu.menuList = db.Menus.ToList();
                 menu.menuTableList = new List<Menu>();
                 TempData["Message"] = "<script>alert('One or more user has been successfully deleted!')</script>";

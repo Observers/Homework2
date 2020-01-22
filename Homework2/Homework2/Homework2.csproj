@@ -96,7 +96,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Controllers\database.txt" />
     <Content Include="Global.asax" />
     <Content Include="Models\Trainee15Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -127,6 +126,10 @@
     <Compile Include="Models\Account.cs">
       <DependentUpon>Trainee15Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ExtendedAccount.cs" />
+    <Compile Include="Models\ExtendedMenu.cs" />
+    <Compile Include="Models\ExtendedRole.cs" />
+    <Compile Include="Models\ExtendedUser.cs" />
     <Compile Include="Models\Menu.cs">
       <DependentUpon>Trainee15Model.tt</DependentUpon>
     </Compile>

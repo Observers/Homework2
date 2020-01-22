@@ -25,9 +25,5 @@ namespace Homework2.Models
     
         public virtual Account Account { get; set; }
         public virtual Role Role { get; set; }
-
-        public List<User> userList { get; set; }
-        public List<Role> roleList { get; set; }
-        public List<User> userTableList { get; set; }
     }
 }

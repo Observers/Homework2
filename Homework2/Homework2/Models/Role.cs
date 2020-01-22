@@ -34,8 +34,5 @@ namespace Homework2.Models
         public virtual ICollection<User> Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Menu> Menus { get; set; }
-
-        public List<Role> rolesList { get; set; }
-        public List<Role> rolesTableList { get; set; }
     }
 }

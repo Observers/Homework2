@@ -27,7 +27,7 @@ namespace Homework2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Account acc, FormCollection form)
+        public ActionResult Login(ExtendedAccount acc, FormCollection form)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
@@ -82,11 +82,11 @@ namespace Homework2.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChangePassword(Account acc)
+        public ActionResult ChangePassword(ExtendedAccount acc)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                Account userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == acc.password);
+                var userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == acc.password);
                 if (userDetails == null)
                 {
                     HttpCookie cookie = Request.Cookies["Profile"];
