@@ -5,6 +5,7 @@
 // TODO: Check all forms have required field where neccessary.
 // TODO: Add comments.
 // TODO: Change buttons to follow prototype.
+// TODO: Split SystemSetup Controller
 
 using Homework2.Models;
 using System;
@@ -659,7 +660,3 @@ namespace Homework2.Controllers
         }
     }
 }
-
-
-
-

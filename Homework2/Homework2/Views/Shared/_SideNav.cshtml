@@ -7,36 +7,29 @@
 <ul id="slide-out" class="sidenav sidenav-fixed collapsible">
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
-            <li>
-                <a class="collapsible-header">Home</a>
-            </li>
+            @if (Session["mainMenu"] != null)
+            {
+                var MainMenu = (List<Homework2.Models.Menu>) Session["mainMenu"];
+                var SubMenu = (List<Homework2.Models.Menu>) Session["subMenu"];
 
-            <li>
-                <a class="collapsible-header">System Setup</a>
-                <div class="collapsible-body">
-                    <ul>
-                        <li><a href="@Url.Action("UserMaintenance", "SystemSetup")">User Maintenance</a></li>
-                        <li><a href="@Url.Action("RoleMaintenance", "SystemSetup")">Role Maintenance</a></li>
-                        <li><a href="@Url.Action("MenuMaintenance", "SystemSetup")">Menu Maintenance</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li>
-                <a class="collapsible-header">System Operation</a>
-                <div class="collapsible-body">
-                    <ul>
-                    </ul>
-                </div>
-            </li>
-            <li>
-                <a class="collapsible-header">Profile</a>
-                <div class="collapsible-body">
-                    <ul>
-                        <li><a href="@Url.Action("ChangePassword", "Profile")">Change Password</a></li>
-                        <li><a href="@Url.Action("LogOut", "Profile")">Logout</a></li>
-                    </ul>
-                </div>
-            </li>
+                foreach (var Main in MainMenu)
+                {
+                    <li>
+                        <a class="collapsible-header">@Main.title</a>
+                        <div class="collapsible-body">
+                            <ul>
+                                @foreach (var Sub in SubMenu)
+                                {
+                                    if (Sub.menuNo.Contains(Main.menuNo))
+                                    {
+                                        <li><a href="@Sub.linkUrl">@Sub.title</a></li>
+                                    }
+                                }
+                            </ul>                            
+                        </div>                        
+                    </li>
+                }
+            }
         </ul>
     </li>
 </ul>

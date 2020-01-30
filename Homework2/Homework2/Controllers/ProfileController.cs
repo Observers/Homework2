@@ -60,6 +60,8 @@ namespace Homework2.Controllers
                 {
                     Session["userID"] = userDetails.userID;
                     Session["username"] = userDetails.username;
+                    Session["mainMenu"] = userDetails.User.Role.Menus.Where(x => x.level == 1).OrderBy(x => x.menuNo).ToList();
+                    Session["subMenu"] = userDetails.User.Role.Menus.Where(x => x.level == 2).ToList();
                     return RedirectToAction("Index", "Home");
                 }
             }
