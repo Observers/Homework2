@@ -1,11 +1,11 @@
-﻿// TODO: Side menu navigation.
-// TODO: Sort tables.
+﻿// TODO: Sort tables.
 // TODO: Add materialize breadcrumb to pages.
 
 // TODO: Check all forms have required field where neccessary.
 // TODO: Add comments.
 // TODO: Change buttons to follow prototype.
 // TODO: Split SystemSetup Controller
+// TODO: Grey out GSYSADM
 
 using Homework2.Models;
 using System;
@@ -83,16 +83,16 @@ namespace Homework2.Controllers
                 ExtendedRole viewModel = new ExtendedRole();
                 if (checkboxes.Length != 1)
                 {
-                    int iSelectRole = int.Parse(checkboxes[0]);
-                    Role role = db.Roles.SingleOrDefault(x => x.roleID == iSelectRole);
-                    return View("ModifyRole", role);
-                }
-                else
-                {
                     viewModel.rolesList = db.Roles.ToList();
                     viewModel.rolesTableList = db.Roles.ToList();
                     TempData["Message"] = "Can only select one to modify from table";
                     return View("RoleMaintenance", viewModel);
+                }
+                else
+                {
+                    int iSelectRole = int.Parse(checkboxes[0]);
+                    Role role = db.Roles.SingleOrDefault(x => x.roleID == iSelectRole);
+                    return View("ModifyRole", role);
                 }
             }
         }
@@ -113,10 +113,68 @@ namespace Homework2.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult MenuRole()
+        [HttpPost]
+        public ActionResult MenuRole(FormCollection form)
         {
-            return View();
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                string[] checkboxes = form["checkbox"].Split(',');
+                ExtendedRole viewModel = new ExtendedRole();
+                if (checkboxes.Length != 1)
+                {
+                    viewModel.rolesList = db.Roles.ToList();
+                    List<Role> list = new List<Role>();
+                    viewModel.rolesTableList = list;
+                    TempData["Message"] = "Can only select one to modify from table";
+                    return View("RoleMaintenance", viewModel);
+                }
+                else
+                {
+                    int iSelectRole = int.Parse(checkboxes[0]);
+                    viewModel.role = db.Roles.SingleOrDefault(x => x.roleID == iSelectRole);
+                    viewModel.menu = db.Menus.ToList();
+                    viewModel.menuRole = viewModel.role.Menus.ToList();
+                    return View("MenuRole", viewModel);
+                }
+            }
+        }
+
+        [HttpPost]
+        public ActionResult MenuRoleDatabase(FormCollection form)
+        {
+            using (Trainee15Entities db = new Trainee15Entities())
+            {
+                var roleID = int.Parse(form["selectRole"]);
+                System.Diagnostics.Debug.WriteLine("-------> RoleID: "+roleID);
+                string[] checkboxes = form["checkbox"].Split(',');
+                var menus = db.Menus.ToList();
+                var role = db.Roles.SingleOrDefault(x => x.roleID == roleID);
+                foreach (var menu in menus)
+                {
+                    if(checkboxes.Contains(menu.menuID.ToString()))
+                    {
+                        if(!menu.Roles.Contains(role))
+                        {
+                            db.Menus.SingleOrDefault(x => x.menuID == menu.menuID).Roles.Add(role);
+                            db.SaveChanges();
+                        }
+                    }
+                    if(!checkboxes.Contains(menu.menuID.ToString()))
+                    {
+                        if(menu.Roles.Contains(role))
+                        {
+                            db.Roles.SingleOrDefault(x => x.roleID == role.roleID).Menus.Remove(menu);
+                            db.SaveChanges();
+                        }
+                    }
+                }
+                ExtendedRole viewModel = new ExtendedRole();
+                viewModel.rolesList = db.Roles.ToList();
+                List<Role> list = new List<Role>();
+                viewModel.rolesTableList = list;
+                TempData["Message"] = " Role - Menu updated.";
+                return View("RoleMaintenance", viewModel);
+            }
         }
 
         [HttpPost]
@@ -307,20 +365,20 @@ namespace Homework2.Controllers
                 string[] checkboxes = form["checkbox"].Split(',');
                 if (checkboxes.Length != 1)
                 {
-                    int iSelectUser = int.Parse(checkboxes[0]);
-                    ExtendedUser user = new ExtendedUser();
-                    user.user = db.Users.SingleOrDefault(x => x.userID == iSelectUser);
-                    user.roleList = db.Roles.ToList();
-                    return View("ModifyUser", user);
-                }
-                else
-                {
                     ExtendedUser viewModel = new ExtendedUser();
                     viewModel.userList = db.Users.ToList();
                     viewModel.roleList = db.Roles.ToList();
                     viewModel.userTableList = new List<User>();
                     TempData["Message"] = "Can only select one from table to modify";
                     return View("UserMaintenance", viewModel);
+                }
+                else
+                {
+                    int iSelectUser = int.Parse(checkboxes[0]);
+                    ExtendedUser user = new ExtendedUser();
+                    user.user = db.Users.SingleOrDefault(x => x.userID == iSelectUser);
+                    user.roleList = db.Roles.ToList();
+                    return View("ModifyUser", user);
                 }
             }
         }
@@ -529,19 +587,19 @@ namespace Homework2.Controllers
                 string[] checkboxes = form["checkbox"].Split(',');
                 ExtendedMenu modify = new ExtendedMenu();
 
-                if(checkboxes.Length == 1)
-                {
-                    int iMenuID = int.Parse(checkboxes[0]);
-                    modify.menu = db.Menus.SingleOrDefault(x => x.menuID == iMenuID);
-                    modify.menuList = db.Menus.SqlQuery("SELECT * FROM Menu m1 INNER JOIN Menu m2 ON m1.menuID = m2.menuID WHERE m1.menuNo LIKE '00%' AND LEN(m2.MenuNo) = 3").ToList();
-                    return View("ModifyMenu", modify);
-                }
-                else
+                if(checkboxes.Length != 1)
                 {
                     modify.menuList = db.Menus.ToList();
                     modify.menuTableList = new List<Menu>();
                     TempData["Message"] = "Can only select one from table to modify.";
                     return View("MenuMaintenance", modify);
+                }
+                else
+                {
+                    int iMenuID = int.Parse(checkboxes[0]);
+                    modify.menu = db.Menus.SingleOrDefault(x => x.menuID == iMenuID);
+                    modify.menuList = db.Menus.SqlQuery("SELECT * FROM Menu m1 INNER JOIN Menu m2 ON m1.menuID = m2.menuID WHERE m1.menuNo LIKE '00%' AND LEN(m2.MenuNo) = 3").ToList();
+                    return View("ModifyMenu", modify);
                 }
             }
         }

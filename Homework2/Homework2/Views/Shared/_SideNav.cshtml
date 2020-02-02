@@ -20,7 +20,7 @@
                             <ul>
                                 @foreach (var Sub in SubMenu)
                                 {
-                                    if (Sub.menuNo.Contains(Main.menuNo))
+                                    if (Sub.menuNo.Contains(Main.menuNo) && Main.level != 0)
                                     {
                                         <li><a href="@Sub.linkUrl">@Sub.title</a></li>
                                     }

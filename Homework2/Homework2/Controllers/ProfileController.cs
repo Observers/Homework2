@@ -60,7 +60,7 @@ namespace Homework2.Controllers
                 {
                     Session["userID"] = userDetails.userID;
                     Session["username"] = userDetails.username;
-                    Session["mainMenu"] = userDetails.User.Role.Menus.Where(x => x.level == 1).OrderBy(x => x.menuNo).ToList();
+                    Session["mainMenu"] = userDetails.User.Role.Menus.Where(x => x.level == 0 || x.level == 1).OrderBy(x => x.menuNo).ToList();
                     Session["subMenu"] = userDetails.User.Role.Menus.Where(x => x.level == 2).ToList();
                     return RedirectToAction("Index", "Home");
                 }
@@ -70,6 +70,8 @@ namespace Homework2.Controllers
         public ActionResult LogOut()
         {
             Session.Abandon();
+            Session.Clear();
+            Session.RemoveAll();
             return RedirectToAction("Index", "Profile");
         }
 
