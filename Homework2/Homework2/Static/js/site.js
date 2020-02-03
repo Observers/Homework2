@@ -7,6 +7,7 @@
 function init() {
     M.AutoInit();
     M.updateTextFields();
+    $("#sortableTable").tablesorter();
 }
 
 function toggle(source) {

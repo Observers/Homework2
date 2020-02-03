@@ -109,6 +109,10 @@
     </Content>
     <Content Include="Static\css\sidenavfixed.css" />
     <Content Include="Static\css\site.css" />
+    <Content Include="Static\img\expand_less-24px.svg" />
+    <Content Include="Static\img\expand_more-24px.svg" />
+    <Content Include="Static\img\unfold_more-24px_black.svg" />
+    <Content Include="Static\img\unfold_more-24px_white.svg" />
     <Content Include="Static\js\addMenu.js" />
     <Content Include="Static\js\changePassword.js" />
     <Content Include="Static\js\modifyMenu.js" />

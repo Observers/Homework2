@@ -30,3 +30,39 @@ main {
     overflow-y: auto !important;
     backface-visibility: hidden !important;
 }
+
+.tablesorter-headerAsc {
+    background-repeat: no-repeat;
+    background-position: center right;
+    padding: 4px 18px 4px 4px;
+    white-space: normal;
+    cursor: pointer;
+    background-image: url('../img/expand_less-24px.svg');
+}
+
+.tablesorter-headerDesc {
+    background-repeat: no-repeat;
+    background-position: center right;
+    padding: 4px 18px 4px 4px;
+    white-space: normal;
+    cursor: pointer;
+    background-image: url('../img/expand_more-24px.svg');
+}
+
+.tablesorter-headerUnSorted {
+    background-repeat: no-repeat;
+    background-position: center right;
+    padding: 4px 18px 4px 4px;
+    white-space: normal;
+    cursor: pointer;
+    background-image: url('../img/unfold_more-24px_black.svg');
+}
+
+.sorter-false {
+    background-repeat: no-repeat;
+    background-position: center right;
+    padding: 4px 18px 4px 4px;
+    white-space: normal;
+    cursor: pointer;
+    background-image: url('');
+}

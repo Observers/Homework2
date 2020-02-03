@@ -1,11 +1,10 @@
-﻿// TODO: Sort tables.
-// TODO: Add materialize breadcrumb to pages.
+﻿// TODO: Add materialize breadcrumb to pages.
 
 // TODO: Check all forms have required field where neccessary.
-// TODO: Add comments.
 // TODO: Change buttons to follow prototype.
 // TODO: Split SystemSetup Controller
 // TODO: Grey out GSYSADM
+// TODO: Add comments.
 
 using Homework2.Models;
 using System;

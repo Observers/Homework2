@@ -148,7 +148,6 @@ D:\Personal Projects\Acer\Homework2\Homework2\obj\Debug\Homework2.csprojAssembly
 D:\Personal Projects\Acer\Homework2\Homework2\obj\Debug\Homework2.csproj.CopyComplete
 D:\Personal Projects\Acer\Homework2\Homework2\obj\Debug\Homework2.dll
 D:\Personal Projects\Acer\Homework2\Homework2\obj\Debug\Homework2.pdb
-D:\C#\Practice2\Homework2\Homework2\Homework2\obj\Debug\Homework2.csprojAssemblyReference.cache
 D:\C#\Practice2\Homework2\Homework2\Homework2\obj\Debug\Homework2.dll
 D:\C#\Practice2\Homework2\Homework2\Homework2\obj\Debug\Homework2.pdb
 D:\C#\Practice2\Homework2\Homework2\Homework2\bin\Homework2.dll.config
