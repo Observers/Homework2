@@ -222,3 +222,12 @@ D:\C#\Practice2\Homework2\Homework2\Homework2\bin\System.Web.Helpers.xml
 D:\C#\Practice2\Homework2\Homework2\Homework2\bin\System.Web.Mvc.xml
 D:\C#\Practice2\Homework2\Homework2\Homework2\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 D:\C#\Practice2\Homework2\Homework2\Homework2\obj\Debug\Homework2.csproj.CopyComplete
+D:\C#\Practice2\Homework2\Homework2\Homework2\bin\ICSharpCode.SharpZipLib.dll
+D:\C#\Practice2\Homework2\Homework2\Homework2\bin\NPOI.dll
+D:\C#\Practice2\Homework2\Homework2\Homework2\bin\NPOI.OOXML.dll
+D:\C#\Practice2\Homework2\Homework2\Homework2\bin\NPOI.OpenXml4Net.dll
+D:\C#\Practice2\Homework2\Homework2\Homework2\bin\NPOI.OpenXmlFormats.dll
+D:\C#\Practice2\Homework2\Homework2\Homework2\bin\ICSharpCode.SharpZipLib.xml
+D:\C#\Practice2\Homework2\Homework2\Homework2\obj\Debug\Homework2.csprojAssemblyReference.cache
+D:\C#\Practice2\Homework2\Homework2\Homework2\bin\Newtonsoft.Json.dll
+D:\C#\Practice2\Homework2\Homework2\Homework2\bin\Newtonsoft.Json.xml

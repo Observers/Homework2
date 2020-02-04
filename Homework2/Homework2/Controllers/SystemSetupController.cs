@@ -10,9 +10,16 @@ using Homework2.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NPOI.XSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.HSSF.UserModel;
+using System.Data;
+using System.Reflection;
+using Newtonsoft.Json;
 
 namespace Homework2.Controllers
 {
@@ -713,6 +720,78 @@ namespace Homework2.Controllers
                 menu.menuTableList = new List<Menu>();
                 TempData["Message"] = "<script>alert('One or more user has been successfully deleted!')</script>";
                 return View("MenuMaintenance", menu);
+            }
+        }
+
+        [HttpPost]
+        public void Submit(object sender, EventArgs e)
+        {
+            string userJSON = Request.Form["UsersJSON"];
+            System.Diagnostics.Debug.WriteLine(userJSON);
+            DataTable dt = JsonConvert.DeserializeObject<DataTable>(userJSON);
+            WriteExcelWithNPOI(dt, "xlsx");
+        }
+        public void WriteExcelWithNPOI(DataTable dt, String extension)
+        {
+
+            IWorkbook workbook;
+
+            if (extension == "xlsx")
+            {
+                workbook = new XSSFWorkbook();
+            }
+            else if (extension == "xls")
+            {
+                workbook = new HSSFWorkbook();
+            }
+            else
+            {
+                throw new Exception("This format is not supported");
+            }
+
+            ISheet sheet1 = workbook.CreateSheet("Sheet 1");
+
+            //make a header row
+            IRow row1 = sheet1.CreateRow(0);
+
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+
+                ICell cell = row1.CreateCell(j);
+                String columnName = dt.Columns[j].ToString();
+                cell.SetCellValue(columnName);
+            }
+
+            //loops through data
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                IRow row = sheet1.CreateRow(i + 1);
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+
+                    ICell cell = row.CreateCell(j);
+                    String columnName = dt.Columns[j].ToString();
+                    cell.SetCellValue(dt.Rows[i][columnName].ToString());
+                }
+            }
+
+            using (var exportData = new MemoryStream())
+            {
+                Response.Clear();
+                workbook.Write(exportData);
+                if (extension == "xlsx") //xlsx file format
+                {
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("Content-Disposition", string.Format("attachment;filename={0}", "ContactNPOI.xlsx"));
+                    Response.BinaryWrite(exportData.ToArray());
+                }
+                else if (extension == "xls")  //xls file format
+                {
+                    Response.ContentType = "application/vnd.ms-excel";
+                    Response.AddHeader("Content-Disposition", string.Format("attachment;filename={0}", "ContactNPOI.xls"));
+                    Response.BinaryWrite(exportData.GetBuffer());
+                }
+                Response.End();
             }
         }
     }

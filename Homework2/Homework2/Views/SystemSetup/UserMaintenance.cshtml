@@ -57,7 +57,41 @@
     </div>
 
     <div class="row">
-        <table id="sortableTable" class="tablesorter highlight">
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small red " formaction="QueryUser" formmethod="post">
+                <i class="material-icons right">search</i>
+                Query
+            </button>
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small yellow darken-2 " formaction="AddUser" formmethod="get">
+                <i class="material-icons right">add</i>
+                Add
+            </button>
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small green " formaction="ModifyUser" formmethod="post">
+                <i class="material-icons right">mode_edit</i>
+                Modify
+            </button>
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small blue " onclick="return confirm('Are you sure you want to delete?')" formaction="DeleteUser" formmethod="post">
+                <i class="material-icons right">delete</i>
+                Delete
+            </button>
+        </div>
+        <div class="col s3">
+            <input hidden id="UsersJSON" name="UsersJSON" />
+            <button class="waves-effect waves-light btn-small purple " OnClick="GetTableValues()" formaction="Submit" formmethod="post">
+                <i class="material-icons right">file_download</i>
+                Download
+            </button>
+        </div>
+    </div>
+    
+    <div class="row">
+        <table id="sortableTable" name="table" class="tablesorter highlight">
             <thead>
                 <tr>
                     <th class="sorter-false">
@@ -106,37 +140,5 @@
                 }
             </tbody>
         </table>
-    </div>
-
-    <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red pulse ">
-            <i class="large material-icons">edit</i>
-        </a>
-        <ul>
-            <li>
-                <button class="btn-floating red tooltipped" data-position="left" data-tooltip="Query" formaction="QueryUser" formmethod="post">
-                    <i class="material-icons">search</i>
-                    Query
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating yellow darken-1 tooltipped" data-position="left" data-tooltip="Add" formaction="AddUser" formmethod="get">
-                    <i class="material-icons">add</i>
-                    Add
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating yellow tooltipped" data-position="left" data-tooltip="Modify" formaction="ModifyUser" formmethod="post">
-                    <i class="material-icons">mode_edit</i>
-                    Modify
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating blue tooltipped" onclick="return confirm('Are you sure you want to delete?')" data-position="left" data-tooltip="Delete" formaction="DeleteUser" formmethod="post">
-                    <i class="material-icons">delete</i>
-                    Delete
-                </button>
-            </li>
-        </ul>
     </div>
 }
