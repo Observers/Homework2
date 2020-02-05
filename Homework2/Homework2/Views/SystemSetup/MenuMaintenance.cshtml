@@ -76,9 +76,42 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small red " formaction="QueryMenu" formmethod="post">
+                <i class="material-icons">search</i>
+                Query
+            </button>
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small yellow darken-2 " formaction="AddMenu" formmethod="get">
+                <i class="material-icons">add</i>
+                Add
+            </button>
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small green " formaction="ModifyMenu" formmethod="post">
+                <i class="material-icons">mode_edit</i>
+                Modify
+            </button>
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small blue " onclick="return confirm('Are you sure you want to delete?')" formaction="DeleteMenu" formmethod="post">
+                <i class="material-icons">delete</i>
+                Delete
+            </button>
+        </div>
+        <div class="col s3">
+            <input hidden id="JSON" name="JSON" />
+            <button class="waves-effect waves-light btn-small purple " OnClick="GetTableValues()" formaction="Submit" formmethod="post">
+                <i class="material-icons right">file_download</i>
+                Download
+            </button>
+        </div>
+    </div>
 
     <div class="row">
-        <table class="highlight">
+        <table name="table" class="highlight">
             <thead>
                 <tr>
                     <th>
@@ -125,37 +158,5 @@
                 }
             </tbody>
         </table>
-    </div>
-
-    <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red pulse ">
-            <i class="large material-icons">edit</i>
-        </a>
-        <ul>
-            <li>
-                <button class="btn-floating red tooltipped" data-position="left" data-tooltip="Query" formaction="QueryMenu" formmethod="post">
-                    <i class="material-icons">search</i>
-                    Query
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating yellow darken-1 tooltipped" data-position="left" data-tooltip="Add" formaction="AddMenu" formmethod="get">
-                    <i class="material-icons">add</i>
-                    Add
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating yellow tooltipped" data-position="left" data-tooltip="Modify" formaction="ModifyMenu" formmethod="post">
-                    <i class="material-icons">mode_edit</i>
-                    Modify
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating blue tooltipped" onclick="return confirm('Are you sure you want to delete?')" data-position="left" data-tooltip="Delete" formaction="DeleteMenu" formmethod="post">
-                    <i class="material-icons">delete</i>
-                    Delete
-                </button>
-            </li>
-        </ul>
     </div>
 }

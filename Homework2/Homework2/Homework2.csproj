@@ -133,8 +133,11 @@
     <Content Include="Static\img\unfold_more-24px_white.svg" />
     <Content Include="Static\js\addMenu.js" />
     <Content Include="Static\js\changePassword.js" />
+    <Content Include="Static\js\menuMaintenance.js" />
     <Content Include="Static\js\modifyMenu.js" />
+    <Content Include="Static\js\roleMaintenance.js" />
     <Content Include="Static\js\site.js" />
+    <Content Include="Static\js\userMaintenance.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

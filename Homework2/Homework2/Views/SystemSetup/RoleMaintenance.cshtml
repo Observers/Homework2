@@ -2,7 +2,7 @@
     ViewBag.Title = "Role Maintenance";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    if(Session["userID"] == null)
+    if (Session["userID"] == null)
     {
         Response.Redirect("~/Profile/Index");
     }
@@ -19,6 +19,10 @@
 
 @section sidenav {
     @{Html.RenderPartial("_SideNav");}
+}
+
+@section scripts {
+    <script src="~/Static/js/roleMaintenance.js" asp-append-version="true"></script>
 }
 
 <div class="row">
@@ -43,7 +47,47 @@
     </div>
 
     <div class="row">
-        <table id="sortableTable" class="tablesorter highlight">
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small red " formaction="QueryRole" formmethod="post">
+                <i class="material-icons">search</i>
+                Query
+            </button>
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small yellow darken-2 " formaction="AddRole" formmethod="get">
+                <i class="material-icons">add</i>
+                Add
+            </button>
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small green " formaction="ModifyRole" formmethod="post">
+                <i class="material-icons">mode_edit</i>
+                Modify
+            </button>
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small orange " formaction="MenuRole" formmethod="post">
+                <i class="material-icons">menu</i>
+                Menu
+            </button>
+        </div>
+        <div class="col s2">
+            <button class="waves-effect waves-light btn-small blue " onclick="return confirm('Are you sure you want to delete?')" formaction="DeleteRole" formmethod="post">
+                <i class="material-icons">delete</i>
+                Delete
+            </button>
+        </div>
+        <div class="col s3">
+            <input hidden id="JSON" name="JSON" />
+            <button class="waves-effect waves-light btn-small purple " OnClick="GetTableValues()" formaction="Submit" formmethod="post">
+                <i class="material-icons right">file_download</i>
+                Download
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <table id="sortableTable" name="table" class="tablesorter highlight">
             <thead>
                 <tr>
                     <th class="sorter-false">
@@ -93,43 +137,5 @@
                 }
             </tbody>
         </table>
-    </div>
-
-    <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red pulse ">
-            <i class="large material-icons">edit</i>
-        </a>
-        <ul>
-            <li>
-                <button class="btn-floating red tooltipped" data-position="left" data-tooltip="Query" formaction="QueryRole" formmethod="post">
-                    <i class="material-icons">search</i>
-                    Query
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating yellow darken-1 tooltipped" data-position="left" data-tooltip="Add" formaction="AddRole" formmethod="get">
-                    <i class="material-icons">add</i>
-                    Add
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating yellow tooltipped" data-position="left" data-tooltip="Modify" formaction="ModifyRole" formmethod="post">
-                    <i class="material-icons">mode_edit</i>
-                    Modify
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating yellow tooltipped" data-position="left" data-tooltip="Menu" formaction="MenuRole" formmethod="post" >
-                    <i class="material-icons">menu</i>
-                    Menu
-                </button>
-            </li>
-            <li>
-                <button class="btn-floating blue tooltipped" onclick="return confirm('Are you sure you want to delete?')" data-position="left" data-tooltip="Delete" formaction="DeleteRole" formmethod="post">
-                    <i class="material-icons">delete</i>
-                    Delete
-                </button>
-            </li>
-        </ul>
     </div>
 }
