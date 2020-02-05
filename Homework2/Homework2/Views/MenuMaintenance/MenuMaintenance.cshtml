@@ -1,6 +1,5 @@
-﻿
-@{
-    ViewBag.Title = "User Maintenance";
+﻿@{
+    ViewBag.Title = "Menu Maintenance";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     if (Session["userID"] == null)
@@ -22,10 +21,6 @@
     @{Html.RenderPartial("_SideNav");}
 }
 
-@section scripts {
-    <script src="~/Static/js/userMaintenance.js" asp-append-version="true"></script>
-}
-
 <div class="row">
     <h5>@ViewData["Title"]</h5>
 </div>
@@ -36,58 +31,78 @@
 {
     <div class="row">
         <div class="input-field col s6">
-            <select name="selectUser" class="wrapper">
+            <select name="selectMenu" class="wrapper">
                 <option value="" disabled selected>Choose your option</option>
-                @foreach (var user in Model?.userList)
+                @foreach (var menu in Model?.menuList)
                 {
-                    <option value="@user.userID">@user.username</option>
+                    <option value="@menu.menuID">@menu.menuNo</option>
                 }
             </select>
-            <label for="user">User</label>
+            <label>Menu No</label>
         </div>
     </div>
 
     <div class="row">
         <div class="input-field col s6">
-            <select name="selectRole" class="wrapper">
+            <select name="selectTitle" class="wrapper">
                 <option value="" disabled selected>Choose your option</option>
-                @foreach (var role in Model?.roleList)
+                @foreach (var menu in Model?.menuList)
                 {
-                    <option value="@role.roleID">@role.roleName</option>
+                    <option value="@menu.title">@menu.title</option>
                 }
             </select>
-            <label>Role</label>
+            <label>Title</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s3">
+            <select name="selectLinkType" class="wrapper">
+                <option value="" disabled selected>Choose your option</option>
+                <option value="Menu">Menu</option>
+                <option value="Program">Program</option>
+            </select>
+            <label>Link Type</label>
+        </div>
+
+        <div class="input-field col s3">
+            <select name="selectStatus" class="wrapper">
+                <option value="" disabled selected>Choose your option</option>
+                <option value="1">Y</option>
+                <option value="0">N</option>
+            </select>
+            <label>Status</label>
         </div>
     </div>
 
     <div class="row">
         <div class="col">
-            <button class="waves-effect waves-light btn-small purple " formaction="QueryUser" formmethod="post">
+            <button class="waves-effect waves-light btn-small purple " formaction="@Url.Action("QueryMenu", "MenuMaintenance")" formmethod="post">
                 <i class="material-icons right">search</i>
                 Query
             </button>
         </div>
         <div class="col">
-            <button class="waves-effect waves-light btn-small green " formaction="AddUser" formmethod="get">
+            <button class="waves-effect waves-light btn-small green " formaction="@Url.Action("AddMenu", "MenuMaintenance")" formmethod="get">
                 <i class="material-icons right">add</i>
                 Add
             </button>
         </div>
         <div class="col">
-            <button class="waves-effect waves-light btn-small yellow darken-2 " formaction="ModifyUser" formmethod="post">
+            <button class="waves-effect waves-light btn-small yellow darken-2 " formaction="@Url.Action("ModifyMenu", "MenuMaintenance")" formmethod="post">
                 <i class="material-icons right">mode_edit</i>
                 Modify
             </button>
         </div>
         <div class="col">
-            <button class="waves-effect waves-light btn-small orange " onclick="return confirm('Are you sure you want to delete?')" formaction="DeleteUser" formmethod="post">
+            <button class="waves-effect waves-light btn-small orange " onclick="return confirm('Are you sure you want to delete?')" formaction="@Url.Action("DeleteMenu", "MenuMaintenance")" formmethod="post">
                 <i class="material-icons right">delete</i>
                 Delete
             </button>
         </div>
         <div class="col">
             <input hidden id="JSON" name="JSON" />
-            <button class="waves-effect waves-light btn-small red " OnClick="GetTableValues()" formaction="Submit" formmethod="post">
+            <button class="waves-effect waves-light btn-small red " OnClick="GetTableValues()" formaction="@Url.Action("Submit", "Export")" formmethod="post">
                 <i class="material-icons right">file_download</i>
                 Download
             </button>
@@ -95,37 +110,40 @@
     </div>
 
     <div class="row">
-        <table id="sortableTable" name="table" class="tablesorter highlight">
+        <table name="table" class="highlight">
             <thead>
                 <tr>
-                    <th class="sorter-false">
+                    <th>
                         <label>
                             <input type="checkbox" class="filled-in" onClick="toggle(this)" />
                             <span></span>
                         </label>
                     </th>
-                    <th>User</th>
-                    <th>Role</th>
+                    <th>Menu No</th>
+                    <th>Level</th>
+                    <th>Title</th>
+                    <th>Link Type</th>
+                    <th>Link URL</th>
                     <th>Status</th>
-                    <th>Create Date</th>
-                    <th>Create User</th>
-                    <th>Modify Date</th>
-                    <th>Modify User</th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach (var item in Model?.userTableList)
+                @foreach (var item in Model?.menuTableList)
                 {
                     <tr>
                         <td>
                             <label>
-                                <input value="@item.userID" type="checkbox" class="filled-in" name="checkbox" />
+                                <input value="@item.menuID" type="checkbox" class="filled-in" name="checkbox" />
                                 <span></span>
                             </label>
                         </td>
-                        <td>@item.username</td>
-                        <td>@item.Role.roleName</td>
+
+                        <td>@item.menuNo</td>
+                        <td>@item.level</td>
+                        <td>@item.title</td>
+                        <td>@item.linkType</td>
+                        <td>@item.linkUrl</td>
 
                         @if (@item.status == true)
                         {
@@ -135,11 +153,6 @@
                         {
                             <td>N</td>
                         }
-
-                        <td>@item.createDate.ToString()</td>
-                        <td>@item.createUser</td>
-                        <td>@item.modifyDate.ToString()</td>
-                        <td>@item.modifyUser</td>
                     </tr>
                 }
             </tbody>

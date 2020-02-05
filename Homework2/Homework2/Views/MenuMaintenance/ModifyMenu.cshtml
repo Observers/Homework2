@@ -1,13 +1,13 @@
 ﻿
 @{
-    ViewBag.Title = "AddUser";
+    ViewBag.Title = "ModifyMenu";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
     if (Session["userID"] == null)
     {
         Response.Redirect("~/Profile/Index");
     }
 }
+
 
 @section stylesheet
 {
@@ -22,13 +22,22 @@
     @{Html.RenderPartial("_SideNav");}
 }
 
-@using (Html.BeginForm("AddUser", "SystemSetup", FormMethod.Post))
+<div class="row">
+    <h5 class="center-align">@ViewData["Title"]</h5>
+</div>
+
+<div>@TempData["Message"]</div>
+
+@using (Html.BeginForm("ModifyMenuDatabase", "MenuMaintenance", FormMethod.Post))
 {
+    <div class="row" hidden>
+        <input hidden disabled id="@Model.menuID" name="menuID" type="text" value="@Model.menuID"/>
+    </div>
     <div class="row">
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
-                <input id="username" name="username" type="text" required class="validate">
-                <label for="username">Username</label>
+                <input id="title" name="title" type="text" required class="validate" value="@Model.title">
+                <label for="title">Title</label>
             </div>
         </div>
     </div>
@@ -36,14 +45,36 @@
     <div class="row">
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
-                <select name="selectRole" class="wrapper">
+                <select id="selectLinkType" name="selectLinkType" onchange="check()">
                     <option value="" disabled selected>Choose your option</option>
-                    @foreach (var role in Model?.rolesList)
+                    <option value="1">Menu</option>
+                    <option value="2">Program</option>
+                </select>
+                <label>Link Type</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="input-field col col s4 offset-s4">
+                <select id="a" name="selectSubMenu" disabled>
+                    <option value="" disabled selected>Choose your option</option>
+                    @foreach (var item in Model?.menuList)
                     {
-                        <option value="@role.roleID">@role.roleName</option>
+                        <option value="@item.menuNo">@item.title</option>
                     }
                 </select>
-                <label>Role</label>
+                <label>Sub-Menu of</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="input-field col col s4 offset-s4">
+                <input id="linkUrl" name="linkUrl" type="text" class="validate">
+                <label for="linkUrl">Link URL</label>
             </div>
         </div>
     </div>
@@ -65,7 +96,7 @@
         <div class="col s12">
             <div class="col s2 offset-s4">
                 <button class="btn waves-effect waves-light" type="submit" name="action">
-                    Add
+                    Save
                 </button>
             </div>
             <div class="col s2">

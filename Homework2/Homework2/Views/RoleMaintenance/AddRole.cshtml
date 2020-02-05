@@ -1,7 +1,8 @@
 ﻿
 @{
-    ViewBag.Title = "Add Menu";
+    ViewBag.Title = "AddRole";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
     if (Session["userID"] == null)
     {
         Response.Redirect("~/Profile/Index");
@@ -22,59 +23,29 @@
 }
 
 @section scripts {
-    <script src="~/Static/js/addMenu.js" asp-append-version="true"></script>
+    <script src="~/Static/js/modifyMenu.js" asp-append-version="true"></script>
 }
 
 <div class="row">
     <h5 class="center-align">@ViewData["Title"]</h5>
 </div>
-
-<div>@TempData["Message"]</div>
-
-@using (Html.BeginForm("AddMenu", "SystemSetup", FormMethod.Post))
+ 
+@using (Html.BeginForm("AddRole", "RoleMaintenance", FormMethod.Post))
 {
     <div class="row">
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
-                <input id="title" name="title" type="text" required class="validate">
-                <label for="title">Title</label>
+                <input id="role" name="role" type="text" required class="validate">
+                <label for="role">Role</label>
             </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <select id="selectLinkType" name="selectLinkType" onchange="check()">
-                    <option value="" disabled selected>Choose your option</option>
-                    <option value="1">Menu</option>
-                    <option value="2">Program</option>
-                </select>
-                <label>Link Type</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <select id="selectSubMenu" name="selectSubMenu" disabled>
-                    <option value="" disabled selected>Choose your option</option>
-                    @foreach (var item in Model?.menuList)
-                    {
-                        <option value="@item.menuNo">@item.title</option>
-                    }
-                </select>
-                <label>Sub-Menu of</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <input id="linkUrl" name="linkUrl" type="text" class="validate">
-                <label for="linkUrl">Link URL</label>
+            <div class="input-field col s4 offset-s4">
+                <input id="role_descrip" name="description" type="text" class="validate">
+                <label for="role_descrip">Role Description</label>
             </div>
         </div>
     </div>

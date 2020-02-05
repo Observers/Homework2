@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Role Maintenance";
+﻿
+@{
+    ViewBag.Title = "User Maintenance";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     if (Session["userID"] == null)
@@ -22,7 +23,7 @@
 }
 
 @section scripts {
-    <script src="~/Static/js/roleMaintenance.js" asp-append-version="true"></script>
+    <script src="~/Static/js/userMaintenance.js" asp-append-version="true"></script>
 }
 
 <div class="row">
@@ -35,9 +36,22 @@
 {
     <div class="row">
         <div class="input-field col s6">
+            <select name="selectUser" class="wrapper">
+                <option value="" disabled selected>Choose your option</option>
+                @foreach (var user in Model?.userList)
+                {
+                    <option value="@user.userID">@user.username</option>
+                }
+            </select>
+            <label for="user">User</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s6">
             <select name="selectRole" class="wrapper">
                 <option value="" disabled selected>Choose your option</option>
-                @foreach (var role in Model?.rolesList)
+                @foreach (var role in Model?.roleList)
                 {
                     <option value="@role.roleID">@role.roleName</option>
                 }
@@ -48,38 +62,32 @@
 
     <div class="row">
         <div class="col">
-            <button class="waves-effect waves-light btn-small purple " formaction="QueryRole" formmethod="post">
+            <button class="waves-effect waves-light btn-small purple " formaction="@Url.Action("QueryUser", "UserMaintenance")" formmethod="post">
                 <i class="material-icons right">search</i>
                 Query
             </button>
         </div>
         <div class="col">
-            <button class="waves-effect waves-light btn-small green " formaction="AddRole" formmethod="get">
+            <button class="waves-effect waves-light btn-small green " formaction="@Url.Action("AddUser", "UserMaintenance")" formmethod="get">
                 <i class="material-icons right">add</i>
                 Add
             </button>
         </div>
         <div class="col">
-            <button class="waves-effect waves-light btn-small yellow darken-2 " formaction="ModifyRole" formmethod="post">
+            <button class="waves-effect waves-light btn-small yellow darken-2 " formaction="@Url.Action("ModifyUser", "UserMaintenance")" formmethod="post">
                 <i class="material-icons right">mode_edit</i>
                 Modify
             </button>
         </div>
         <div class="col">
-            <button class="waves-effect waves-light btn-small blue " formaction="MenuRole" formmethod="post">
-                <i class="material-icons right">menu</i>
-                Menu
-            </button>
-        </div>
-        <div class="col">
-            <button class="waves-effect waves-light btn-small orange " onclick="return confirm('Are you sure you want to delete?')" formaction="DeleteRole" formmethod="post">
+            <button class="waves-effect waves-light btn-small orange " onclick="return confirm('Are you sure you want to delete?')" formaction="DeleteUser" formmethod="post">
                 <i class="material-icons right">delete</i>
                 Delete
             </button>
         </div>
         <div class="col">
             <input hidden id="JSON" name="JSON" />
-            <button class="waves-effect waves-light btn-small red " OnClick="GetTableValues()" formaction="Submit" formmethod="post">
+            <button class="waves-effect waves-light btn-small red " OnClick="GetTableValues()" formaction="@Url.Action("Submit", "Export")" formmethod="post">
                 <i class="material-icons right">file_download</i>
                 Download
             </button>
@@ -96,8 +104,8 @@
                             <span></span>
                         </label>
                     </th>
+                    <th>User</th>
                     <th>Role</th>
-                    <th>Role Description</th>
                     <th>Status</th>
                     <th>Create Date</th>
                     <th>Create User</th>
@@ -107,18 +115,17 @@
             </thead>
 
             <tbody>
-                @foreach (var item in Model?.rolesTableList)
+                @foreach (var item in Model?.userTableList)
                 {
                     <tr>
                         <td>
                             <label>
-                                <input value="@item.roleID" type="checkbox" class="filled-in" name="checkbox" />
+                                <input value="@item.userID" type="checkbox" class="filled-in" name="checkbox" />
                                 <span></span>
                             </label>
                         </td>
-
-                        <td>@item.roleName</td>
-                        <td>@item.description</td>
+                        <td>@item.username</td>
+                        <td>@item.Role.roleName</td>
 
                         @if (@item.status == true)
                         {
