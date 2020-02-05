@@ -19,7 +19,7 @@
         role.createUser = row.cells[5].innerHTML;
         role.modifyDate = row.cells[6].innerHTML;
         role.modifyUser = row.cells[7].innerHTML;
-        roles.push(user);
+        roles.push(role);
     }
 
     //Convert the JSON object to string and assign to Hidden Field.

@@ -18,7 +18,7 @@
         menu.linkType = row.cells[4].innerHTML;
         menu.linkUrl = row.cells[5].innerHTML;
         menu.status = row.cells[6].innerHTML;
-        menus.push(user);
+        menus.push(menu);
     }
 
     //Convert the JSON object to string and assign to Hidden Field.
