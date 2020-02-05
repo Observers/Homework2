@@ -726,11 +726,13 @@ namespace Homework2.Controllers
         [HttpPost]
         public void Submit(object sender, EventArgs e)
         {
-            string userJSON = Request.Form["UsersJSON"];
-            System.Diagnostics.Debug.WriteLine(userJSON);
+            string userJSON = Request.Form["JSON"];
             DataTable dt = JsonConvert.DeserializeObject<DataTable>(userJSON);
             WriteExcelWithNPOI(dt, "xlsx");
         }
+
+        // Resource : https://www.aspsnippets.com/Articles/Convert-HTML-Table-to-DataTable-in-ASPNet-using-C-and-VBNet.aspx
+        // Resource : https://techbrij.com/export-excel-xls-xlsx-asp-net-npoi-epplus
         public void WriteExcelWithNPOI(DataTable dt, String extension)
         {
 

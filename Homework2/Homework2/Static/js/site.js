@@ -23,8 +23,6 @@ function GetTableValues() {
 
     //Reference the Table.
     var table = document.getElementsByName("table");
-    console.log("Hi");
-    console.log(table);
     console.log(table[0].rows.length);
     //Loop through Table Rows.
     for (var i = 1; i < table[0].rows.length; i++) {
@@ -44,6 +42,5 @@ function GetTableValues() {
     }
 
     //Convert the JSON object to string and assign to Hidden Field.
-    document.getElementById("UsersJSON").value = JSON.stringify(users);
-    //$("#myForm").submit();
+    document.getElementById("JSON").value = JSON.stringify(users);
 }

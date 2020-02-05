@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Homework2.Models;
+using System.Security.Cryptography;
 
 namespace Homework2.Controllers
 {
@@ -31,40 +32,66 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                HttpCookie cookie = new HttpCookie("Profile");
-                string f = form["RememberMe"];
-                if (f != null)
+                using (MD5 md5Hash = MD5.Create())
                 {
-                    cookie["username"] = acc.username;
+                    string hash = GetMd5Hash(md5Hash, acc.password);
 
-                    byte[] b = ASCIIEncoding.ASCII.GetBytes(acc.password);
-                    string EncryptedPassword = Convert.ToBase64String(b);
-                    cookie["password"] = EncryptedPassword;
+                    HttpCookie cookie = new HttpCookie("Profile");
+                    string f = form["RememberMe"];
+                    if (f != null)
+                    {
+                        cookie["username"] = acc.username;
 
-                    cookie.Expires = DateTime.Now.AddDays(2);
-                    HttpContext.Response.Cookies.Add(cookie);
-                }
-                else
-                {
-                    cookie.Expires = DateTime.Now.AddDays(-1);
-                    HttpContext.Response.Cookies.Add(cookie);
-                }
-                //Where(x => x.username == acc.username && x.password == acc.password).FirstOrDefault();
-                var userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == acc.password); 
-                if (userDetails == null)
-                {
-                    TempData["Message"] = "Wrong Username or Password.";
-                    return View("Index");
-                }
-                else
-                {
-                    Session["userID"] = userDetails.userID;
-                    Session["username"] = userDetails.username;
-                    Session["mainMenu"] = userDetails.User.Role.Menus.Where(x => x.level == 0 || x.level == 1).OrderBy(x => x.menuNo).ToList();
-                    Session["subMenu"] = userDetails.User.Role.Menus.Where(x => x.level == 2).ToList();
-                    return RedirectToAction("Index", "Home");
+                        byte[] b = ASCIIEncoding.ASCII.GetBytes(hash);
+                        string EncryptedPassword = Convert.ToBase64String(b);
+                        cookie["password"] = EncryptedPassword;
+
+                        cookie.Expires = DateTime.Now.AddDays(2);
+                        HttpContext.Response.Cookies.Add(cookie);
+                    }
+                    else
+                    {
+                        cookie.Expires = DateTime.Now.AddDays(-1);
+                        HttpContext.Response.Cookies.Add(cookie);
+                    }
+
+                    var userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == hash);
+                    if (userDetails == null)
+                    {
+                        TempData["Message"] = "Wrong Username or Password.";
+                        return View("Index");
+                    }
+                    else
+                    {
+                        Session["userID"] = userDetails.userID;
+                        Session["username"] = userDetails.username;
+                        Session["mainMenu"] = userDetails.User.Role.Menus.Where(x => x.level == 0 || x.level == 1).OrderBy(x => x.menuNo).ToList();
+                        Session["subMenu"] = userDetails.User.Role.Menus.Where(x => x.level == 2).ToList();
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
             }
+        }
+
+        static string GetMd5Hash(MD5 md5Hash, string input)
+        {
+
+            // Convert the input string to a byte array and compute the hash.
+            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+            // Create a new Stringbuilder to collect the bytes
+            // and create a string.
+            StringBuilder sBuilder = new StringBuilder();
+
+            // Loop through each byte of the hashed data 
+            // and format each one as a hexadecimal string.
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+
+            // Return the hexadecimal string.
+            return sBuilder.ToString();
         }
 
         public ActionResult LogOut()
@@ -90,26 +117,33 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                var userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == acc.password);
-                if (userDetails == null)
+                using (MD5 md5Hash = MD5.Create())
                 {
-                    HttpCookie cookie = Request.Cookies["Profile"];
-                    if (cookie != null)
+                    string hash = GetMd5Hash(md5Hash, acc.password);
+                    var userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == hash);
+
+                    if (userDetails == null)
                     {
-                        ViewBag.username = cookie["username"].ToString();
+                        HttpCookie cookie = Request.Cookies["Profile"];
+                        if (cookie != null)
+                        {
+                            ViewBag.username = cookie["username"].ToString();
+                        }
+                        TempData["Message"] = "Wrong Username or Password.";
+                        return View("ChangePassword");
                     }
-                    TempData["Message"] = "Wrong Username or Password.";
-                    return View("ChangePassword");
-                }
-                else
-                {
-                    userDetails.password = acc.newPassword;
+                    else
+                    {
+                        hash = GetMd5Hash(md5Hash, acc.newPassword);
 
-                    db.SaveChanges();
+                        userDetails.password = hash;
 
-                    TempData["Message"] = "<script>alert('Password changed successfully!')</script>";
+                        db.SaveChanges();
 
-                    return View("ChangePassword");
+                        TempData["Message"] = "<script>alert('Password changed successfully!')</script>";
+
+                        return View("ChangePassword");
+                    }
                 }
             }
         }
