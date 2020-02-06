@@ -13,8 +13,11 @@
     <link rel="stylesheet" href="~/Static/css/sidenavfixed.css" />
 }
 
-@section header {
-    @{Html.RenderPartial("_NavBar");}
+@section navbar {
+    <div class="col s12">
+        <a href="@Url.Action("RoleMaintenance", "SystemSetup")" class="breadcrumb">Role Maintenance</a>
+        <a href="@Url.Action("MenuRole", "RoleMaintenance")" class="breadcrumb">Menu</a>
+    </div>
 }
 
 @section sidenav {
@@ -54,7 +57,7 @@
                             <label>
                                 @if (Model.menuRole.Contains(item))
                                 {
-                                    <input value="@item.menuID" type="checkbox" class="filled-in" name="checkbox" checked/>
+                                    <input value="@item.menuID" type="checkbox" class="filled-in" name="checkbox" checked />
                                 }
                                 else
                                 {
@@ -68,7 +71,7 @@
                         <td>@item.title</td>
                         <td>@item.linkType</td>
                         <td>@item.linkUrl</td>
-                        @if(item.status == true)
+                        @if (item.status == true)
                         {
                             <td>Y</td>
                         }

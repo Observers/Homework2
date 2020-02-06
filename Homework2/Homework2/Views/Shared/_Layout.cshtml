@@ -18,7 +18,20 @@
 
 <body>
     <header>
-        @RenderSection("header", required: false)
+        <nav class="green darken-3">
+            <div class="nav-wrapper">
+                <div class="container">
+                    @if (Session["mainMenu"] != null)
+                    {
+                        <a class="top-nav sidenav-trigger full hide-on-large-only" data-target="nav-mobile">
+                            <i class="material-icons">menu</i>
+                        </a>
+                    }
+                    @RenderSection("navBar", required: false)
+                </div>
+            </div>
+        </nav>
+
         @RenderSection("sidenav", required: false)
     </header>
 

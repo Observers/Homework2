@@ -14,8 +14,11 @@
     <link rel="stylesheet" href="~/Static/css/sidenavfixed.css" />
 }
 
-@section header {
-    @{Html.RenderPartial("_NavBar");}
+@section navbar {
+    <div class="col s12">
+        <a href="@Url.Action("RoleMaintenance", "SystemSetup")" class="breadcrumb">Role Maintenance</a>
+        <a href="@Url.Action("AddMenu", "RoleMaintenance")" class="breadcrumb">Add</a>
+    </div>
 }
 
 @section sidenav {
@@ -29,7 +32,7 @@
 <div class="row">
     <h5 class="center-align">@ViewData["Title"]</h5>
 </div>
- 
+
 @using (Html.BeginForm("AddRole", "RoleMaintenance", FormMethod.Post))
 {
     <div class="row">

@@ -3,7 +3,7 @@
     ViewBag.Title = "ModifyRole";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    if(Session["userID"] == null)
+    if (Session["userID"] == null)
     {
         Response.Redirect("~/Profile/Index");
     }
@@ -14,8 +14,11 @@
     <link rel="stylesheet" href="~/Static/css/sidenavfixed.css" />
 }
 
-@section header {
-    @{Html.RenderPartial("_NavBar");}
+@section navbar {
+<div class="col s12">
+    <a href="@Url.Action("RoleMaintenance", "SystemSetup")" class="breadcrumb">Role Maintenance</a>
+    <a href="@Url.Action("ModifyRole", "MenuMaintenance")" class="breadcrumb">Modify</a>
+</div>
 }
 
 @section sidenav {
@@ -24,14 +27,14 @@
 
 @using (Html.BeginForm("ModifyRoleDatabase", "RoleMaintenance", FormMethod.Post))
 {
-<div class="row">
-    <div class="input-field col s4 offset-s4">
-        <select name="selectRole" class="wrapper">
+    <div class="row">
+        <div class="input-field col s4 offset-s4">
+            <select name="selectRole" class="wrapper">
                 <option selected value="@Model.roleID">@Model.roleName</option>
-        </select>
-        <label>Role</label>
+            </select>
+            <label>Role</label>
+        </div>
     </div>
-</div>
 
     <div class="row">
         <div class="col s12">

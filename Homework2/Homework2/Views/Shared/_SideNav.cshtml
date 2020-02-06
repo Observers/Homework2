@@ -3,19 +3,20 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
-<ul id="slide-out" class="sidenav sidenav-fixed collapsible">
+<ul id="nav-mobile" class="sidenav sidenav-fixed">
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
             @if (Session["mainMenu"] != null)
             {
-                var MainMenu = (List<Homework2.Models.Menu>) Session["mainMenu"];
-                var SubMenu = (List<Homework2.Models.Menu>) Session["subMenu"];
+                var MainMenu = (List<Homework2.Models.Menu>)Session["mainMenu"];
+                var SubMenu = (List<Homework2.Models.Menu>)Session["subMenu"];
 
                 foreach (var Main in MainMenu)
                 {
                     <li>
                         <a class="collapsible-header">@Main.title</a>
+                        @if (Main.level != 0)
+                        {
                         <div class="collapsible-body">
                             <ul>
                                 @foreach (var Sub in SubMenu)
@@ -25,8 +26,9 @@
                                         <li><a href="@Sub.linkUrl">@Sub.title</a></li>
                                     }
                                 }
-                            </ul>                            
-                        </div>                        
+                            </ul>
+                        </div>
+                        }
                     </li>
                 }
             }

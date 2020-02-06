@@ -5,10 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section header {
-    @{Html.RenderPartial("_NavBar");}
-}
-
 @using (Html.BeginForm("Login", "Profile", FormMethod.Post))
 {
     <div class="row">

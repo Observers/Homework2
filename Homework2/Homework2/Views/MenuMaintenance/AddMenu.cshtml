@@ -13,8 +13,11 @@
     <link rel="stylesheet" href="~/Static/css/sidenavfixed.css" />
 }
 
-@section header {
-    @{Html.RenderPartial("_NavBar");}
+@section navbar {
+    <div class="col s12">
+        <a href="@Url.Action("MenuMaintenance", "SystemSetup")" class="breadcrumb">Menu Maintenance</a>
+        <a href="@Url.Action("AddMenu", "MenuMaintenance")" class="breadcrumb">Add</a>
+    </div>
 }
 
 @section sidenav {
