@@ -1,9 +1,7 @@
 ﻿// TODO: Add materialize breadcrumb to pages.
-
 // TODO: Check all forms have required field where neccessary.
-// TODO: Change buttons to follow prototype.
-// TODO: Split SystemSetup Controller
 // TODO: Grey out GSYSADM
+// TODO: Remove JSON from URL when query.
 // TODO: Add comments.
 
 using System.Web.Mvc;

@@ -42,7 +42,7 @@ namespace Homework2.Controllers
                     {
                         cookie["username"] = acc.username;
 
-                        byte[] b = ASCIIEncoding.ASCII.GetBytes(hash);
+                        byte[] b = ASCIIEncoding.ASCII.GetBytes(acc.password);
                         string EncryptedPassword = Convert.ToBase64String(b);
                         cookie["password"] = EncryptedPassword;
 
