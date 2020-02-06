@@ -4,8 +4,6 @@
     flex-direction: column;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -24,13 +22,15 @@ main {
     color: red;
 }
 
-/* Creates a scrollable select tag. */
 .dropdown-content {
     max-height: 350px !important;
     overflow-y: auto !important;
     backface-visibility: hidden !important;
 }
 
+/*----------------------*/
+/*   Sorting table      */
+/*----------------------*/
 .tablesorter-headerAsc {
     background-repeat: no-repeat;
     background-position: center right;

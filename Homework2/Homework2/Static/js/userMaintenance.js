@@ -1,4 +1,5 @@
-﻿function GetTableValues() {
+﻿// Function to convert table into JSON.
+function GetTableValues() {
     //Create an Array to hold the Table values.
     var users = new Array();
 

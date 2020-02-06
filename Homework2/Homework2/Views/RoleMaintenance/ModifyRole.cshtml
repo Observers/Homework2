@@ -39,7 +39,7 @@
     <div class="row">
         <div class="col s12">
             <div class="input-field col s4 offset-s4">
-                <input id="role_descrip" name="description" type="text" class="validate" value="@Model.description">
+                <input id="role_descrip" name="description" type="text" class="validate" required value="@Model.description">
                 <label for="role_descrip">Role Description</label>
             </div>
         </div>
@@ -48,7 +48,7 @@
     <div class="row">
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
-                <select name="selectStatus">
+                <select name="selectStatus" required>
                     <option value="" disabled selected>Choose your option</option>
                     <option value="1">Y</option>
                     <option value="2">N</option>

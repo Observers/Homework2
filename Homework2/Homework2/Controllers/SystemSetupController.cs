@@ -1,7 +1,4 @@
-﻿// TODO: Check all forms have required field where neccessary.
-// TODO: Grey out GSYSADM
-
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Homework2.Models;
 using System.Linq;
 using System.Collections.Generic;
