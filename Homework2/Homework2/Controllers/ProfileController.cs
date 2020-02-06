@@ -11,14 +11,15 @@ namespace Homework2.Controllers
 {
     public class ProfileController : Controller
     {
-        // GET: Account
+        // Login landing page. 
         public ActionResult Index()
         {
             HttpCookie cookie = Request.Cookies["Profile"];
+            // Check if cookie has login data saved.
             if (cookie != null)
             {
                 ViewBag.username = cookie["username"].ToString();
-
+                // Decrypt stored ASCII password from cookie into MD5 hash.
                 string EncryptedPassword = cookie["password"].ToString();
                 byte[] b = Convert.FromBase64String(EncryptedPassword);
                 string DecryptedPassword = ASCIIEncoding.ASCII.GetString(b);
@@ -27,6 +28,8 @@ namespace Homework2.Controllers
             return View();
         }
 
+        // Login authentication function. Password is converted into MD5 hash.
+        // If remember me is checked, password is then exrypted to ASCII and stored in cookie.
         [HttpPost]
         public ActionResult Login(ExtendedAccount acc, FormCollection form)
         {
@@ -34,6 +37,7 @@ namespace Homework2.Controllers
             {
                 using (MD5 md5Hash = MD5.Create())
                 {
+                    // Encode text password into MD5 hash.
                     string hash = GetMd5Hash(md5Hash, acc.password);
 
                     HttpCookie cookie = new HttpCookie("Profile");
@@ -41,16 +45,17 @@ namespace Homework2.Controllers
                     if (f != null)
                     {
                         cookie["username"] = acc.username;
-
+                        // Encrypt MD5 password into ASCII and save to cookie.
                         byte[] b = ASCIIEncoding.ASCII.GetBytes(acc.password);
                         string EncryptedPassword = Convert.ToBase64String(b);
                         cookie["password"] = EncryptedPassword;
-
+                        // Set expire timmer to cookie.
                         cookie.Expires = DateTime.Now.AddDays(2);
                         HttpContext.Response.Cookies.Add(cookie);
                     }
                     else
                     {
+                        // Remove any cookie related to this website.
                         cookie.Expires = DateTime.Now.AddDays(-1);
                         HttpContext.Response.Cookies.Add(cookie);
                     }
@@ -63,6 +68,8 @@ namespace Homework2.Controllers
                     }
                     else
                     {
+                        // Store neccessary information in session that will be used in all websites without having to
+                        // continuously call the same information from database.
                         Session["userID"] = userDetails.userID;
                         Session["username"] = userDetails.username;
                         Session["mainMenu"] = userDetails.User.Role.Menus.Where(x => x.level == 0 || x.level == 1).OrderBy(x => x.menuNo).ToList();
@@ -73,6 +80,7 @@ namespace Homework2.Controllers
             }
         }
 
+        // Function to convert plain text password into MD5 hash.
         static string GetMd5Hash(MD5 md5Hash, string input)
         {
 
@@ -94,6 +102,7 @@ namespace Homework2.Controllers
             return sBuilder.ToString();
         }
 
+        // Logout function.
         public ActionResult LogOut()
         {
             Session.Abandon();
@@ -102,6 +111,7 @@ namespace Homework2.Controllers
             return RedirectToAction("Index", "Profile");
         }
 
+        // Change password landing page.
         public ActionResult ChangePassword()
         {
             HttpCookie cookie = Request.Cookies["Profile"];
@@ -112,6 +122,7 @@ namespace Homework2.Controllers
             return View();
         }
 
+        // Change password function.
         [HttpPost]
         public ActionResult ChangePassword(ExtendedAccount acc)
         {
@@ -134,14 +145,10 @@ namespace Homework2.Controllers
                     }
                     else
                     {
-                        hash = GetMd5Hash(md5Hash, acc.newPassword);
-
                         userDetails.password = hash;
-
                         db.SaveChanges();
 
                         TempData["Message"] = "<script>alert('Password changed successfully!')</script>";
-
                         return View("ChangePassword");
                     }
                 }

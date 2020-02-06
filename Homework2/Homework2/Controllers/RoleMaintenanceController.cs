@@ -9,6 +9,7 @@ namespace Homework2.Controllers
 {
     public class RoleMaintenanceController : Controller
     {
+        // Role Maintenance landing page.
         public ActionResult RoleMaintenance(ExtendedRole roles)
         {
             using (Trainee15Entities db = new Trainee15Entities())
@@ -20,6 +21,7 @@ namespace Homework2.Controllers
             }
         }
 
+        // Query role table from database.
         [HttpPost]
         public ActionResult QueryRole(FormCollection form)
         {
@@ -42,17 +44,20 @@ namespace Homework2.Controllers
             }
         }
 
+        // Add role landing page.
         [HttpGet]
         public ActionResult AddRole()
         {
             return View();
         }
 
+        // Add role to database function.
         [HttpPost]
         public ActionResult AddRole(FormCollection form)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
+                // Calling database function down below.
                 Database(form, true);
 
                 ExtendedRole viewModel = new ExtendedRole();
@@ -64,34 +69,47 @@ namespace Homework2.Controllers
             }
         }
 
+        // Modify role in database landing page.
         [HttpPost]
         public ActionResult ModifyRole(FormCollection form)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                string[] checkboxes = form["checkbox"].Split(',');
                 ExtendedRole viewModel = new ExtendedRole();
-                if (checkboxes.Length != 1)
+                viewModel.rolesList = db.Roles.ToList();
+                viewModel.rolesTableList = db.Roles.ToList();
+                try
                 {
-                    viewModel.rolesList = db.Roles.ToList();
-                    viewModel.rolesTableList = db.Roles.ToList();
-                    TempData["Message"] = "Can only select one to modify from table";
-                    return View("RoleMaintenance", viewModel);
+                    // Checkbox is the attribute name. 
+                    // Returns values of the boxes that have been checked as csv.
+                    string[] checkboxes = form["checkbox"].Split(',');
+                    if (checkboxes.Length != 1) // More than 1 checkbox selected.
+                    {
+                        TempData["Message"] = "Error: Can only select one to modify from table";
+                        return View("RoleMaintenance", viewModel);
+                    }
+                    else
+                    {
+                        int iSelectRole = int.Parse(checkboxes[0]);
+                        Role role = db.Roles.SingleOrDefault(x => x.roleID == iSelectRole);
+                        return View("ModifyRole", role);
+                    }
                 }
-                else
+                catch (Exception e) // Catch exception when no item from table was selected.
                 {
-                    int iSelectRole = int.Parse(checkboxes[0]);
-                    Role role = db.Roles.SingleOrDefault(x => x.roleID == iSelectRole);
-                    return View("ModifyRole", role);
+                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    return View("RoleMaintenance", viewModel);
                 }
             }
         }
 
+        // Modify and update role in database function.
         [HttpPost]
         public ActionResult ModifyRoleDatabase(FormCollection form)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
+                // Calling database function down below.
                 Database(form, false);
 
                 ExtendedRole viewModel = new ExtendedRole();
@@ -103,93 +121,140 @@ namespace Homework2.Controllers
             }
         }
 
+        // Role to Menu landing page.
         [HttpPost]
         public ActionResult MenuRole(FormCollection form)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                string[] checkboxes = form["checkbox"].Split(',');
                 ExtendedRole viewModel = new ExtendedRole();
-                if (checkboxes.Length != 1)
+                viewModel.rolesList = db.Roles.ToList();
+                List<Role> list = new List<Role>();
+                viewModel.rolesTableList = list;
+
+                try
                 {
-                    viewModel.rolesList = db.Roles.ToList();
-                    List<Role> list = new List<Role>();
-                    viewModel.rolesTableList = list;
-                    TempData["Message"] = "Can only select one to modify from table";
-                    return View("RoleMaintenance", viewModel);
+                    // Checkbox is the attribute name. 
+                    // Returns values of the boxes that have been checked as csv.
+                    string[] checkboxes = form["checkbox"].Split(',');
+
+                    if (checkboxes.Length != 1) // More than 1 checkbox selected.
+                    {
+                        TempData["Message"] = "Can only select one to modify from table";
+                        return View("RoleMaintenance", viewModel);
+                    }
+                    else
+                    {
+                        int iSelectRole = int.Parse(checkboxes[0]);
+                        viewModel.role = db.Roles.SingleOrDefault(x => x.roleID == iSelectRole);
+                        viewModel.menu = db.Menus.ToList();
+                        viewModel.menuRole = viewModel.role.Menus.ToList();
+                        return View("MenuRole", viewModel);
+                    }
                 }
-                else
+                catch (Exception e) // Catch exception when no item from table was selected.
                 {
-                    int iSelectRole = int.Parse(checkboxes[0]);
-                    viewModel.role = db.Roles.SingleOrDefault(x => x.roleID == iSelectRole);
-                    viewModel.menu = db.Menus.ToList();
-                    viewModel.menuRole = viewModel.role.Menus.ToList();
-                    return View("MenuRole", viewModel);
+                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    return View("RoleMaintenance", viewModel);
                 }
             }
         }
 
+        // Update Role to Menu in the database.
         [HttpPost]
         public ActionResult MenuRoleDatabase(FormCollection form)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
                 var roleID = int.Parse(form["selectRole"]);
-                System.Diagnostics.Debug.WriteLine("-------> RoleID: " + roleID);
-                string[] checkboxes = form["checkbox"].Split(',');
-                var menus = db.Menus.ToList();
-                var role = db.Roles.SingleOrDefault(x => x.roleID == roleID);
-                foreach (var menu in menus)
-                {
-                    if (checkboxes.Contains(menu.menuID.ToString()))
-                    {
-                        if (!menu.Roles.Contains(role))
-                        {
-                            db.Menus.SingleOrDefault(x => x.menuID == menu.menuID).Roles.Add(role);
-                            db.SaveChanges();
-                        }
-                    }
-                    if (!checkboxes.Contains(menu.menuID.ToString()))
-                    {
-                        if (menu.Roles.Contains(role))
-                        {
-                            db.Roles.SingleOrDefault(x => x.roleID == role.roleID).Menus.Remove(menu);
-                            db.SaveChanges();
-                        }
-                    }
-                }
                 ExtendedRole viewModel = new ExtendedRole();
-                viewModel.rolesList = db.Roles.ToList();
-                List<Role> list = new List<Role>();
-                viewModel.rolesTableList = list;
-                TempData["Message"] = " Role - Menu updated.";
-                return View("RoleMaintenance", viewModel);
+                try
+                {
+                    // Checkbox is the attribute name. 
+                    // Returns values of the boxes that have been checked as csv.
+                    string[] checkboxes = form["checkbox"].Split(',');
+
+                    var menus = db.Menus.ToList();
+                    var role = db.Roles.SingleOrDefault(x => x.roleID == roleID);
+                    foreach (var menu in menus)
+                    {
+                        // Add to menu to role.
+                        if (checkboxes.Contains(menu.menuID.ToString()))
+                        {
+                            if (!menu.Roles.Contains(role))
+                            {
+                                db.Menus.SingleOrDefault(x => x.menuID == menu.menuID).Roles.Add(role);
+                                db.SaveChanges();
+                            }
+                        }
+                        // Remove menu from role.
+                        if (!checkboxes.Contains(menu.menuID.ToString()))
+                        {
+                            if (menu.Roles.Contains(role))
+                            {
+                                db.Roles.SingleOrDefault(x => x.roleID == role.roleID).Menus.Remove(menu);
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+
+                    viewModel.rolesList = db.Roles.ToList();
+                    List<Role> list = new List<Role>();
+                    viewModel.rolesTableList = list;
+                    TempData["Message"] = " Role - Menu updated.";
+                    return View("RoleMaintenance", viewModel);
+                }
+                catch (Exception e) // Catch exception when no item from table was selected.
+                {
+                    viewModel.role = db.Roles.SingleOrDefault(x => x.roleID == roleID);
+                    viewModel.menu = db.Menus.ToList();
+                    viewModel.menuRole = viewModel.role.Menus.ToList();
+                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    return View("MenuRole", viewModel);
+                }
             }
         }
 
+        // Delete role(s) from database function.
         [HttpPost]
         public ActionResult DeleteRole(FormCollection form)
         {
-            var viewModel = new ExtendedRole();
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                string[] checkboxes = form["checkbox"].Split(',');
-                foreach (var role in checkboxes)
+                ExtendedRole viewModel = new ExtendedRole();
+
+                try
                 {
-                    int iRoleID = Int32.Parse(role);
-                    Role deleteRole = db.Roles.SingleOrDefault(r => r.roleID == iRoleID);
-                    db.Roles.Remove(deleteRole);
-                    db.SaveChanges();
+                    // Checkbox is the attribute name. 
+                    // Returns values of the boxes that have been checked as csv.
+                    string[] checkboxes = form["checkbox"].Split(',');
+                    foreach (var role in checkboxes)
+                    {
+                        int iRoleID = Int32.Parse(role);
+                        Role deleteRole = db.Roles.SingleOrDefault(r => r.roleID == iRoleID);
+                        db.Roles.Remove(deleteRole);
+                        db.SaveChanges();
+                    }
+                    viewModel.rolesList = db.Roles.ToList();
+                    List<Role> list = new List<Role>();
+                    viewModel.rolesTableList = list;
+                    TempData["Message"] = "<script>alert('One or more role has been successfully deleted!')</script>";
+                    return View("RoleMaintenance", viewModel);
+                }
+                catch (Exception e) // Catch exception when no item from table was selected.
+                {
+                    viewModel.rolesList = db.Roles.ToList();
+                    List<Role> list = new List<Role>();
+                    viewModel.rolesTableList = list;
+                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    return View("RoleMaintenance", viewModel);
                 }
 
-                viewModel.rolesList = db.Roles.ToList();
-                List<Role> list = new List<Role>();
-                viewModel.rolesTableList = list;
+
             }
-            TempData["Message"] = "<script>alert('One or more role has been successfully deleted!')</script>";
-            return View("RoleMaintenance", viewModel);
         }
 
+        // Database function to add and modify records accordingly.
         public void Database(FormCollection form, bool action)
         {
             using (Trainee15Entities db = new Trainee15Entities())
@@ -199,11 +264,11 @@ namespace Homework2.Controllers
 
                 Role role = new Role();
 
-                if (action)
+                if (action) // Add role.
                 {
                     role.roleName = form["roleName"];
                 }
-                if (!action)
+                if (!action) // Modify role.
                 {
                     var selectRole = form["selectRole"];
                     int iSelectRole = int.Parse(selectRole);
@@ -212,17 +277,10 @@ namespace Homework2.Controllers
 
                 role.description = form["description"];
                 var selectStatus = form["selectStatus"];
-                if (selectStatus == "1")
-                {
-                    role.status = true;
-                }
-                else
-                {
-                    role.status = false;
-                }
+                role.status = bool.Parse(selectStatus);
 
                 DateTime curretDateTime = DateTime.Now;
-                if (action)
+                if (action) // Add role
                 {
                     role.createDate = curretDateTime;
                     role.createUser = sessionUser.username;
@@ -230,7 +288,7 @@ namespace Homework2.Controllers
                 role.modifyDate = curretDateTime;
                 role.modifyUser = sessionUser.username;
 
-                if (action)
+                if (action) // Add role
                 {
                     db.Roles.Add(role);
                 }

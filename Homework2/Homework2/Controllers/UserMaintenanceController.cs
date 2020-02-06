@@ -9,6 +9,7 @@ namespace Homework2.Controllers
 {
     public class UserMaintenanceController : Controller
     {
+        // User Maintenance landing page.
         public ActionResult UserMaintenance(ExtendedUser users)
         {
             using (Trainee15Entities db = new Trainee15Entities())
@@ -20,6 +21,7 @@ namespace Homework2.Controllers
             }
         }
 
+        // Query user table from database function.
         [HttpPost]
         public ActionResult QueryUser(FormCollection form)
         {
@@ -33,33 +35,24 @@ namespace Homework2.Controllers
                 var selectUser = form["selectUser"];
                 var selectRole = form["selectRole"];
 
-                if (selectUser != null && selectRole != null)
+                var queryUser = db.Users.AsQueryable();
+                if (selectUser != null)
                 {
                     int iSelectUser = int.Parse(selectUser);
-                    int iSelectRole = int.Parse(selectRole);
-                    users.userTableList = db.Users.Where(x => x.userID == iSelectUser && x.roleID == iSelectRole).ToList();
-                    return View("UserMaintenance", users);
+                    queryUser = queryUser.Where(x => x.userID == iSelectUser);
                 }
-
-                if (selectUser != null && selectRole == null)
-                {
-                    int iSelectUser = int.Parse(selectUser);
-                    users.userTableList = db.Users.Where(x => x.userID == iSelectUser).ToList();
-                    return View("UserMaintenance", users);
-                }
-
-                if (selectUser == null && selectRole != null)
+                if (selectRole != null)
                 {
                     int iSelectRole = int.Parse(selectRole);
-                    users.userTableList = db.Users.Where(x => x.roleID == iSelectRole).ToList();
-                    return View("UserMaintenance", users);
+                    queryUser = queryUser.Where(x => x.roleID == iSelectRole);
                 }
 
-                users.userTableList = db.Users.ToList();
+                users.userTableList = queryUser.ToList();
                 return View("UserMaintenance", users);
             }
         }
 
+        // Add user landing page.
         [HttpGet]
         public ActionResult AddUser()
         {
@@ -71,6 +64,8 @@ namespace Homework2.Controllers
             }
         }
 
+        // Add user to database function. Hard code setting the default password as 'username12345'
+        // where username is the username entered.
         [HttpPost]
         public ActionResult AddUser(FormCollection form)
         {
@@ -92,14 +87,7 @@ namespace Homework2.Controllers
                 User addUser = new User();
                 addUser.username = username;
                 addUser.roleID = iRoleID;
-                if (selectStatus == "1")
-                {
-                    addUser.status = true;
-                }
-                else
-                {
-                    addUser.status = false;
-                }
+                addUser.status = bool.Parse(selectStatus);
                 addUser.createDate = curretDateTime;
                 addUser.createUser = sessionUser.username;
                 addUser.modifyDate = curretDateTime;
@@ -116,32 +104,46 @@ namespace Homework2.Controllers
             }
         }
 
+        // Modify user landing page.
         [HttpPost]
         public ActionResult ModifyUser(FormCollection form)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                string[] checkboxes = form["checkbox"].Split(',');
-                if (checkboxes.Length != 1)
+                ExtendedUser viewModel = new ExtendedUser();
+                viewModel.userList = db.Users.ToList();
+                viewModel.roleList = db.Roles.ToList();
+                viewModel.userTableList = new List<User>();
+
+                try
                 {
-                    ExtendedUser viewModel = new ExtendedUser();
-                    viewModel.userList = db.Users.ToList();
-                    viewModel.roleList = db.Roles.ToList();
-                    viewModel.userTableList = new List<User>();
-                    TempData["Message"] = "Can only select one from table to modify";
-                    return View("UserMaintenance", viewModel);
+                    // Checkbox is the attribute name. 
+                    // Returns values of the boxes that have been checked as csv.
+                    string[] checkboxes = form["checkbox"].Split(',');
+
+                    if (checkboxes.Length != 1) // More than 1 checkbox selected.
+                    {
+                        TempData["Message"] = "Can only select one from table to modify";
+                        return View("UserMaintenance", viewModel);
+                    }
+                    else
+                    {
+                        int iSelectUser = int.Parse(checkboxes[0]);
+                        ExtendedUser user = new ExtendedUser();
+                        user.user = db.Users.SingleOrDefault(x => x.userID == iSelectUser);
+                        user.roleList = db.Roles.ToList();
+                        return View("ModifyUser", user);
+                    }
                 }
-                else
+                catch (Exception e) // Catch exception when no item from table was selected.
                 {
-                    int iSelectUser = int.Parse(checkboxes[0]);
-                    ExtendedUser user = new ExtendedUser();
-                    user.user = db.Users.SingleOrDefault(x => x.userID == iSelectUser);
-                    user.roleList = db.Roles.ToList();
-                    return View("ModifyUser", user);
+                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    return View("UserMaintenance", viewModel);
                 }
             }
         }
 
+        // Modify user in the database function.
         [HttpPost]
         public ActionResult ModifyUserDatabase(FormCollection form)
         {
@@ -155,16 +157,10 @@ namespace Homework2.Controllers
                 var selectStatus = form["selectStatus"];
                 int iUserID = int.Parse(userID);
                 int iRoleID = int.Parse(roleID);
+
                 User user = db.Users.SingleOrDefault(x => x.userID == iUserID);
                 user.roleID = iRoleID;
-                if (selectStatus == "1")
-                {
-                    user.status = true;
-                }
-                else
-                {
-                    user.status = false;
-                }
+                user.status = bool.Parse(selectStatus);
                 DateTime curretDateTime = DateTime.Now;
                 user.modifyDate = curretDateTime;
                 user.modifyUser = sessionUser.username;
@@ -179,25 +175,40 @@ namespace Homework2.Controllers
             }
         }
 
+        // Delete user(s) from database function.
         [HttpPost]
         public ActionResult DeleteUser(FormCollection form)
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                string[] checkboxes = form["checkbox"].Split(',');
-                foreach (var user in checkboxes)
-                {
-                    int iUserID = Int32.Parse(user);
-                    User deletUser = db.Users.SingleOrDefault(x => x.userID == iUserID);
-                    db.Users.Remove(deletUser);
-                    db.SaveChanges();
-                }
                 ExtendedUser users = new ExtendedUser();
-                users.userList = db.Users.ToList();
-                users.roleList = db.Roles.ToList();
-                users.userTableList = new List<User>();
-                TempData["Message"] = "<script>alert('One or more user has been successfully deleted!')</script>";
-                return View("UserMaintenance", users);
+                try
+                {
+                    // Checkbox is the attribute name. 
+                    // Returns values of the boxes that have been checked as csv.
+                    string[] checkboxes = form["checkbox"].Split(',');
+
+                    foreach (var user in checkboxes)
+                    {
+                        int iUserID = Int32.Parse(user);
+                        User deletUser = db.Users.SingleOrDefault(x => x.userID == iUserID);
+                        db.Users.Remove(deletUser);
+                        db.SaveChanges();
+                    }
+                    users.userList = db.Users.ToList();
+                    users.roleList = db.Roles.ToList();
+                    users.userTableList = new List<User>();
+                    TempData["Message"] = "<script>alert('One or more user has been successfully deleted!')</script>";
+                    return View("UserMaintenance", users);
+                }
+                catch (Exception e) // Catch exception when no item from table was selected.
+                {
+                    users.userList = db.Users.ToList();
+                    users.roleList = db.Roles.ToList();
+                    users.userTableList = new List<User>();
+                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    return View("UserMaintenance", users);
+                }
             }
         }
     }

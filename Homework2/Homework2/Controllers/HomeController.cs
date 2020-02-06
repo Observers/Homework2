@@ -8,7 +8,7 @@ namespace Homework2.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
+        // Home landing page function
         public ActionResult Index()
         {
             return View();

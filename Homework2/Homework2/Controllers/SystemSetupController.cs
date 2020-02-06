@@ -1,7 +1,5 @@
 ﻿// TODO: Check all forms have required field where neccessary.
 // TODO: Grey out GSYSADM
-// TODO: Remove JSON from URL when query.
-// TODO: Add comments.
 
 using System.Web.Mvc;
 using Homework2.Models;
@@ -12,6 +10,7 @@ namespace Homework2.Controllers
 {
     public class SystemSetupController : Controller
     {
+        // Menu Maintenance landing page.
         public ActionResult MenuMaintenance(ExtendedMenu menus)
         {
             using (Trainee15Entities db = new Trainee15Entities())
@@ -22,6 +21,7 @@ namespace Homework2.Controllers
             }
         }
 
+        // Role Maintenance landing page.
         public ActionResult RoleMaintenance(ExtendedRole roles)
         {
             using (Trainee15Entities db = new Trainee15Entities())
@@ -33,6 +33,7 @@ namespace Homework2.Controllers
             }
         }
 
+        // User Maintenance landing page.
         public ActionResult UserMaintenance(ExtendedUser users)
         {
             using (Trainee15Entities db = new Trainee15Entities())
