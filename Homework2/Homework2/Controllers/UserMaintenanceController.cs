@@ -16,7 +16,7 @@ namespace Homework2.Controllers
             using (Trainee15Entities db = new Trainee15Entities())
             {
                 users.userList = db.Users.ToList();
-                users.roleList = db.Roles.ToList();
+                users.roleList = db.Roles.Where(x => x.status == true).ToList();
                 users.userTableList = new List<User>();
                 return View(users);
             }
@@ -30,7 +30,7 @@ namespace Homework2.Controllers
             {
                 ExtendedUser users = new ExtendedUser();
                 users.userList = db.Users.ToList();
-                users.roleList = db.Roles.ToList();
+                users.roleList = db.Roles.Where(x => x.status == true).ToList();
                 users.userTableList = new List<User>();
 
                 var selectUser = form["selectUser"];
@@ -60,7 +60,7 @@ namespace Homework2.Controllers
             using (Trainee15Entities db = new Trainee15Entities())
             {
                 ExtendedRole roles = new ExtendedRole();
-                roles.rolesList = db.Roles.ToList();
+                roles.rolesList = db.Roles.Where(x => x.status == true).ToList();
                 return View(roles);
             }
         }
@@ -107,7 +107,7 @@ namespace Homework2.Controllers
 
                 ExtendedUser users = new ExtendedUser();
                 users.userList = db.Users.ToList();
-                users.roleList = db.Roles.ToList();
+                users.roleList = db.Roles.Where(x => x.status == true).ToList();
                 users.userTableList = new List<User>();
                 TempData["Message"] = "A new user has been successfully added!";
                 return View("UserMaintenance", users);
@@ -122,7 +122,7 @@ namespace Homework2.Controllers
             {
                 ExtendedUser viewModel = new ExtendedUser();
                 viewModel.userList = db.Users.ToList();
-                viewModel.roleList = db.Roles.ToList();
+                viewModel.roleList = db.Roles.Where(x => x.status == true).ToList();
                 viewModel.userTableList = new List<User>();
 
                 try
@@ -141,7 +141,7 @@ namespace Homework2.Controllers
                         int iSelectUser = int.Parse(checkboxes[0]);
                         ExtendedUser user = new ExtendedUser();
                         user.user = db.Users.SingleOrDefault(x => x.userID == iSelectUser);
-                        user.roleList = db.Roles.ToList();
+                        user.roleList = db.Roles.Where(x => x.status == true).ToList();
                         return View("ModifyUser", user);
                     }
                 }
@@ -182,7 +182,7 @@ namespace Homework2.Controllers
 
                 ExtendedUser users = new ExtendedUser();
                 users.userList = db.Users.ToList();
-                users.roleList = db.Roles.ToList();
+                users.roleList = db.Roles.Where(x => x.status == true).ToList();
                 users.userTableList = new List<User>();
                 TempData["Message"] = "Role has been successfully modified!";
                 return View("UserMaintenance", users);
@@ -210,7 +210,7 @@ namespace Homework2.Controllers
                         db.SaveChanges();
                     }
                     users.userList = db.Users.ToList();
-                    users.roleList = db.Roles.ToList();
+                    users.roleList = db.Roles.Where(x => x.status == true).ToList();
                     users.userTableList = new List<User>();
                     TempData["Message"] = "One or more user has been successfully deleted!";
                     return View("UserMaintenance", users);
@@ -218,7 +218,7 @@ namespace Homework2.Controllers
                 catch (Exception e) // Catch exception when no item from table was selected.
                 {
                     users.userList = db.Users.ToList();
-                    users.roleList = db.Roles.ToList();
+                    users.roleList = db.Roles.Where(x => x.status == true).ToList();
                     users.userTableList = new List<User>();
                     TempData["Message"] = "Error: No item was selected from table.";
                     return View("UserMaintenance", users);
