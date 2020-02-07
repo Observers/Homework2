@@ -37,12 +37,12 @@ namespace Homework2.Controllers
                 var selectRole = form["selectRole"];
 
                 var queryUser = db.Users.AsQueryable();
-                if (selectUser != null)
+                if (selectUser != "")
                 {
                     int iSelectUser = int.Parse(selectUser);
                     queryUser = queryUser.Where(x => x.userID == iSelectUser);
                 }
-                if (selectRole != null)
+                if (selectRole != "")
                 {
                     int iSelectRole = int.Parse(selectRole);
                     queryUser = queryUser.Where(x => x.roleID == iSelectRole);
@@ -109,7 +109,7 @@ namespace Homework2.Controllers
                 users.userList = db.Users.ToList();
                 users.roleList = db.Roles.ToList();
                 users.userTableList = new List<User>();
-                TempData["Message"] = "<script>alert('A new user has been successfully added!')</script>";
+                TempData["Message"] = "A new user has been successfully added!";
                 return View("UserMaintenance", users);
             }
         }
@@ -133,7 +133,7 @@ namespace Homework2.Controllers
 
                     if (checkboxes.Length != 1) // More than 1 checkbox selected.
                     {
-                        TempData["Message"] = "Can only select one from table to modify";
+                        TempData["Message"] = "Error: Can only select one from table to modify.";
                         return View("UserMaintenance", viewModel);
                     }
                     else
@@ -147,7 +147,7 @@ namespace Homework2.Controllers
                 }
                 catch (Exception e) // Catch exception when no item from table was selected.
                 {
-                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    TempData["Message"] = "Error: No item was selected from table.";
                     return View("UserMaintenance", viewModel);
                 }
             }
@@ -184,7 +184,7 @@ namespace Homework2.Controllers
                 users.userList = db.Users.ToList();
                 users.roleList = db.Roles.ToList();
                 users.userTableList = new List<User>();
-                TempData["Message"] = "<script>alert('Role has been successfully modified!')</script>";
+                TempData["Message"] = "Role has been successfully modified!";
                 return View("UserMaintenance", users);
             }
         }
@@ -212,7 +212,7 @@ namespace Homework2.Controllers
                     users.userList = db.Users.ToList();
                     users.roleList = db.Roles.ToList();
                     users.userTableList = new List<User>();
-                    TempData["Message"] = "<script>alert('One or more user has been successfully deleted!')</script>";
+                    TempData["Message"] = "One or more user has been successfully deleted!";
                     return View("UserMaintenance", users);
                 }
                 catch (Exception e) // Catch exception when no item from table was selected.

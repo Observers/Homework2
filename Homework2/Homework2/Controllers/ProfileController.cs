@@ -126,7 +126,7 @@ namespace Homework2.Controllers
                         userDetails.password = hash;
                         db.SaveChanges();
 
-                        TempData["Message"] = "<script>alert('Password changed successfully!')</script>";
+                        TempData["Message"] = "Password changed successfully!";
                         return View("ChangePassword");
                     }
                 }

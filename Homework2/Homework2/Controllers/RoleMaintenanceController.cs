@@ -29,7 +29,7 @@ namespace Homework2.Controllers
             {
                 var selectRole = form["selectRole"];
                 var viewModel = new ExtendedRole();
-                if (selectRole != null)
+                if (selectRole != "")
                 {
                     int iSelectRole = int.Parse(selectRole);
                     viewModel.rolesList = db.Roles.ToList();
@@ -64,7 +64,7 @@ namespace Homework2.Controllers
                 viewModel.rolesList = db.Roles.ToList();
                 List<Role> list = new List<Role>();
                 viewModel.rolesTableList = list;
-                TempData["Message"] = "<script>alert('Role has been successfully added!')</script>";
+                TempData["Message"] = "Role has been successfully added!";
                 return View("RoleMaintenance", viewModel);
             }
         }
@@ -97,7 +97,7 @@ namespace Homework2.Controllers
                 }
                 catch (Exception e) // Catch exception when no item from table was selected.
                 {
-                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    TempData["Message"] = "Error: No item was selected from table.";
                     return View("RoleMaintenance", viewModel);
                 }
             }
@@ -116,7 +116,7 @@ namespace Homework2.Controllers
                 viewModel.rolesList = db.Roles.ToList();
                 List<Role> list = new List<Role>();
                 viewModel.rolesTableList = list;
-                TempData["Message"] = "<script>alert('Role has been successfully modified!')</script>";
+                TempData["Message"] = "Role has been successfully modified!";
                 return View("RoleMaintenance", viewModel);
             }
         }
@@ -140,7 +140,7 @@ namespace Homework2.Controllers
 
                     if (checkboxes.Length != 1) // More than 1 checkbox selected.
                     {
-                        TempData["Message"] = "Can only select one to modify from table";
+                        TempData["Message"] = "Error: Can only select one to modify from table";
                         return View("RoleMaintenance", viewModel);
                     }
                     else
@@ -154,7 +154,7 @@ namespace Homework2.Controllers
                 }
                 catch (Exception e) // Catch exception when no item from table was selected.
                 {
-                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    TempData["Message"] = "Error: No item was selected from table.";
                     return View("RoleMaintenance", viewModel);
                 }
             }
@@ -209,7 +209,7 @@ namespace Homework2.Controllers
                     viewModel.role = db.Roles.SingleOrDefault(x => x.roleID == roleID);
                     viewModel.menu = db.Menus.ToList();
                     viewModel.menuRole = viewModel.role.Menus.ToList();
-                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    TempData["Message"] = "Error: No item was selected from table.";
                     return View("MenuRole", viewModel);
                 }
             }
@@ -228,10 +228,15 @@ namespace Homework2.Controllers
                     // Checkbox is the attribute name. 
                     // Returns values of the boxes that have been checked as csv.
                     string[] checkboxes = form["checkbox"].Split(',');
-                    System.Diagnostics.Debug.WriteLine(checkboxes);
                     foreach (var role in checkboxes)
                     {
                         int iRoleID = Int32.Parse(role);
+                        // Delete role-menu relationship first before deleting roles.
+                        List<Menu> dropMenus = db.Roles.SingleOrDefault(r => r.roleID == iRoleID).Menus.ToList();
+                        foreach (var drop in dropMenus)
+                        {
+                            db.Roles.SingleOrDefault(r => r.roleID == iRoleID).Menus.Remove(drop);
+                        }
                         Role deleteRole = db.Roles.SingleOrDefault(r => r.roleID == iRoleID);
                         db.Roles.Remove(deleteRole);
                         db.SaveChanges();
@@ -239,7 +244,7 @@ namespace Homework2.Controllers
                     viewModel.rolesList = db.Roles.ToList();
                     List<Role> list = new List<Role>();
                     viewModel.rolesTableList = list;
-                    TempData["Message"] = "<script>alert('One or more role has been successfully deleted!')</script>";
+                    TempData["Message"] = "One or more role has been successfully deleted!";
                     return View("RoleMaintenance", viewModel);
                 }
                 catch (Exception e) // Catch exception when no item from table was selected.

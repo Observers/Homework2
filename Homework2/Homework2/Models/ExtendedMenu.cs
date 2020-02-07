@@ -11,5 +11,6 @@ namespace Homework2.Models
         public List<Menu> menuList { get; set; }
         public List<Menu> menuTableList { get; set; }
         public List<string> menuNoList { get; set; }
+        public string subMenuNo { get; set; }
     }
 }

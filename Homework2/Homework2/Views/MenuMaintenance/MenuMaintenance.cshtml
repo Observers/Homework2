@@ -19,13 +19,19 @@
 
 @section scripts {
     <script src="~/Static/js/menuMaintenance.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            var message = @((TempData["Message"] != null).ToString().ToLower());
+            if (message == true) {
+                M.toast({ html: '@TempData["Message"]' })
+            }
+        });
+    </script>
 }
 
 <div class="row">
     <h5>@ViewData["Title"]</h5>
 </div>
-
-<div>@TempData["Message"]</div>
 
 @using (Html.BeginForm())
 {

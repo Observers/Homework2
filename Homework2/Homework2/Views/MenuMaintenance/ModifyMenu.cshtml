@@ -25,6 +25,10 @@
     @{Html.RenderPartial("_SideNav");}
 }
 
+@section scripts {
+    <script src="~/Static/js/modifyMenu.js" asp-append-version="true"></script>
+}
+
 <div class="row">
     <h5 class="center-align">@ViewData["Title"]</h5>
 </div>
@@ -34,7 +38,7 @@
 @using (Html.BeginForm("ModifyMenuDatabase", "MenuMaintenance", FormMethod.Post))
 {
     <div class="row" hidden>
-        <input hidden disabled id="@Model.menu.menuID" name="menuID" type="text" value="@Model.menu.menuID" />
+        <input hidden id="@Model.menu.menuID" name="menuID" type="text" value="@Model.menu.menuID" />
     </div>
     <div class="row">
         <div class="col s12">
@@ -49,9 +53,22 @@
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
                 <select id="selectLinkType" name="selectLinkType" required onchange="check()">
-                    <option value="" disabled selected>Choose your option</option>
-                    <option value="1">Menu</option>
-                    <option value="2">Program</option>
+                    @if (Model.menu.linkType == "Menu")
+                    {
+                        <option value="1" selected>Menu</option>
+                        <option value="2">Program</option>
+                    }
+                    else if (Model.menu.linkType == "Program")
+                    {
+                        <option value="1">Menu</option>
+                        <option value="2" selected>Program</option>
+                    }
+                    else
+                    {
+                        <option value="" disabled selected>Please select an option</option>
+                        <option value="1">Menu</option>
+                        <option value="2">Program</option>
+                    }
                 </select>
                 <label>Link Type</label>
             </div>
@@ -61,13 +78,39 @@
     <div class="row">
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
-                <select id="a" name="selectSubMenu" disabled>
-                    <option value="" disabled selected>Choose your option</option>
-                    @foreach (var item in Model?.menuList)
-                    {
-                        <option value="@item.menuNo">@item.title</option>
-                    }
-                </select>
+                @if (Model.menu.linkType == "Menu")
+                {
+                    <select id="selectSubMenu" name="selectSubMenu" disabled>
+                        <option value="" disabled selected>Please select an option</option>
+                        @foreach (var item in Model?.menuList)
+                        {
+                            if (Model.subMenuNo == item.menuNo)
+                            {
+                                <option value="@item.menuNo" selected>@item.title</option>
+                            }
+                            else
+                            {
+                                <option value="@item.menuNo"> @item.title </option>
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                    <select id="selectSubMenu" name="selectSubMenu">
+                        @foreach (var item in Model?.menuList)
+                        {
+                            if (Model.subMenuNo == item.menuNo)
+                            {
+                                <option value="@item.menuNo" selected>@item.title</option>
+                            }
+                            else
+                            {
+                                <option value="@item.menuNo"> @item.title </option>
+                            }
+                        }
+                    </select>
+                }
                 <label>Sub-Menu of</label>
             </div>
         </div>
@@ -86,9 +129,16 @@
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
                 <select name="selectStatus" required>
-                    <option value="" disabled selected>Choose your option</option>
-                    <option value="1">Y</option>
-                    <option value="2">N</option>
+                    @if (Model.menu.status == true)
+                    {
+                        <option value="1" selected>Y</option>
+                        <option value="2">N</option>
+                    }
+                    else
+                    {
+                        <option value="1">Y</option>
+                        <option value="2" selected>N</option>
+                    }
                 </select>
                 <label>Status</label>
             </div>

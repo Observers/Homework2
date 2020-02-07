@@ -103,7 +103,7 @@ namespace Homework2.Controllers
                     }
                     else
                     {
-                        TempData["Message"] = "Error: Sub-menu category must be selected.";
+                        TempData["Message"] = "Error: Sub-menu category was not selected.";
                         return View("MenuMaintenance", "SystemSetup");
                     }
                 }
@@ -151,7 +151,6 @@ namespace Homework2.Controllers
                     // Checkbox is the attribute name. 
                     // Returns values of the boxes that have been checked as csv.
                     string[] checkboxes = form["checkbox"].Split(',');
-
                     if (checkboxes.Length != 1) // More than 1 checkbox selected.
                     {
                         TempData["Message"] = "Error: Can only select one from table to modify.";
@@ -162,12 +161,17 @@ namespace Homework2.Controllers
                         int iMenuID = int.Parse(checkboxes[0]);
                         modify.menu = db.Menus.SingleOrDefault(x => x.menuID == iMenuID);
                         modify.menuList = db.Menus.SqlQuery("SELECT * FROM Menu m1 INNER JOIN Menu m2 ON m1.menuID = m2.menuID WHERE m1.menuNo LIKE '00%' AND LEN(m2.MenuNo) = 3").ToList();
+
+                        if (modify.menu.menuNo.Length > 3)
+                        {
+                            modify.subMenuNo = modify.menu.menuNo.Remove(3);
+                        }
                         return View("ModifyMenu", modify);
                     }
                 }
                 catch (Exception e) // Catch exception when no item from table was selected.
                 {
-                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    TempData["Message"] = "Error: No item was selected from table.";
                     return View("MenuMaintenance", modify);
                 }
             }
@@ -179,66 +183,72 @@ namespace Homework2.Controllers
             using (Trainee15Entities db = new Trainee15Entities())
             {
                 // Menu object to store and update database.
-                ExtendedMenu menu = new ExtendedMenu();
+                Menu updateMenu = new Menu();
+                ExtendedMenu menus = new ExtendedMenu();
 
                 int menuID = int.Parse(form["menuID"]);
-               // Get data from database and assign it to object.
-                menu.menu = db.Menus.SingleOrDefault(x => x.menuID == menuID);
+                // Get data from database and assign it to object.
+                updateMenu = db.Menus.SingleOrDefault(x => x.menuID == menuID);
 
                 if (form["selectLinkType"] == "1") //Main Menu
                 {
-                    if (menu.linkType != "Menu") // Checks if menu isn't already a menu.
+                    if (updateMenu.linkType != "Menu") // Checks if menu isn't already a menu.
                     {
-                        menu.linkType = "Menu";
+                        updateMenu.linkType = "Menu";
                         // Update menu number if changed from sub menu to main menu.
-                        menu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
+                        updateMenu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
                     }
                 }
                 if (form["selectLinkType"] == "2") // Sub Menu
                 {
                     if (form["selectSubMenu"] != null)
                     {
-                        if (menu.linkType != "Program") // Checks if menu isn't already sub menu.
+                        if (updateMenu.linkType != "Program") // Checks if menu isn't already sub menu.
                         {
-                            menu.linkType = "Program";
+                            updateMenu.linkType = "Program";
                             // Update menu number if changed from main menu to sub menu.
-                            menu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
+                            updateMenu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
                         }
                         else // If the menu is already a program.
                         {
                             // Compare the menu category from database to the selected menu category.
-                            if (string.CompareOrdinal(menu.menuNo, 0, form["selectSubMenu"], 0, 3) != 0)
+                            if (string.CompareOrdinal(updateMenu.menuNo, 0, form["selectSubMenu"], 0, 3) != 0)
                             {
                                 // Update menu number if menu changed to a different menu category.
-                                menu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
+                                updateMenu.menuNo = MenuNo(form["selectLinkType"], form["selectSubMenu"]);
                             }
                         }
                     }
                     else
                     {
-                        menu.menuList = db.Menus.ToList();
-                        menu.menuTableList = new List<Menu>();
+                        menus.menuList = db.Menus.ToList();
+                        menus.menuTableList = new List<Menu>();
                         TempData["Message"] = "Error: Sub-menu category was not selected.";
-                        return View("MenuMaitenance", menu);
+                        return View("MenuMaintenance", menus);
                     }
                 }
 
-                menu.level = int.Parse(form["selectLinkType"]);
-                menu.title = form["title"];
+                updateMenu.level = int.Parse(form["selectLinkType"]);
+                updateMenu.title = form["title"];
                 if (form["linkUrl"] != null) // Optional
                 {
-                    menu.linkUrl = form["linkUrl"]; 
+                    updateMenu.linkUrl = form["linkUrl"]; 
                 }
                 else
                 {
-                    menu.linkUrl = "";
+                    updateMenu.linkUrl = "";
                 }
-                menu.status = bool.Parse(form["status"]);
+                updateMenu.status = false;
+                if(form["selectStatus"] == "1")
+                {
+                    updateMenu.status = true;
+                }
                 db.SaveChanges();
 
-                menu.menuList = db.Menus.ToList();
-                menu.menuTableList = new List<Menu>();
-                return View("MenuMaitenance", menu);
+                menus.menuList = db.Menus.ToList();
+                menus.menuTableList = new List<Menu>();
+                TempData["Message"] = "Menu updated.";
+                return View("MenuMaintenance", menus);
             }
         }
 
@@ -320,14 +330,14 @@ namespace Homework2.Controllers
                     }
                     menu.menuList = db.Menus.ToList();
                     menu.menuTableList = new List<Menu>();
-                    TempData["Message"] = "<script>alert('One or more user has been successfully deleted!')</script>";
+                    TempData["Message"] = "One or more user has been successfully deleted!";
                     return View("MenuMaintenance", menu);
                 }
                 catch (Exception e) // Catch exception when no item from table was selected.
                 {
                     menu.menuList = db.Menus.ToList();
                     menu.menuTableList = new List<Menu>();
-                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    TempData["Message"] = "Error: No item was selected from table.";
                     return View("MenuMaintenance", menu);
                 }
             }

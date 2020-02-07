@@ -40,10 +40,16 @@
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
                 <select name="selectRole" class="wrapper" required>
-                    <option value="" disabled selected>Choose your option</option>
                     @foreach (var role in Model?.roleList)
                     {
-                        <option value="@role.roleID">@role.roleName</option>
+                        if (Model.user.roleID == role.roleID)
+                        {
+                            <option value="@role.roleID" selected>@role.roleName</option>
+                        }
+                        else
+                        {
+                            <option value="@role.roleID">@role.roleName</option>
+                        }
                     }
                 </select>
                 <label>Role</label>
@@ -55,9 +61,17 @@
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
                 <select name="selectStatus" required>
-                    <option value="" disabled selected>Choose your option</option>
-                    <option value="1">Y</option>
-                    <option value="2">N</option>
+                    @if (Model.user.status == true)
+                    {
+                        <option value="1" selected>Y</option>
+                        <option value="2">N</option>
+                    }
+                    else
+                    {
+                        <option value="1">Y</option>
+                        <option value="2" selected>N</option>
+                    }
+
                 </select>
                 <label>Status</label>
             </div>
