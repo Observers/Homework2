@@ -173,7 +173,7 @@ namespace Homework2.Controllers
                 user.status = false;
                 if (selectStatus == "1")
                 {
-                    user.status = false;
+                    user.status = true;
                 }
                 DateTime curretDateTime = DateTime.Now;
                 user.modifyDate = curretDateTime;

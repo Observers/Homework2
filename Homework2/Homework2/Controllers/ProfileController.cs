@@ -60,10 +60,10 @@ namespace Homework2.Controllers
                         HttpContext.Response.Cookies.Add(cookie);
                     }
 
-                    var userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == hash);
+                    var userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == hash && x.User.status == true);
                     if (userDetails == null)
                     {
-                        TempData["Message"] = "Wrong Username or Password.";
+                        TempData["Message"] = "Access denied: Username or password is incorrect or you don't have an account.";
                         return View("Index");
                     }
                     else
