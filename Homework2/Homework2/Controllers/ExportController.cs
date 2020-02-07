@@ -18,16 +18,15 @@ namespace Homework2.Controllers
         [HttpPost]
         public void Submit(object sender, EventArgs e)
         {
-                string JSON = Request.Form["JSON"];
+            string JSON = Request.Form["JSON"];
             System.Diagnostics.Debug.WriteLine(JSON);
-                DataTable dt = JsonConvert.DeserializeObject<DataTable>(JSON);
-                WriteExcelWithNPOI(dt, "xlsx");
+            DataTable dt = JsonConvert.DeserializeObject<DataTable>(JSON);
+            WriteExcelWithNPOI(dt, "xlsx");
         }
 
         // Write JSON data to excel file and send excel document to user to download.
         public void WriteExcelWithNPOI(DataTable dt, String extension)
         {
-
             IWorkbook workbook;
 
             if (extension == "xlsx")
@@ -45,28 +44,29 @@ namespace Homework2.Controllers
 
             ISheet sheet1 = workbook.CreateSheet("Sheet 1");
 
-            // Make a header row
-            IRow row1 = sheet1.CreateRow(0);
-
-            for (int j = 0; j < dt.Columns.Count; j++)
-            {
-
-                ICell cell = row1.CreateCell(j);
-                String columnName = dt.Columns[j].ToString();
-                cell.SetCellValue(columnName);
-            }
-
-            // Loops through data
+            // Loops through data.
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                IRow row = sheet1.CreateRow(i + 1);
+                IRow row = sheet1.CreateRow(i);
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {
-
                     ICell cell = row.CreateCell(j);
                     String columnName = dt.Columns[j].ToString();
                     cell.SetCellValue(dt.Rows[i][columnName].ToString());
+                    if (i == 0)
+                    {
+                        var style = workbook.CreateCellStyle();
+                        style.FillForegroundColor = IndexedColors.Grey40Percent.Index;
+                        style.FillPattern = FillPattern.SolidForeground;
+                        cell.CellStyle = style;
+                    }
                 }
+            }
+
+            // Auto resize each column.
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+                sheet1.AutoSizeColumn(j);
             }
 
             // Steps to send excel file to client to download.
@@ -74,13 +74,13 @@ namespace Homework2.Controllers
             {
                 Response.Clear();
                 workbook.Write(exportData);
-                if (extension == "xlsx") //xlsx file format
+                if (extension == "xlsx") // xlsx file format.
                 {
                     Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                     Response.AddHeader("Content-Disposition", string.Format("attachment;filename={0}", "ContactNPOI.xlsx"));
                     Response.BinaryWrite(exportData.ToArray());
                 }
-                else if (extension == "xls")  //xls file format
+                else if (extension == "xls")  // xls file format.
                 {
                     Response.ContentType = "application/vnd.ms-excel";
                     Response.AddHeader("Content-Disposition", string.Format("attachment;filename={0}", "ContactNPOI.xls"));

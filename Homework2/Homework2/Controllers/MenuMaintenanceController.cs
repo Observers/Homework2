@@ -84,7 +84,7 @@ namespace Homework2.Controllers
                 var linkUrl = form["linkUrl"];
                 var status = form["selectStatus"];
 
-                ExtendedMenu menu = new ExtendedMenu();
+                Menu menu = new Menu();
                 // Determine the new menu number.
                 if (linkType == "1")
                 {
@@ -120,13 +120,18 @@ namespace Homework2.Controllers
                     menu.linkUrl = "";
                 }
 
-                menu.status = bool.Parse(status);
+                menu.status = false;
+                if (status == "1")
+                {
+                    menu.status = true;
+                }
                 db.Menus.Add(menu);
                 db.SaveChanges();
 
-                menu.menuList = db.Menus.ToList();
-                menu.menuTableList = new List<Menu>();
-                return View("MenuMaintenance", menu);
+                ExtendedMenu menus = new ExtendedMenu();
+                menus.menuList = db.Menus.ToList();
+                menus.menuTableList = new List<Menu>();
+                return View("MenuMaintenance", menus);
             }
         }
 

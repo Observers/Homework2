@@ -228,6 +228,7 @@ namespace Homework2.Controllers
                     // Checkbox is the attribute name. 
                     // Returns values of the boxes that have been checked as csv.
                     string[] checkboxes = form["checkbox"].Split(',');
+                    System.Diagnostics.Debug.WriteLine(checkboxes);
                     foreach (var role in checkboxes)
                     {
                         int iRoleID = Int32.Parse(role);
@@ -246,7 +247,7 @@ namespace Homework2.Controllers
                     viewModel.rolesList = db.Roles.ToList();
                     List<Role> list = new List<Role>();
                     viewModel.rolesTableList = list;
-                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    TempData["Message"] = "Error: No item was selected from table.";
                     return View("RoleMaintenance", viewModel);
                 }
 
@@ -277,7 +278,11 @@ namespace Homework2.Controllers
 
                 role.description = form["description"];
                 var selectStatus = form["selectStatus"];
-                role.status = bool.Parse(selectStatus);
+                role.status = false;
+                if (selectStatus == "1")
+                {
+                    role.status = true;
+                }
 
                 DateTime curretDateTime = DateTime.Now;
                 if (action) // Add role

@@ -7,19 +7,19 @@ function GetTableValues() {
     var table = document.getElementsByName("table");
     console.log(table[0].rows.length);
     //Loop through Table Rows.
-    for (var i = 1; i < table[0].rows.length; i++) {
+    for (var i = 0; i < table[0].rows.length; i++) {
         //Reference the Table Row.
         var row = table[0].rows[i];
 
         //Copy values from Table Cell to JSON object.
         var user = {};
-        user.user = row.cells[1].innerHTML;
-        user.role = row.cells[2].innerHTML;
-        user.status = row.cells[3].innerHTML;
-        user.createDate = row.cells[4].innerHTML;
-        user.createUser = row.cells[5].innerHTML;
-        user.modifyDate = row.cells[6].innerHTML;
-        user.modifyUser = row.cells[7].innerHTML;
+        user.user = row.cells[1].innerText;
+        user.role = row.cells[2].innerText;
+        user.status = row.cells[3].innerText;
+        user.createDate = row.cells[4].innerText;
+        user.createUser = row.cells[5].innerText;
+        user.modifyDate = row.cells[6].innerText;
+        user.modifyUser = row.cells[7].innerText;
         users.push(user);
     }
 

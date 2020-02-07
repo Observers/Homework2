@@ -7,18 +7,18 @@ function GetTableValues() {
     var table = document.getElementsByName("table");
     console.log(table[0].rows.length);
     //Loop through Table Rows.
-    for (var i = 1; i < table[0].rows.length; i++) {
+    for (var i = 0; i < table[0].rows.length; i++) {
         //Reference the Table Row.
         var row = table[0].rows[i];
 
         //Copy values from Table Cell to JSON object.
         var menu = {};
-        menu.menuNo = row.cells[1].innerHTML;
-        menu.level = row.cells[2].innerHTML;
-        menu.title = row.cells[3].innerHTML;
-        menu.linkType = row.cells[4].innerHTML;
-        menu.linkUrl = row.cells[5].innerHTML;
-        menu.status = row.cells[6].innerHTML;
+        menu.menuNo = row.cells[1].innerText;
+        menu.level = row.cells[2].innerText;
+        menu.title = row.cells[3].innerText;
+        menu.linkType = row.cells[4].innerText;
+        menu.linkUrl = row.cells[5].innerText;
+        menu.status = row.cells[6].innerText;
         menus.push(menu);
     }
 

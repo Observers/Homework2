@@ -34,12 +34,12 @@
 @using (Html.BeginForm("ModifyMenuDatabase", "MenuMaintenance", FormMethod.Post))
 {
     <div class="row" hidden>
-        <input hidden disabled id="@Model.menuID" name="menuID" type="text" value="@Model.menuID" />
+        <input hidden disabled id="@Model.menu.menuID" name="menuID" type="text" value="@Model.menu.menuID" />
     </div>
     <div class="row">
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
-                <input id="title" name="title" type="text" required class="validate" value="@Model.title">
+                <input id="title" name="title" type="text" required class="validate" value="@Model.menu.title">
                 <label for="title">Title</label>
             </div>
         </div>
@@ -76,7 +76,7 @@
     <div class="row">
         <div class="col s12">
             <div class="input-field col col s4 offset-s4">
-                <input id="linkUrl" name="linkUrl" type="text" class="validate">
+                <input id="linkUrl" name="linkUrl" type="text" class="validate" value="@Model.menu.linkUrl">
                 <label for="linkUrl">Link URL</label>
             </div>
         </div>

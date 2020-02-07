@@ -13,6 +13,8 @@
 
                 foreach (var Main in MainMenu)
                 {
+                    if (Main.status ==  true)
+                    {
                     <li>
                         <a class="collapsible-header">@Main.title</a>
                         @if (Main.level != 0)
@@ -21,15 +23,19 @@
                             <ul>
                                 @foreach (var Sub in SubMenu)
                                 {
-                                    if (Sub.menuNo.Contains(Main.menuNo) && Main.level != 0)
+                                    if (Sub.status == true)
                                     {
+                                        if (Sub.menuNo.Contains(Main.menuNo))
+                                        {
                                         <li><a href="@Sub.linkUrl">@Sub.title</a></li>
+                                        }
                                     }
                                 }
                             </ul>
                         </div>
                         }
                     </li>
+                    }
                 }
             }
         </ul>

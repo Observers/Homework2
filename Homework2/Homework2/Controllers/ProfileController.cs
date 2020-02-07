@@ -38,7 +38,7 @@ namespace Homework2.Controllers
                 using (MD5 md5Hash = MD5.Create())
                 {
                     // Encode text password into MD5 hash.
-                    string hash = GetMd5Hash(md5Hash, acc.password);
+                    string hash = Encryption.GetMd5Hash(md5Hash, acc.password);
 
                     HttpCookie cookie = new HttpCookie("Profile");
                     string f = form["RememberMe"];
@@ -80,28 +80,6 @@ namespace Homework2.Controllers
             }
         }
 
-        // Function to convert plain text password into MD5 hash.
-        static string GetMd5Hash(MD5 md5Hash, string input)
-        {
-
-            // Convert the input string to a byte array and compute the hash.
-            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-            // Create a new Stringbuilder to collect the bytes
-            // and create a string.
-            StringBuilder sBuilder = new StringBuilder();
-
-            // Loop through each byte of the hashed data 
-            // and format each one as a hexadecimal string.
-            for (int i = 0; i < data.Length; i++)
-            {
-                sBuilder.Append(data[i].ToString("x2"));
-            }
-
-            // Return the hexadecimal string.
-            return sBuilder.ToString();
-        }
-
         // Logout function.
         public ActionResult LogOut()
         {
@@ -130,7 +108,7 @@ namespace Homework2.Controllers
             {
                 using (MD5 md5Hash = MD5.Create())
                 {
-                    string hash = GetMd5Hash(md5Hash, acc.password);
+                    string hash = Encryption.GetMd5Hash(md5Hash, acc.password);
                     var userDetails = db.Accounts.SingleOrDefault(x => x.username == acc.username && x.password == hash);
 
                     if (userDetails == null)

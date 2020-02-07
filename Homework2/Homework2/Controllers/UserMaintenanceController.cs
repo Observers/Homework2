@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Homework2.Models;
+using System.Security.Cryptography;
 
 namespace Homework2.Controllers
 {
@@ -81,13 +82,22 @@ namespace Homework2.Controllers
 
                 Account newAccount = new Account();
                 newAccount.username = username;
-                newAccount.password = username + "12345";
-                db.Accounts.Add(newAccount);
+                string newPassword = username + "12345";
+                using (MD5 md5Hash = MD5.Create())
+                {
+                    string hash = Encryption.GetMd5Hash(md5Hash, newPassword);
+                    newAccount.password = hash;
+                    db.Accounts.Add(newAccount); 
+                }
 
                 User addUser = new User();
                 addUser.username = username;
                 addUser.roleID = iRoleID;
-                addUser.status = bool.Parse(selectStatus);
+                addUser.status = false;
+                if (selectStatus == "1")
+                {
+                    addUser.status = true;
+                }
                 addUser.createDate = curretDateTime;
                 addUser.createUser = sessionUser.username;
                 addUser.modifyDate = curretDateTime;
@@ -160,7 +170,11 @@ namespace Homework2.Controllers
 
                 User user = db.Users.SingleOrDefault(x => x.userID == iUserID);
                 user.roleID = iRoleID;
-                user.status = bool.Parse(selectStatus);
+                user.status = false;
+                if (selectStatus == "1")
+                {
+                    user.status = false;
+                }
                 DateTime curretDateTime = DateTime.Now;
                 user.modifyDate = curretDateTime;
                 user.modifyUser = sessionUser.username;
@@ -206,7 +220,7 @@ namespace Homework2.Controllers
                     users.userList = db.Users.ToList();
                     users.roleList = db.Roles.ToList();
                     users.userTableList = new List<User>();
-                    TempData["Message"] = "Error: No itemm was selected from table.";
+                    TempData["Message"] = "Error: No item was selected from table.";
                     return View("UserMaintenance", users);
                 }
             }
