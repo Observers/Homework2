@@ -8,15 +8,15 @@ INSERT INTO [dbo].[Account]
            ('admin'
            ,'administrator'),
 		   ('Lyvia'
-           ,'Lyvia123'),
+           ,'Lyvia12345'),
 		   ('Raco'
-           ,'Raco123'),
+           ,'Raco12345'),
 		   ('Alan'
-           ,'Alan123'),
+           ,'Alan12345'),
 		   ('Matt'
-           ,'Matt123'),
+           ,'Matt12345'),
 		   ('Steven'
-           ,'Steven123')
+           ,'Steven12345')
 GO
 
 
