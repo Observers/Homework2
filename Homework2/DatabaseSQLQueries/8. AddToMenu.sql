@@ -27,21 +27,21 @@ INSERT INTO [dbo].[Menu]
            ,'2'
            ,'User Maintenance'
            ,'Program'
-           ,'SystemSetup/UserMaintenance'
+           ,'/SystemSetup/UserMaintenance'
 		   ,'1'),
 
 		   ('0012'
            ,'2'
            ,'Role Maintenance'
            ,'Program'
-           ,'SystemSetup/RoleMaintenance'
+           ,'/SystemSetup/RoleMaintenance'
 		   ,'1'),
 
 		   ('0013'
            ,'2'
            ,'Menu Maintenance'
            ,'Program'
-           ,'SystemSetup'
+           ,'/SystemSetup'
 		   ,'1'),
 
 		   ('002'
@@ -55,14 +55,14 @@ INSERT INTO [dbo].[Menu]
            ,'2'
            ,'Test'
            ,'Program'
-           ,'SystemSetup/Test'
+           ,'/SystemSetup/Test'
 		   ,'0'),
 
 		   ('0022'
            ,'2'
            ,'Test2'
            ,'Program'
-           ,'SystemSetup/Test2'
+           ,'/SystemSetup/Test2'
 		   ,'0'),
 
 		   ('003'
@@ -76,14 +76,14 @@ INSERT INTO [dbo].[Menu]
            ,'2'
            ,'Change Password'
            ,'Program'
-           ,'Profile/ChangePassword'
+           ,'/Profile/ChangePassword'
 		   ,'1'),
 
 		   ('0032'
            ,'2'
            ,'Logout'
            ,'Program'
-           ,'Profile/Logout'
+           ,'/Profile/Logout'
 		   ,'1')
 GO
 
