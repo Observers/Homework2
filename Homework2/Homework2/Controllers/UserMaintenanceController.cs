@@ -30,7 +30,7 @@ namespace Homework2.Controllers
             {
                 ExtendedUser users = new ExtendedUser();
                 users.userList = db.Users.ToList();
-                users.roleList = db.Roles.Where(x => x.status == true).ToList();
+                users.roleList = db.Roles.ToList();
                 users.userTableList = new List<User>();
 
                 var selectUser = form["selectUser"];

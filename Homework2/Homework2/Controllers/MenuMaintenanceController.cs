@@ -26,29 +26,31 @@ namespace Homework2.Controllers
         {
             using (Trainee15Entities db = new Trainee15Entities())
             {
-                var menuNo = form["menuNo"];
-                var title = form["title"];
-                var linkType = form["linkType"];
+                var menuID = form["selectMenu"];
+                var title = form["selectTitle"];
+                var linkType = form["selectLinkType"];
                 // Status is of type string from front-end.
                 // bStatus is used to check database.
-                var status = form["status"];
+                var status = form["selectStatus"];
 
                 var queryMenu = db.Menus.AsQueryable();
-                if (menuNo != null)
+                if (menuID != "")
                 {
-                    queryMenu = queryMenu.Where(x => x.menuNo == menuNo);
+                    int iMenuID = int.Parse(menuID);
+                    queryMenu = queryMenu.Where(x => x.menuID == iMenuID);
                 }
-                if (title != null)
+                if (title != "")
                 {
                     queryMenu = queryMenu.Where(x => x.title == title);
                 }
-                if (linkType != null)
+                if (linkType != "")
                 {
                     queryMenu = queryMenu.Where(x => x.linkType == linkType);
                 }
-                if (status != null)
+                if (status != "")
                 {
-                    queryMenu = queryMenu.Where(x => x.status == bool.Parse(status));
+                    bool bStatus = bool.Parse(status);
+                    queryMenu = queryMenu.Where(x => x.status == bStatus);
                 }
 
                 ExtendedMenu query = new ExtendedMenu();

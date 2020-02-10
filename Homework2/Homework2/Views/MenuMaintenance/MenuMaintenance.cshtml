@@ -38,7 +38,7 @@
     <div class="row">
         <div class="input-field col s6">
             <select name="selectMenu" class="wrapper">
-                <option value="" disabled selected>Choose your option</option>
+                <option value="" selected>All</option>
                 @foreach (var menu in Model?.menuList)
                 {
                     <option value="@menu.menuID">@menu.menuNo</option>
@@ -51,7 +51,7 @@
     <div class="row">
         <div class="input-field col s6">
             <select name="selectTitle" class="wrapper">
-                <option value="" disabled selected>Choose your option</option>
+                <option value="" selected>All</option>
                 @foreach (var menu in Model?.menuList)
                 {
                     <option value="@menu.title">@menu.title</option>
@@ -64,7 +64,7 @@
     <div class="row">
         <div class="input-field col s3">
             <select name="selectLinkType" class="wrapper">
-                <option value="" disabled selected>Choose your option</option>
+                <option value="" selected>All</option>
                 <option value="Menu">Menu</option>
                 <option value="Program">Program</option>
             </select>
@@ -73,7 +73,7 @@
 
         <div class="input-field col s3">
             <select name="selectStatus" class="wrapper">
-                <option value="" disabled selected>Choose your option</option>
+                <option value="" selected>All</option>
                 <option value="1">Y</option>
                 <option value="0">N</option>
             </select>
