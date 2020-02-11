@@ -14,7 +14,7 @@
     </div>
 
     <div class="row">
-            <div class="input-field col s4 offset-s4">
+            <div class="input-field col s12 m5 offset-m4">
                 <input id="username" name="Username" type="text" required class="validate" value="@ViewBag.username"/>
                 <label for="username">Username</label>
                 <span class="helper-text" data-error="Invalid Usernme"></span>
@@ -22,34 +22,28 @@
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="input-field col s4 offset-s4">
+            <div class="input-field col s12 m5 offset-m4">
                 <input id="password" name="Password" type="password" required class="validate" value="@ViewBag.password"/>
                 <label for="password">Password</label>
                 <span class="helper-text" data-error="Invalid Password"></span>
             </div>
-        </div>
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="col s2 offset-s5">
+            <div class="col s7 offset-s3 m3 offset-m5">
                 <label>
                     <input id="RemembeMe" name="RememberMe" type="checkbox" />
                     <span>Remember me</span>
                 </label>
             </div>
-        </div>
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="col s2 offset-s5">
+            <div class="col s7 offset-s3 m3 offset-m5">
                 <button class="btn waves-effect waves-light" type="submit">
                     Login
                     <i class="material-icons right">send</i>
                 </button>
             </div>
-        </div>
     </div>
 }

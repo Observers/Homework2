@@ -15,10 +15,10 @@
 }
 
 @section navbar {
-<div class="col s12">
-    <a href="@Url.Action("RoleMaintenance", "SystemSetup")" class="breadcrumb">Role Maintenance</a>
-    <a href="#!" class="breadcrumb">Modify</a>
-</div>
+    <div class="col s12">
+        <a href="@Url.Action("RoleMaintenance", "SystemSetup")" class="breadcrumb">Role Maintenance</a>
+        <a href="#!" class="breadcrumb">Modify</a>
+    </div>
 }
 
 @section sidenav {
@@ -28,7 +28,7 @@
 @using (Html.BeginForm("ModifyRoleDatabase", "RoleMaintenance", FormMethod.Post))
 {
     <div class="row">
-        <div class="input-field col s4 offset-s4">
+        <div class="input-field col s12 m6 offset-m3">
             <select name="selectRole" class="wrapper">
                 <option selected value="@Model.roleID">@Model.roleName</option>
             </select>
@@ -37,44 +37,38 @@
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="input-field col s4 offset-s4">
-                <input id="role_descrip" name="description" type="text" class="validate" required value="@Model.description">
-                <label for="role_descrip">Role Description</label>
-            </div>
+        <div class="input-field col s12 m6 offset-m3">
+            <input id="role_descrip" name="description" type="text" class="validate" required value="@Model.description">
+            <label for="role_descrip">Role Description</label>
         </div>
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <select name="selectStatus" required>
-                    @if (Model.status == true)
-                    {
-                        <option value="1" selected>Y</option>
-                        <option value="2">N</option>
-                    }
-                    else
-                    {
-                        <option value="1">Y</option>
-                        <option value="2" selected>N</option>
-                    }
-                </select>
-                <label>Status</label>
-            </div>
+        <div class="input-field col s12 m6 offset-m3">
+            <select name="selectStatus" required>
+                @if (Model.status == true)
+                {
+                    <option value="1" selected>Y</option>
+                    <option value="2">N</option>
+                }
+                else
+                {
+                    <option value="1">Y</option>
+                    <option value="2" selected>N</option>
+                }
+            </select>
+            <label>Status</label>
         </div>
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="col s2 offset-s4">
-                <button class="btn waves-effect waves-light" onclick="return confirm('Are you sure you want to modify?')" type="submit" name="action">
-                    Save
-                </button>
-            </div>
-            <div class="col s2">
-                <button class="btn waves-effect waves-light " onclick="history.back()">Back</button>
-            </div>
+        <div class="col s12 m4 offset-m4">
+            <button class="btn waves-effect waves-light" onclick="return confirm('Are you sure you want to modify?')" type="submit" name="action">
+                Save
+            </button>
+            <button class="btn waves-effect waves-light " onclick="history.back()">
+                Back
+            </button>
         </div>
     </div>
 }

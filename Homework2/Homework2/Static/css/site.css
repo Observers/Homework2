@@ -66,3 +66,6 @@ main {
     cursor: pointer;
     background-image: url('');
 }
+table.responsive-table th {
+    text-align: left;
+}

@@ -8,6 +8,7 @@ function init() {
     M.AutoInit();
     M.updateTextFields();
     $("#sortableTable").tablesorter();
+    $('.tooltipped').tooltip();
 }
 
 // Function to toggle all checkboxes.
@@ -17,3 +18,4 @@ function toggle(source) {
         checkboxes[i].checked = source.checked;
     }
 }
+

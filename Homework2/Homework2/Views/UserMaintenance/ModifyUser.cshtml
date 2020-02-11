@@ -26,68 +26,58 @@
 @using (Html.BeginForm("ModifyUserDatabase", "UserMaintenance", FormMethod.Post))
 {
     <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <select name="selectUser" class="wrapper">
-                    <option selected value="@Model.user.userID">@Model.user.username</option>
-                </select>
-                <label>User</label>
-            </div>
+        <div class="input-field col s12 m6 offset-m3">
+            <select name="selectUser" class="wrapper">
+                <option selected value="@Model.user.userID">@Model.user.username</option>
+            </select>
+            <label>User</label>
         </div>
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <select name="selectRole" class="wrapper" required>
-                    @foreach (var role in Model?.roleList)
+        <div class="input-field col s12 m6 offset-m3">
+            <select name="selectRole" class="wrapper" required>
+                @foreach (var role in Model?.roleList)
+                {
+                    if (Model.user.roleID == role.roleID)
                     {
-                        if (Model.user.roleID == role.roleID)
-                        {
-                            <option value="@role.roleID" selected>@role.roleName</option>
-                        }
-                        else
-                        {
-                            <option value="@role.roleID">@role.roleName</option>
-                        }
-                    }
-                </select>
-                <label>Role</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <select name="selectStatus" required>
-                    @if (Model.user.status == true)
-                    {
-                        <option value="1" selected>Y</option>
-                        <option value="2">N</option>
+                        <option value="@role.roleID" selected>@role.roleName</option>
                     }
                     else
                     {
-                        <option value="1">Y</option>
-                        <option value="2" selected>N</option>
+                        <option value="@role.roleID">@role.roleName</option>
                     }
-
-                </select>
-                <label>Status</label>
-            </div>
+                }
+            </select>
+            <label>Role</label>
         </div>
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="col s2 offset-s4">
-                <button class="btn waves-effect waves-light" onclick="return confirm('Are you sure you want to modify?')" type="submit" name="action">
-                    Save
-                </button>
-            </div>
-            <div class="col s2">
-                <a class="btn waves-effect waves-light" onclick="history.back()">Back</a>
-            </div>
+        <div class="input-field col s12 m6 offset-m3">
+            <select name="selectStatus" required>
+                @if (Model.user.status == true)
+                {
+                    <option value="1" selected>Y</option>
+                    <option value="2">N</option>
+                }
+                else
+                {
+                    <option value="1">Y</option>
+                    <option value="2" selected>N</option>
+                }
+
+            </select>
+            <label>Status</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 m4 offset-m4">
+            <button class="btn waves-effect waves-light" onclick="return confirm('Are you sure you want to modify?')" type="submit" name="action">
+                Save
+            </button>
+            <a class="btn waves-effect waves-light" onclick="history.back()">Back</a>
         </div>
     </div>
 }

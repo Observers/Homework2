@@ -3,7 +3,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    if(Session["userID"] == null)
+    if (Session["userID"] == null)
     {
         Response.Redirect("~/Profile/Index");
     }
@@ -12,6 +12,10 @@
 @section stylesheet
 {
     <link rel="stylesheet" href="~/Static/css/sidenavfixed.css" />
+}
+
+@section navBar {
+    @{Html.RenderPartial("_Navbar");}
 }
 
 @section sidenav {

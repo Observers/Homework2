@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="~/Static/css/sidenavfixed.css" />
 }
 
+@section navBar {
+    @{Html.RenderPartial("_Navbar");}
+}
+
 @section sidenav {
     @{Html.RenderPartial("_SideNav");}
 }
@@ -36,7 +40,7 @@
 @using (Html.BeginForm())
 {
     <div class="row">
-        <div class="input-field col s6">
+        <div class="input-field col s12 m6">
             <select name="selectMenu" class="wrapper">
                 <option value="" selected>All</option>
                 @foreach (var menu in Model?.menuList)
@@ -49,7 +53,7 @@
     </div>
 
     <div class="row">
-        <div class="input-field col s6">
+        <div class="input-field col s12 m6">
             <select name="selectTitle" class="wrapper">
                 <option value="" selected>All</option>
                 @foreach (var menu in Model?.menuList)
@@ -62,7 +66,7 @@
     </div>
 
     <div class="row">
-        <div class="input-field col s3">
+        <div class="input-field col s6 m3">
             <select name="selectLinkType" class="wrapper">
                 <option value="" selected>All</option>
                 <option value="Menu">Menu</option>
@@ -71,7 +75,7 @@
             <label>Link Type</label>
         </div>
 
-        <div class="input-field col s3">
+        <div class="input-field col s6 m3">
             <select name="selectStatus" class="wrapper">
                 <option value="" selected>All</option>
                 <option value="1">Y</option>
@@ -81,32 +85,24 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col">
+    <div class="show-on-medium-and-up hide-on-med-and-down show-on-medium">
+        <div class="row">
             <button class="waves-effect waves-light btn-small purple " formaction="@Url.Action("QueryMenu", "MenuMaintenance")" formmethod="post">
                 <i class="material-icons right">search</i>
                 Query
             </button>
-        </div>
-        <div class="col">
             <button class="waves-effect waves-light btn-small green " formaction="@Url.Action("AddMenu", "MenuMaintenance")" formmethod="get">
                 <i class="material-icons right">add</i>
                 Add
             </button>
-        </div>
-        <div class="col">
             <button class="waves-effect waves-light btn-small yellow darken-2 " formaction="@Url.Action("ModifyMenu", "MenuMaintenance")" formmethod="post">
                 <i class="material-icons right">mode_edit</i>
                 Modify
             </button>
-        </div>
-        <div class="col">
             <button class="waves-effect waves-light btn-small orange " onclick="return confirm('Are you sure you want to delete?')" formaction="@Url.Action("DeleteMenu", "MenuMaintenance")" formmethod="post">
                 <i class="material-icons right">delete</i>
                 Delete
             </button>
-        </div>
-        <div class="col">
             <input hidden id="JSON" name="JSON" />
             <button class="waves-effect waves-light btn-small red " OnClick="GetTableValues()" formaction="@Url.Action("Submit", "Export")" formmethod="post">
                 <i class="material-icons right">file_download</i>
@@ -115,8 +111,44 @@
         </div>
     </div>
 
+    <div class="hide-on-med-and-up hide-on-med-only">
+        <div class="row">
+            <div class="col">
+                <button class="waves-effect waves-light btn-floating purple tooltipped" data-position="bottom" data-tooltip="Query" formaction="@Url.Action("QueryMenu", "MenuMaintenance")" formmethod="post">
+                    <i class="material-icons right">search</i>
+                    Query
+                </button>
+            </div>
+            <div class="col">
+                <button class="waves-effect waves-light btn-floating green tooltipped" data-position="bottom" data-tooltip="Add" formaction="@Url.Action("AddMenu", "MenuMaintenance")" formmethod="get">
+                    <i class="material-icons right">add</i>
+                    Add
+                </button>
+            </div>
+            <div class="col">
+                <button class="waves-effect waves-light btn-floating yellow darken-2 tooltipped" data-position="bottom" data-tooltip="Modify" formaction="@Url.Action("ModifyMenu", "MenuMaintenance")" formmethod="post">
+                    <i class="material-icons right">mode_edit</i>
+                    Modify
+                </button>
+            </div>
+            <div class="col">
+                <button class="waves-effect waves-light btn-floating orange tooltipped" data-position="bottom" data-tooltip="Delete" onclick="return confirm('Are you sure you want to delete?')" formaction="@Url.Action("DeleteMenu", "MenuMaintenance")" formmethod="post">
+                    <i class="material-icons right">delete</i>
+                    Delete
+                </button>
+            </div>
+            <div class="col">
+                <input hidden id="JSON" name="JSON" />
+                <button class="waves-effect waves-light btn-floating red tooltipped" data-position="bottom" data-tooltip="Download" OnClick="GetTableValues()" formaction="@Url.Action("Submit", "Export")" formmethod="post">
+                    <i class="material-icons right">file_download</i>
+                    Download
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
-        <table name="table" class="highlight">
+        <table name="table" class="highlight responsive-table">
             <thead>
                 <tr>
                     <th>

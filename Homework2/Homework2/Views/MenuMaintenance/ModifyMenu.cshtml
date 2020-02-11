@@ -40,121 +40,110 @@
     <div class="row" hidden>
         <input hidden id="@Model.menu.menuID" name="menuID" type="text" value="@Model.menu.menuID" />
     </div>
+
     <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <input id="title" name="title" type="text" required class="validate" value="@Model.menu.title">
-                <label for="title">Title</label>
-            </div>
+        <div class="input-field col s12 m6 offset-m3">
+            <input id="title" name="title" type="text" required class="validate" value="@Model.menu.title">
+            <label for="title">Title</label>
         </div>
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <select id="selectLinkType" name="selectLinkType" required onchange="check()">
-                    @if (Model.menu.linkType == "Menu")
-                    {
-                        <option value="1" selected>Menu</option>
-                        <option value="2">Program</option>
-                    }
-                    else if (Model.menu.linkType == "Program")
-                    {
-                        <option value="1">Menu</option>
-                        <option value="2" selected>Program</option>
-                    }
-                    else
-                    {
-                        <option value="" disabled selected>Please select an option</option>
-                        <option value="1">Menu</option>
-                        <option value="2">Program</option>
-                    }
-                </select>
-                <label>Link Type</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
+        <div class="input-field col s12 m6 offset-m3">
+            <select id="selectLinkType" name="selectLinkType" required onchange="check()">
                 @if (Model.menu.linkType == "Menu")
                 {
-                    <select id="selectSubMenu" name="selectSubMenu" disabled>
-                        <option value="" disabled selected>Please select an option</option>
-                        @foreach (var item in Model?.menuList)
-                        {
-                            if (Model.subMenuNo == item.menuNo)
-                            {
-                                <option value="@item.menuNo" selected>@item.title</option>
-                            }
-                            else
-                            {
-                                <option value="@item.menuNo"> @item.title </option>
-                            }
-                        }
-                    </select>
+                    <option value="1" selected>Menu</option>
+                    <option value="2">Program</option>
+                }
+                else if (Model.menu.linkType == "Program")
+                {
+                    <option value="1">Menu</option>
+                    <option value="2" selected>Program</option>
                 }
                 else
                 {
-                    <select id="selectSubMenu" name="selectSubMenu">
-                        @foreach (var item in Model?.menuList)
-                        {
-                            if (Model.subMenuNo == item.menuNo)
-                            {
-                                <option value="@item.menuNo" selected>@item.title</option>
-                            }
-                            else
-                            {
-                                <option value="@item.menuNo"> @item.title </option>
-                            }
-                        }
-                    </select>
+                    <option value="" disabled selected>Please select an option</option>
+                    <option value="1">Menu</option>
+                    <option value="2">Program</option>
                 }
-                <label>Sub-Menu of</label>
-            </div>
+            </select>
+            <label>Link Type</label>
         </div>
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <input id="linkUrl" name="linkUrl" type="text" class="validate" value="@Model.menu.linkUrl">
-                <label for="linkUrl">Link URL</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s12">
-            <div class="input-field col col s4 offset-s4">
-                <select name="selectStatus" required>
-                    @if (Model.menu.status == true)
+        <div class="input-field col s12 m6 offset-m3">
+            @if (Model.menu.linkType == "Menu")
+            {
+                <select id="selectSubMenu" name="selectSubMenu" disabled>
+                    <option value="" disabled selected>Please select an option</option>
+                    @foreach (var item in Model?.menuList)
                     {
-                        <option value="1" selected>Y</option>
-                        <option value="2">N</option>
-                    }
-                    else
-                    {
-                        <option value="1">Y</option>
-                        <option value="2" selected>N</option>
+                        if (Model.subMenuNo == item.menuNo)
+                        {
+                            <option value="@item.menuNo" selected>@item.title</option>
+                        }
+                        else
+                        {
+                            <option value="@item.menuNo"> @item.title </option>
+                        }
                     }
                 </select>
-                <label>Status</label>
-            </div>
+            }
+            else
+            {
+                <select id="selectSubMenu" name="selectSubMenu">
+                    @foreach (var item in Model?.menuList)
+                    {
+                        if (Model.subMenuNo == item.menuNo)
+                        {
+                            <option value="@item.menuNo" selected>@item.title</option>
+                        }
+                        else
+                        {
+                            <option value="@item.menuNo"> @item.title </option>
+                        }
+                    }
+                </select>
+            }
+            <label>Sub-Menu of</label>
         </div>
     </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="col s2 offset-s4">
-                <button class="btn waves-effect waves-light" type="submit" name="action">
-                    Save
-                </button>
-            </div>
-            <div class="col s2">
-                <button class="btn waves-effect waves-light " onclick="history.back()">Back</button>
-            </div>
+        <div class="input-field col s12 m6 offset-m3">
+            <input id="linkUrl" name="linkUrl" type="text" class="validate" value="@Model.menu.linkUrl">
+            <label for="linkUrl">Link URL</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12 m6 offset-m3">
+            <select name="selectStatus" required>
+                @if (Model.menu.status == true)
+                {
+                    <option value="1" selected>Y</option>
+                    <option value="2">N</option>
+                }
+                else
+                {
+                    <option value="1">Y</option>
+                    <option value="2" selected>N</option>
+                }
+            </select>
+            <label>Status</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 m4 offset-m4">
+            <button class="btn waves-effect waves-light" type="submit" name="action">
+                Save
+            </button>
+            <button class="btn waves-effect waves-light " onclick="history.back()">
+                Back
+            </button>
         </div>
     </div>
 }
