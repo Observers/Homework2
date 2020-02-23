@@ -9,6 +9,14 @@
     <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="User" Relationship="Self.FK_User_Account" FromRole="Account" ToRole="User" />
   </EntityType>
+  <EntityType Name="Home">
+    <Key>
+      <PropertyRef Name="userID" />
+    </Key>
+    <Property Name="userID" Type="Int32" Nullable="false" />
+    <Property Name="home1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Home_Home" FromRole="Home" ToRole="User" />
+  </EntityType>
   <EntityType Name="Menu">
     <Key>
       <PropertyRef Name="menuID" />
@@ -50,6 +58,7 @@
     <Property Name="modifyDate" Type="DateTime" Precision="3" />
     <Property Name="modifyUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Account" Relationship="Self.FK_User_Account" FromRole="User" ToRole="Account" />
+    <NavigationProperty Name="Home" Relationship="Self.FK_Home_Home" FromRole="User" ToRole="Home" />
     <NavigationProperty Name="Role" Relationship="Self.FK_User_Role" FromRole="User" ToRole="Role" />
   </EntityType>
   <Association Name="FK_User_Account">
@@ -60,6 +69,18 @@
         <PropertyRef Name="userID" />
       </Principal>
       <Dependent Role="User">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Home_Home">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Home" Type="Self.Home" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="userID" />
+      </Principal>
+      <Dependent Role="Home">
         <PropertyRef Name="userID" />
       </Dependent>
     </ReferentialConstraint>
@@ -82,12 +103,17 @@
   </Association>
   <EntityContainer Name="Trainee15Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Accounts" EntityType="Self.Account" />
+    <EntitySet Name="Homes" EntityType="Self.Home" />
     <EntitySet Name="Menus" EntityType="Self.Menu" />
     <EntitySet Name="Roles" EntityType="Self.Role" />
     <EntitySet Name="Users" EntityType="Self.User" />
     <AssociationSet Name="FK_User_Account" Association="Self.FK_User_Account">
       <End Role="Account" EntitySet="Accounts" />
       <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Home_Home" Association="Self.FK_Home_Home">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Home" EntitySet="Homes" />
     </AssociationSet>
     <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
       <End Role="Role" EntitySet="Roles" />

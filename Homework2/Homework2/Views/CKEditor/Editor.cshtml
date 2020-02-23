@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "CKEditor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (Session["userID"] == null)
+    {
+        Response.Redirect("~/Profile/Index");
+    }
+}
+
+@section stylesheet {
+    <link rel="stylesheet" href="~/Static/css/sidenavfixed.css" />
+}
+
+@section navBar {
+    @{Html.RenderPartial("_Navbar");}
+}
+
+@section sidenav {
+    @{Html.RenderPartial("_SideNav");}
+}
+
+@section scripts {
+    <script src="~/Static/js/CKEditor.js"></script>
+}
+
+<div class="row">
+    <h5>@ViewData["Title"]</h5>
+</div>
+
+<div class="row">
+    <textarea id="editor" name="editor"></textarea>
+</div>
+
+<div class="row">
+    <div class="col s12 m4 offset-m1">
+        <button class="btn waves-effect waves-light" onclick="encode()">
+            Add
+        </button>
+        <button class="btn waves-effect waves-light " onclick="history.back()">
+            Back
+        </button>
+    </div>
+</div>

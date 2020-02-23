@@ -8,6 +8,13 @@
     <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
+  <EntityType Name="Home">
+    <Key>
+      <PropertyRef Name="userID" />
+    </Key>
+    <Property Name="userID" Type="int" Nullable="false" />
+    <Property Name="home" Type="varchar(max)" />
+  </EntityType>
   <EntityType Name="Menu">
     <Key>
       <PropertyRef Name="menuID" />
@@ -54,6 +61,18 @@
     <Property Name="modifyDate" Type="datetime" />
     <Property Name="modifyUser" Type="varchar" MaxLength="50" />
   </EntityType>
+  <Association Name="FK_Home_Home">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Home" Type="Self.Home" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="userID" />
+      </Principal>
+      <Dependent Role="Home">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_RoleMenu_Menu1">
     <End Role="Menu" Type="Self.Menu" Multiplicity="1" />
     <End Role="RoleMenu" Type="Self.RoleMenu" Multiplicity="*" />
@@ -104,10 +123,15 @@
   </Association>
   <EntityContainer Name="Trainee15ModelStoreContainer">
     <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Home" EntityType="Self.Home" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RoleMenu" EntityType="Self.RoleMenu" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Home_Home" Association="Self.FK_Home_Home">
+      <End Role="User" EntitySet="User" />
+      <End Role="Home" EntitySet="Home" />
+    </AssociationSet>
     <AssociationSet Name="FK_RoleMenu_Menu1" Association="Self.FK_RoleMenu_Menu1">
       <End Role="Menu" EntitySet="Menu" />
       <End Role="RoleMenu" EntitySet="RoleMenu" />

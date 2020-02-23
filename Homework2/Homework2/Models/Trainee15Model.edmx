@@ -13,6 +13,13 @@
           <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Home">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="home" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="Menu">
           <Key>
             <PropertyRef Name="menuID" />
@@ -59,6 +66,18 @@
           <Property Name="modifyDate" Type="datetime" />
           <Property Name="modifyUser" Type="varchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK_Home_Home">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Home" Type="Self.Home" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Home">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_RoleMenu_Menu1">
           <End Role="Menu" Type="Self.Menu" Multiplicity="1" />
           <End Role="RoleMenu" Type="Self.RoleMenu" Multiplicity="*" />
@@ -109,10 +128,15 @@
         </Association>
         <EntityContainer Name="Trainee15ModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Home" EntityType="Self.Home" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleMenu" EntityType="Self.RoleMenu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Home_Home" Association="Self.FK_Home_Home">
+            <End Role="User" EntitySet="User" />
+            <End Role="Home" EntitySet="Home" />
+          </AssociationSet>
           <AssociationSet Name="FK_RoleMenu_Menu1" Association="Self.FK_RoleMenu_Menu1">
             <End Role="Menu" EntitySet="Menu" />
             <End Role="RoleMenu" EntitySet="RoleMenu" />
@@ -143,6 +167,14 @@
           <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.FK_User_Account" FromRole="Account" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Home">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="home1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Home_Home" FromRole="Home" ToRole="User" />
         </EntityType>
         <EntityType Name="Menu">
           <Key>
@@ -185,6 +217,7 @@
           <Property Name="modifyDate" Type="DateTime" Precision="3" />
           <Property Name="modifyUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Account" Relationship="Self.FK_User_Account" FromRole="User" ToRole="Account" />
+          <NavigationProperty Name="Home" Relationship="Self.FK_Home_Home" FromRole="User" ToRole="Home" />
           <NavigationProperty Name="Role" Relationship="Self.FK_User_Role" FromRole="User" ToRole="Role" />
         </EntityType>
         <Association Name="FK_User_Account">
@@ -195,6 +228,18 @@
               <PropertyRef Name="userID" />
             </Principal>
             <Dependent Role="User">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Home_Home">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Home" Type="Self.Home" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Home">
               <PropertyRef Name="userID" />
             </Dependent>
           </ReferentialConstraint>
@@ -217,12 +262,17 @@
         </Association>
         <EntityContainer Name="Trainee15Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="Homes" EntityType="Self.Home" />
           <EntitySet Name="Menus" EntityType="Self.Menu" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <AssociationSet Name="FK_User_Account" Association="Self.FK_User_Account">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Home_Home" Association="Self.FK_Home_Home">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Home" EntitySet="Homes" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
             <End Role="Role" EntitySet="Roles" />
@@ -245,6 +295,14 @@
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Homes">
+            <EntityTypeMapping TypeName="Trainee15Model.Home">
+              <MappingFragment StoreEntitySet="Home">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="home1" ColumnName="home" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

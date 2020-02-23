@@ -133,6 +133,7 @@
     <Content Include="Static\img\unfold_more-24px_white.svg" />
     <Content Include="Static\js\addMenu.js" />
     <Content Include="Static\js\changePassword.js" />
+    <Content Include="Static\js\CKEditor.js" />
     <Content Include="Static\js\menuMaintenance.js" />
     <Content Include="Static\js\modifyMenu.js" />
     <Content Include="Static\js\roleMaintenance.js" />
@@ -142,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CKEditorController.cs" />
     <Compile Include="Controllers\Encryption.cs" />
     <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\MenuMaintenanceController.cs" />
@@ -157,9 +159,13 @@
       <DependentUpon>Trainee15Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ExtendedAccount.cs" />
+    <Compile Include="Models\ExtendedHome.cs" />
     <Compile Include="Models\ExtendedMenu.cs" />
     <Compile Include="Models\ExtendedRole.cs" />
     <Compile Include="Models\ExtendedUser.cs" />
+    <Compile Include="Models\Home.cs">
+      <DependentUpon>Trainee15Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Menu.cs">
       <DependentUpon>Trainee15Model.tt</DependentUpon>
     </Compile>
@@ -212,6 +218,7 @@
     <Content Include="Views\MenuMaintenance\MenuMaintenance.cshtml" />
     <Content Include="Views\MenuMaintenance\AddMenu.cshtml" />
     <Content Include="Views\MenuMaintenance\ModifyMenu.cshtml" />
+    <Content Include="Views\CKEditor\Editor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,19 +12,11 @@ namespace Homework2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Home
     {
         public int userID { get; set; }
-        public string username { get; set; }
-        public int roleID { get; set; }
-        public Nullable<bool> status { get; set; }
-        public Nullable<System.DateTime> createDate { get; set; }
-        public string createUser { get; set; }
-        public Nullable<System.DateTime> modifyDate { get; set; }
-        public string modifyUser { get; set; }
+        public string home1 { get; set; }
     
-        public virtual Account Account { get; set; }
-        public virtual Home Home { get; set; }
-        public virtual Role Role { get; set; }
+        public virtual User User { get; set; }
     }
 }

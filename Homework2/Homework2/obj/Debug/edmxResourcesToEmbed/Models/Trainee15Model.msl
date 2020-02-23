@@ -10,6 +10,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Homes">
+      <EntityTypeMapping TypeName="Trainee15Model.Home">
+        <MappingFragment StoreEntitySet="Home">
+          <ScalarProperty Name="userID" ColumnName="userID" />
+          <ScalarProperty Name="home1" ColumnName="home" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Menus">
       <EntityTypeMapping TypeName="Trainee15Model.Menu">
         <MappingFragment StoreEntitySet="Menu">
