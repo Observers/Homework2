@@ -104,7 +104,7 @@
                 Delete
             </button>
             <input hidden id="JSON" name="JSON" />
-            <button class="waves-effect waves-light btn-small red " OnClick="GetTableValues()" formaction="@Url.Action("Submit", "Export")" formmethod="post">
+            <button id="download" class="waves-effect waves-light btn-small red " OnClick="GetTableValues()" formaction="@Url.Action("Submit", "Export")" formmethod="post" disabled>
                 <i class="material-icons right">file_download</i>
                 Download
             </button>
@@ -139,7 +139,7 @@
             </div>
             <div class="col">
                 <input hidden id="JSON" name="JSON" />
-                <button class="waves-effect waves-light btn-floating red tooltipped" data-position="bottom" data-tooltip="Download" OnClick="GetTableValues()" formaction="@Url.Action("Submit", "Export")" formmethod="post">
+                <button id="download" class="waves-effect waves-light btn-floating red tooltipped" data-position="bottom" data-tooltip="Download" OnClick="GetTableValues()" formaction="@Url.Action("Submit", "Export")" formmethod="post" disabled>
                     <i class="material-icons right">file_download</i>
                     Download
                 </button>

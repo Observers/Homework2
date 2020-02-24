@@ -1,11 +1,18 @@
-﻿// Function to convert table into JSON.
+﻿$(document).ready(function () {
+    var table = document.getElementsByName("table")
+    var x = table[0].rows.length
+    if (x > 1) {
+        $('#download').prop('disabled', false)
+    }
+})
+
+// Function to convert table into JSON.
 function GetTableValues() {
     //Create an Array to hold the Table values.
     var roles = new Array();
 
     //Reference the Table.
     var table = document.getElementsByName("table");
-    console.log(table[0].rows.length);
     //Loop through Table Rows.
     for (var i = 0; i < table[0].rows.length; i++) {
         //Reference the Table Row.
